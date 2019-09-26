@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
+    android:background="@color/colorTheme"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/view_top_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height">
+
+        <!--android:indeterminateDrawable="@drawable/anim_list_more_loading"-->
+        <!--android:indeterminateTint="@color/color_ffffff"-->
+        <!--<ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="@dimen/margin_20dp"
+            android:layout_height="@dimen/margin_20dp"
+            android:visibility="invisible"
+            android:indeterminateDrawable="@drawable/anim_list_more_loading"
+            android:layout_centerInParent="true" />-->
+
+        <ImageView
+            android:id="@+id/progressbar"
+            android:layout_width="@dimen/margin_20dp"
+            android:layout_height="@dimen/margin_20dp"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_chat_item_mistake" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_ffffff"
+            android:visibility="visible"
+            android:text=""
+            android:textSize="@dimen/text_size_18sp" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/margin_40dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back_press"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_right_tool"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:paddingRight="@dimen/margin_10dp"
+            android:text="确定"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_14sp"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="@dimen/margin_50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_12dp"
+            android:scaleType="centerInside"
+            android:tint="@color/color_333333"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>

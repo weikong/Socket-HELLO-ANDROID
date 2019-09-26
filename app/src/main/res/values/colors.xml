@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorTheme">#4db4ff</color>
+    <color name="colorThemeAlpha05">#884db4ff</color>
+    <color name="color_ffffff">#ffffff</color>
+    <color name="color_f4f4f4">#f4f4f4</color>
+    <color name="color_e5e7e5">#f8f8f8</color>
+    <color name="color_e8e8e8">#e8e8e8</color>
+    <color name="color_submit_end">#4dc5ff</color>
+    <color name="color_submit_start">#4daeff</color>
+    <color name="color_register_input">#848484</color>
+    <color name="color_bg_activity">#e7e7e7</color>
+    <color name="color_main_teacher">#2a5fc3</color>
+    <color name="color_main_qiehuan">#3b74d4</color>
+    <color name="color_dadada">#dadada</color>
+
+
+    <color name="color_transparent">#00000000</color>
+    <color name="color_black_alpha17">#2c000000</color>
+    <color name="color_000000">#000000</color>
+    <color name="color_111111">#111111</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_444444">#444444</color>
+    <color name="color_555555">#555555</color>
+    <color name="color_666666">#666666</color>
+    <color name="color_888888">#888888</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_aaaaaa">#aaaaaa</color>
+    <color name="color_bbbbbb">#bbbbbb</color>
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_dddddd">#dddddd</color>
+    <color name="color_line">#eeeeee</color>
+    <color name="color_bg_action">#fafbff</color>
+    <color name="color_biaozhu">#50addf</color>
+    <color name="color_jf">#fd5654</color>
+
+    <color name="percent_green">#00ff00</color>
+    <color name="percent_pink">#ff9411</color>
+    <color name="percent_yellow">#fdde54</color>
+    <color name="percent_pink_red">#fc0071</color>
+    <color name="percent_red">#ff0000</color>
+    <color name="percent_deep_red">#8f0200</color>
+    <color name="percent_gray">#818181</color>
+    <color name="color_search_bg">#eaeaea</color>
+    <color name="color_search_txt">#9a9a9a</color>
+    <color name="color_tag_bg">#f7f7f7</color>
+    <color name="color_tag_txt">#5f5f5f</color>
+    <!--<color name="color_tab_press">#ab90fa</color>-->
+    <color name="color_tab_press">#0B5CB8</color>
+    <color name="color_tab_nomal">#666666</color>
+
+
+    <color name="color_mask_email">#64d260</color>
+    <color name="color_mask_call">#6086d2</color>
+    <color name="color_mask_location">#d29860</color>
+    <color name="color_mask_calender">#d26060</color>
+
+    <color name="swipeoption_green">#36CF8E</color>
+    <color name="swipeoption_blue">#3693D0</color>
+    <color name="swipeoption_purple">#ff1744</color>
+
+    <!--<color name="color_sign_in">#7d78f7</color>-->
+    <color name="color_sign_in">#0B5CB8</color>
+    <color name="bg_50_percent_black">#80000000</color>
+    <color name="timetimepicker_default_text_color">#999999</color>
+    <color name="timepicker_toolbar_bg">#e60012</color>
+    <color name="timepicker_dialog_bg">#80000000</color>
+    <color name="timepicker_line">#e8e8e8</color>
+
+    <color name="color_main_tab_press">#3DCE6D</color>
+    <color name="color_main_tab_nomal">#999999</color>
+
+</resources>

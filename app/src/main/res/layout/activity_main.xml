@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_activity">
+
+    <com.king.chat.socket.ui.view.viewpager.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom_bar">
+
+    </com.king.chat.socket.ui.view.viewpager.CustomViewPager>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/margin_1dp"
+        android:background="@color/color_ffffff">
+
+        <RelativeLayout
+            android:id="@+id/layout_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_tab_1"
+                android:layout_width="44dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/tab_icon_message_hover"/>
+
+            <TextView
+                android:id="@+id/tv_unread_all"
+                android:layout_width="@dimen/margin_16dp"
+                android:layout_height="@dimen/margin_16dp"
+                android:layout_alignRight="@+id/iv_tab_1"
+                android:background="@drawable/bg_circle_red"
+                android:layout_marginTop="@dimen/margin_2dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="99"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/text_size_10sp"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_tab_2"
+                android:layout_width="44dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/tab_icon_contact"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_tab_3"
+                android:layout_width="44dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerInside"
+                android:tint="@color/color_main_tab_nomal"
+                android:src="@drawable/tab_icon_discovery"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_tab_4"
+                android:layout_width="44dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/tab_icon_mine"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
