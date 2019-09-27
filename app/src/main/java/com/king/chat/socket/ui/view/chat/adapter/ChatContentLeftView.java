@@ -3,10 +3,12 @@ package com.king.chat.socket.ui.view.chat.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import com.king.chat.socket.ui.adapter.GridMoreAdapter;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
 import com.king.chat.socket.util.GlideOptions;
+import com.king.chat.socket.util.ToastUtil;
+import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +38,10 @@ public class ChatContentLeftView extends RelativeLayout {
     TextView tv_content;
     @BindView(R.id.iv_content)
     RoundAngleImageView iv_content;
+    @BindView(R.id.iv_viedo_play)
+    ImageView iv_viedo_play;
+    @BindView(R.id.iv_voice_play)
+    ImageView iv_voice_play;
 
     public ChatContentLeftView(Context context) {
         super(context);
@@ -52,21 +60,56 @@ public class ChatContentLeftView extends RelativeLayout {
 
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_chat_content_left, this);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
     }
 
-    public void setData(ChatRecordData bean){
+    public void setData(final ChatRecordData bean) {
         int messageChatType = bean.getMessagechattype();
-        switch (messageChatType){
+        switch (messageChatType) {
             case MessageChatType.TYPE_TEXT:
                 tv_content.setVisibility(View.VISIBLE);
                 iv_content.setVisibility(View.GONE);
+                iv_viedo_play.setVisibility(View.GONE);
+                iv_voice_play.setVisibility(View.GONE);
                 tv_content.setText(bean.getMessagecontent());
                 break;
             case MessageChatType.TYPE_IMG:
                 tv_content.setVisibility(View.GONE);
                 iv_content.setVisibility(View.VISIBLE);
+                iv_viedo_play.setVisibility(View.GONE);
+                iv_voice_play.setVisibility(View.GONE);
                 GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+                break;
+            case MessageChatType.TYPE_VIDEO:
+                tv_content.setVisibility(View.GONE);
+                iv_content.setVisibility(View.VISIBLE);
+                iv_viedo_play.setVisibility(View.VISIBLE);
+                iv_voice_play.setVisibility(View.GONE);
+                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+                iv_viedo_play.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtil.show(bean.getMessagecontent());
+                    }
+                });
+                break;
+            case MessageChatType.TYPE_VOICE:
+                tv_content.setVisibility(View.GONE);
+                iv_content.setVisibility(View.GONE);
+                iv_viedo_play.setVisibility(View.GONE);
+                iv_voice_play.setVisibility(View.VISIBLE);
+                iv_voice_play.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AnimationDrawable mVoiceAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.anim_voice);
+                        iv_voice_play.setImageDrawable(mVoiceAnim);
+                        if (mVoiceAnim != null) {
+                            mVoiceAnim.setVisible(true, true);
+                            mVoiceAnim.start();
+                        }
+                        VoiceMediaPlayHelper.getInstance().playVoiceUrl(getContext(),bean.getMessagecontent(),iv_voice_play);
+                    }
+                });
                 break;
         }
     }

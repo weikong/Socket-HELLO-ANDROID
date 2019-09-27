@@ -1,5 +1,6 @@
 package com.king.chat.socket.ui.activity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.bean.FileItem;
 import com.king.chat.socket.bean.UploadFileBean;
 import com.king.chat.socket.bean.base.BaseTaskBean;
 import com.king.chat.socket.config.UrlConfig;
@@ -43,6 +45,7 @@ import com.king.chat.socket.ui.view.chat.VoiceView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
 import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.BroadCastUtil;
+import com.king.chat.socket.util.FilterTimeOutManager;
 import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
@@ -51,6 +54,7 @@ import com.squareup.okhttp.Request;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,18 +82,20 @@ public class MainChatActivity extends BaseDataActivity {
     private boolean isPullScroll = false;
     private float oldY = 0;
     private ContactBean contactBean;
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main_chat);
         ButterKnife.bind(this);
         regitserReceiver();
         contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
-        actionBar = (CommonActionBar)findViewById(R.id.action_bar);
+        actionBar = (CommonActionBar) findViewById(R.id.action_bar);
         actionBar.setTitle(contactBean.getName());
         actionBar.setIvBackVisiable(View.VISIBLE);
-        if (SocketUtil.IM_CONNECT_STATE == SocketUtil.IM_CONNECTED){
+        if (SocketUtil.IM_CONNECT_STATE == SocketUtil.IM_CONNECTED) {
             actionBar.setTitleVisiable(View.VISIBLE);
         } else {
             actionBar.setTitleVisiable(View.INVISIBLE);
@@ -152,7 +158,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void onClick(View v) {
                 if (inputHasContent) {
-                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT,contactBean);
+                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT, contactBean);
                 } else {
                     showExpandView("更多");
                 }
@@ -186,6 +192,12 @@ public class MainChatActivity extends BaseDataActivity {
             }
         });
         mEditText.addTextChangedListener(textWatcher);
+        viewVoice.setCallBack(new VoiceView.CallBack() {
+            @Override
+            public void recordVoice(String path) {
+                sendFileTask(MessageChatType.TYPE_VOICE, path);
+            }
+        });
         SocketUtil.getInstance().setmHandler(mHandler);
         clearUnreadCount();
         loadData();
@@ -228,46 +240,28 @@ public class MainChatActivity extends BaseDataActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            if (requestCode == INTENT_REQUEST_PHOTO){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == INTENT_REQUEST_PHOTO) {
                 String path = data.getStringExtra("ImagePath");
-                if (TextUtils.isEmpty(path))
-                    return;
-                showProgreessDialog();
-                HttpTaskUtil.getInstance().postUploadTask(UrlConfig.HTTP_UPLOAD_IMAGES, new File(path), "file", new OkHttpClientManager.StringCallback() {
-                    @Override
-                    public void onFailure(Request request, IOException e) {
-                        dismissProgressDialog();
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-//                        {"data":[{"fileName":"picture_1569497730337.jpg","suffix":".jpg","filePathMD5":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg","filePathMD5Thumb":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg"}],"code":1}
-                        try {
-                            BaseTaskBean resultTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
-                            if (resultTaskBean.getCode() == 1) {
-                                List<UploadFileBean> list = JSONArray.parseArray(resultTaskBean.getData(), UploadFileBean.class);
-                                if (list != null && list.size() > 0){
-                                    UploadFileBean uploadFileBean = list.get(0);
-                                    String filePath = uploadFileBean.getFilePathMD5();
-                                    if (!TextUtils.isEmpty(filePath)){
-                                        SocketUtil.getInstance().sendContent(uploadFileBean.getFilePathMD5(),MessageChatType.TYPE_IMG,contactBean);
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            dismissProgressDialog();
-                        } finally {
-                            dismissProgressDialog();
+                sendFileTask(MessageChatType.TYPE_IMG, path);
+            } else if (requestCode == REQUEST_ALBUM) {
+                ArrayList<FileItem> chooseItems = data.getParcelableArrayListExtra("images");
+                if (chooseItems != null && chooseItems.size() > 0) {
+                    for (FileItem fileItem : chooseItems) {
+                        if (fileItem.getFileType().contains("image/")) {
+                            sendFileTask(MessageChatType.TYPE_IMG, fileItem.getFilePath());
+                        } else if (fileItem.getFileType().contains("video/")) {
+                            sendFileTask(MessageChatType.TYPE_VIDEO, fileItem.getFilePath());
+                        } else {
+                            ToastUtil.show("文件格式不正確");
                         }
                     }
-                });
+                }
             }
         }
     }
 
-    private void clearUserHandler(){
+    private void clearUserHandler() {
         SocketUtil.getInstance().setmHandler(null);
         Config.toUserId = "";
         Config.toUserName = "";
@@ -283,7 +277,7 @@ public class MainChatActivity extends BaseDataActivity {
         }
     }
 
-    private void hideExpandViews(){
+    private void hideExpandViews() {
         viewVoice.setVisibility(View.INVISIBLE);
         viewBiaoQing.setVisibility(View.INVISIBLE);
         viewMore.setVisibility(View.INVISIBLE);
@@ -291,7 +285,7 @@ public class MainChatActivity extends BaseDataActivity {
 
     private void showExpandView(String more) {
         hideExpandViews();
-        switch (more){
+        switch (more) {
             case "语音":
                 viewVoice.setVisibility(View.VISIBLE);
                 break;
@@ -503,12 +497,12 @@ public class MainChatActivity extends BaseDataActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
-                    switch (action){
+                    switch (action) {
                         case BroadCastUtil.ACTION_UPDATE_MESSAGE:
                             ChatRecordData chatRecordData = (ChatRecordData) intent.getSerializableExtra("DATA");
-                            if (adapter != null && chatRecordData != null && chatRecordData.getMessagetoid().equals(contactBean.getAccount())){
+                            if (adapter != null && chatRecordData != null && chatRecordData.getMessagetoid().equals(contactBean.getAccount())) {
                                 List<ChatRecordData> list = adapter.getList();
-                                for (ChatRecordData item : list){
+                                for (ChatRecordData item : list) {
                                     item.setMessagestate(chatRecordData.getMessagestate());
                                     break;
                                 }
@@ -541,5 +535,70 @@ public class MainChatActivity extends BaseDataActivity {
         if (null != receiver) {
             unregisterReceiver(receiver);
         }
+    }
+
+    private void sendFileTask(int fileType, String path) {
+        if (TextUtils.isEmpty(path))
+            return;
+        File file = new File(path);
+        if (file == null || !file.exists() || file.length() <= 0) {
+            ToastUtil.show("文件不存在");
+            return;
+        }
+        final ChatRecordData chatRecordData = SocketUtil.getInstance().sendContentFilePre(file.getAbsolutePath(), fileType, contactBean);
+        if (chatRecordData == null)
+            return;
+        HttpTaskUtil.getInstance().postUploadTask(UrlConfig.HTTP_UPLOAD_IMAGES, new File(path), "file", new OkHttpClientManager.StringCallback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                dismissProgressDialog();
+                chatRecordData.setMessagestate(9);
+                DBChatRecordImpl.getInstance().updateChatRecord(chatRecordData);
+                FilterTimeOutManager.getInstance().scheduledNotTimeOut(chatRecordData);
+                if (mHandler != null) {
+                    Message message = Message.obtain();
+                    message.what = 2;
+                    message.obj = chatRecordData;
+                    mHandler.sendMessage(message);
+                }
+            }
+
+            @Override
+            public void onResponse(String response) {
+//                        {"data":[{"fileName":"picture_1569497730337.jpg","suffix":".jpg","filePathMD5":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg","filePathMD5Thumb":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg"}],"code":1}
+                try {
+                    BaseTaskBean resultTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
+                    if (resultTaskBean.getCode() == 1) {
+                        List<UploadFileBean> list = JSONArray.parseArray(resultTaskBean.getData(), UploadFileBean.class);
+                        if (list != null && list.size() > 0) {
+                            UploadFileBean uploadFileBean = list.get(0);
+                            String filePath = uploadFileBean.getFilePathMD5();
+                            if (!TextUtils.isEmpty(filePath)) {
+//                                        SocketUtil.getInstance().sendContent(uploadFileBean.getFilePathMD5(),MessageChatType.TYPE_IMG,contactBean);
+                                chatRecordData.setMessagecontent(filePath);
+                                SocketUtil.getInstance().sendContentFilePost(chatRecordData);
+                                return;
+                            }
+                        }
+                    }
+
+                    chatRecordData.setMessagestate(9);
+                    DBChatRecordImpl.getInstance().updateChatRecord(chatRecordData);
+                    FilterTimeOutManager.getInstance().scheduledNotTimeOut(chatRecordData);
+                    if (mHandler != null) {
+                        Message message = Message.obtain();
+                        message.what = 2;
+                        message.obj = chatRecordData;
+                        mHandler.sendMessage(message);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dismissProgressDialog();
+                } finally {
+                    dismissProgressDialog();
+                }
+            }
+        });
     }
 }

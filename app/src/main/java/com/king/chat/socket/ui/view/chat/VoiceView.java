@@ -11,6 +11,11 @@ import android.widget.RelativeLayout;
 
 import com.king.chat.socket.R;
 import com.king.chat.socket.util.AnimUtil;
+import com.king.chat.socket.util.SDCardUtil;
+import com.king.chat.socket.util.ToastUtil;
+import com.king.chat.socket.util.voice.VoiceRecordHelper;
+
+import java.io.File;
 
 /**
  * Created by maesinfo on 2019/5/15.
@@ -18,8 +23,11 @@ import com.king.chat.socket.util.AnimUtil;
 
 public class VoiceView extends RelativeLayout {
 
-    private ImageView iv_voice,iv_voice_circle,iv_voice_circle2;
-    AnimatorSet animatorSet1,animatorSet2;
+    private ImageView iv_voice, iv_voice_circle, iv_voice_circle2;
+    private AnimatorSet animatorSet1, animatorSet2;
+    private long dur = 0;
+    private String fileName;
+    private String filePath;
 
     public VoiceView(Context context) {
         super(context);
@@ -39,9 +47,9 @@ public class VoiceView extends RelativeLayout {
 
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_voice, this);
-        iv_voice = (ImageView)view.findViewById(R.id.iv_voice);
-        iv_voice_circle = (ImageView)view.findViewById(R.id.iv_voice_circle);
-        iv_voice_circle2 = (ImageView)view.findViewById(R.id.iv_voice_circle2);
+        iv_voice = (ImageView) view.findViewById(R.id.iv_voice);
+        iv_voice_circle = (ImageView) view.findViewById(R.id.iv_voice_circle);
+        iv_voice_circle2 = (ImageView) view.findViewById(R.id.iv_voice_circle2);
         iv_voice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,25 +60,51 @@ public class VoiceView extends RelativeLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
-                switch (action){
+                switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        animatorSet1 = AnimUtil.scaleAnim(iv_voice_circle,1.0f,4.5f,0,2000);
-                        animatorSet2 = AnimUtil.scaleAnim(iv_voice_circle2,1.0f,4.5f,200,2000);
+                        animatorSet1 = AnimUtil.scaleAnim(iv_voice_circle, 1.0f, 4.5f, 0, 2000);
+                        animatorSet2 = AnimUtil.scaleAnim(iv_voice_circle2, 1.0f, 4.5f, 200, 2000);
+                        dur = System.currentTimeMillis();
+                        fileName = new StringBuffer().append(dur).append(".m4a").toString();
+                        VoiceRecordHelper.getInstance().beginRecording(fileName);
                         break;
                     case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        if (animatorSet1 != null){
+                        if (animatorSet1 != null) {
                             animatorSet1.end();
                             animatorSet1.cancel();
                         }
-                        if (animatorSet2 != null){
+                        if (animatorSet2 != null) {
                             animatorSet2.end();
                             animatorSet2.cancel();
+                        }
+                        VoiceRecordHelper.getInstance().stopRecording();
+                        String filePath = SDCardUtil.getVoiceDir() + File.separator + fileName;
+                        long nowTime = System.currentTimeMillis();
+                        if (nowTime - dur < 1000) {
+                            ToastUtil.show("录制时间太短");
+                            File file = new File(filePath);
+                            if (file.exists()) {
+                                file.delete();
+                            }
+                        } else {
+                            if (callBack != null) {
+                                callBack.recordVoice(filePath);
+                            }
                         }
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack {
+        public void recordVoice(String path);
     }
 }

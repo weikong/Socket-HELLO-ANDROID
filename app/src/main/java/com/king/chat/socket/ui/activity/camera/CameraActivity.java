@@ -16,6 +16,8 @@ import com.cjt2325.cameralibrary.util.DeviceUtil;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.FileItem;
+import com.king.chat.socket.ui.activity.ChooseImages.ChooseImagesActivity;
+import com.king.chat.socket.ui.activity.MainChatActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.util.SDCardUtil;
 
@@ -73,7 +75,7 @@ public class CameraActivity extends BaseDataActivity {
                 SDCardUtil.getImgDir();
                 String path = FileUtil.saveBitmap("JCamera", bitmap);
                 Intent intent = new Intent();
-                intent.putExtra("ImagePath",path);
+                intent.putExtra("ImagePath", path);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -100,8 +102,7 @@ public class CameraActivity extends BaseDataActivity {
         jCameraView.setLeftClickListener(new ClickListener() {
             @Override
             public void onClick() {
-//                CameraActivity.this.finish();
-//                intent2Activity(ChooseImagesActivity.class);
+                ChooseImagesActivity.startActivityResult(MainChatActivity.activity, BaseDataActivity.REQUEST_ALBUM, 1024, 0, true);
             }
         });
         jCameraView.setRightClickListener(new ClickListener() {

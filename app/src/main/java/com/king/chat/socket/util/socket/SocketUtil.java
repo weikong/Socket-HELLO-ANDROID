@@ -126,26 +126,70 @@ public class SocketUtil {
     /**
      * 发送聊天内容
      */
+    public ChatRecordData sendContentFilePre(String sendMsg, int chatType, ContactBean contactBean) {
+        // TODO: 2019/9/20 保存数据库
+        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType);
+        long insert = DBChatRecordImpl.getInstance().insertChatRecord(chatRecordData);
+        if (insert > 0) {
+            SessionData sessionData = new SessionData();
+            sessionData.setMessagecontent(chatRecordData.getMessagecontent());
+            sessionData.setMessagefromid(chatRecordData.getMessagetoid());
+            sessionData.setMessagefromname(chatRecordData.getMessagetoname());
+            String headerAvatar = "";
+            if (contactBean != null)
+                headerAvatar = contactBean.getHeadPortrait();
+            if (!TextUtils.isEmpty(headerAvatar))
+                sessionData.setMessagefromavatar(headerAvatar);
+            sessionData.setMessageid(chatRecordData.getMessageid());
+            sessionData.setMessagestate(chatRecordData.getMessagestate());
+            sessionData.setMessagetime(chatRecordData.getMessagetime());
+            sessionData.setMessagetype(chatRecordData.getMessagetype());
+            sessionData.setMessagechattype(chatRecordData.getMessagechattype());
+            boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
+            BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
+            if (mHandler != null) {
+                Message message = Message.obtain();
+                message.what = 1;
+                message.obj = chatRecordData;
+                mHandler.sendMessage(message);
+            }
+            return chatRecordData;
+        }
+        ToastUtil.show("数据存储失败");
+        Logger.e(TAG, "数据存储失败");
+        return null;
+    }
+
+    /**
+     * 发送聊天内容
+     */
+    public void sendContentFilePost(ChatRecordData chatRecordData) {
+        mExecutorService.execute(new sendService(chatRecordData));
+    }
+
+    /**
+     * 发送聊天内容
+     */
     public void sendContent(String sendMsg, int chatType, ContactBean contactBean) {
         // TODO: 2019/9/20 保存数据库
         ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType);
         long insert = DBChatRecordImpl.getInstance().insertChatRecord(chatRecordData);
-        SessionData sessionData = new SessionData();
-        sessionData.setMessagecontent(chatRecordData.getMessagecontent());
-        sessionData.setMessagefromid(chatRecordData.getMessagetoid());
-        sessionData.setMessagefromname(chatRecordData.getMessagetoname());
-        String headerAvatar = "";
-        if (contactBean != null)
-            headerAvatar = contactBean.getHeadPortrait();
-        if (!TextUtils.isEmpty(headerAvatar))
-            sessionData.setMessagefromavatar(headerAvatar);
-        sessionData.setMessageid(chatRecordData.getMessageid());
-        sessionData.setMessagestate(chatRecordData.getMessagestate());
-        sessionData.setMessagetime(chatRecordData.getMessagetime());
-        sessionData.setMessagetype(chatRecordData.getMessagetype());
-        sessionData.setMessagechattype(chatRecordData.getMessagechattype());
-        boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
         if (insert > 0) {
+            SessionData sessionData = new SessionData();
+            sessionData.setMessagecontent(chatRecordData.getMessagecontent());
+            sessionData.setMessagefromid(chatRecordData.getMessagetoid());
+            sessionData.setMessagefromname(chatRecordData.getMessagetoname());
+            String headerAvatar = "";
+            if (contactBean != null)
+                headerAvatar = contactBean.getHeadPortrait();
+            if (!TextUtils.isEmpty(headerAvatar))
+                sessionData.setMessagefromavatar(headerAvatar);
+            sessionData.setMessageid(chatRecordData.getMessageid());
+            sessionData.setMessagestate(chatRecordData.getMessagestate());
+            sessionData.setMessagetime(chatRecordData.getMessagetime());
+            sessionData.setMessagetype(chatRecordData.getMessagetype());
+            sessionData.setMessagechattype(chatRecordData.getMessagechattype());
+            boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
             if (mHandler != null) {
                 Message message = Message.obtain();

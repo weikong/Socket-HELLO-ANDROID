@@ -4,30 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:background="@drawable/bg_chat_incoming_item_picture_nor">
+    android:background="@drawable/bg_chat_incoming_item_picture_nor"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:maxWidth="220dp"
+        android:paddingBottom="@dimen/margin_4dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="@dimen/margin_4dp"
-        android:paddingBottom="@dimen/margin_4dp"
+        android:text="你好，我叫孔偉。請多關照"
         android:textColor="#333333"
-        android:maxWidth="220dp"
-        android:visibility="gone"
-        android:text="你好，我叫孔偉。請多關照"/>
+        android:textSize="14sp"
+        android:visibility="gone" />
 
     <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
         android:id="@+id/iv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:minWidth="@dimen/margin_220dp"
         android:minHeight="@dimen/margin_220dp"
-        android:visibility="gone"/>
+        android:minWidth="@dimen/margin_220dp"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/iv_viedo_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_play_nol"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_voice_play"
+        android:layout_width="130dp"
+        android:layout_height="30dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:paddingRight="@dimen/margin_10dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        android:src="@drawable/anim_voice11" />
 </RelativeLayout>

@@ -29,4 +29,21 @@
         android:minHeight="@dimen/margin_220dp"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/iv_viedo_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:src="@drawable/ic_play_nol"/>
+
+    <ImageView
+        android:id="@+id/iv_voice_play"
+        android:layout_width="130dp"
+        android:layout_height="30dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:paddingRight="@dimen/margin_10dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        android:src="@drawable/anim_voice11" />
 </RelativeLayout>

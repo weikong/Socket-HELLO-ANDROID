@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.activity.ChooseImages.ChooseImagesActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.camera.CameraActivity;
 import com.king.chat.socket.ui.adapter.GridMoreAdapter;
@@ -46,14 +47,15 @@ public class MoreView extends RelativeLayout {
 
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_more, this);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         adapter = new GridMoreAdapter(context);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
+                        ChooseImagesActivity.startActivityResult((Activity) getContext(), BaseDataActivity.REQUEST_ALBUM, 1024, 0, true);
                         break;
                     case 1:
                         chooseCamera();
@@ -78,6 +80,6 @@ public class MoreView extends RelativeLayout {
         boolean onlyImage = false;
         Intent intent = new Intent(getContext(), CameraActivity.class);
         intent.putExtra(CameraActivity.ONLY_CAPTURE, onlyImage);
-        ((Activity)getContext()).startActivityForResult(intent, BaseDataActivity.INTENT_REQUEST_PHOTO);
+        ((Activity) getContext()).startActivityForResult(intent, BaseDataActivity.INTENT_REQUEST_PHOTO);
     }
 }

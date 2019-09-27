@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_100dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/iv_choose"
+            android:layout_width="@dimen/margin_28dp"
+            android:layout_height="@dimen/margin_28dp"
+            android:padding="@dimen/margin_5dp"
+            android:scaleType="fitXY"
+            android:layout_alignRight="@+id/iv_icon"
+            android:src="@drawable/ic_new_chat_nor" />
+
+        <!--ic_history_item_time-->
+        <TextView
+            android:id="@+id/tv_video_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:18"
+            android:layout_alignBottom="@+id/iv_icon"
+            android:shadowDx="10"
+            android:shadowDy="20"
+            android:gravity="center_vertical"
+            android:drawablePadding="@dimen/margin_6dp"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:drawableLeft="@drawable/icon_choose_file_video"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

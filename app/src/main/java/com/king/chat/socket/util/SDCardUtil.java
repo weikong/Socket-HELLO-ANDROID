@@ -16,6 +16,8 @@ public class SDCardUtil {
     public static final String localAppImgDir = "IMG";
     public static final String localAppLogDir = "LOG";
     public static final String localAppGifDir = "GIF";
+    public static final String localAppVoiceDir = "VOICE";
+    public static final String localAppVideoDir = "VIDEO";
 
     private SDCardUtil() {
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -53,6 +55,20 @@ public class SDCardUtil {
 
     public static String getGifDir() {
         File dir = new File(createRootDir() + File.separator + localAppGifDir);
+        if (!dir.exists())
+            dir.mkdirs();
+        return dir != null ? dir.getAbsolutePath() : getSDCardPath();
+    }
+
+    public static String getVoiceDir() {
+        File dir = new File(createRootDir() + File.separator + localAppVoiceDir);
+        if (!dir.exists())
+            dir.mkdirs();
+        return dir != null ? dir.getAbsolutePath() : getSDCardPath();
+    }
+
+    public static String getVideoDir() {
+        File dir = new File(createRootDir() + File.separator + localAppVideoDir);
         if (!dir.exists())
             dir.mkdirs();
         return dir != null ? dir.getAbsolutePath() : getSDCardPath();

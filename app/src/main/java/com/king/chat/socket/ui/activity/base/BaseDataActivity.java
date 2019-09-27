@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 public class BaseDataActivity extends FragmentActivity {
 
     public static final int INTENT_REQUEST_PHOTO = 101;
+    public static final int REQUEST_ALBUM = 102;
     private final int SDK_PERMISSION_REQUEST = 127;
     private String permissionInfo;
     /**
