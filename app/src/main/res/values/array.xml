@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_grid_more">
+        <item>照片</item>
+        <item>拍摄</item>
+        <item>语音</item>
+        <item>视频</item>
+        <item>红包</item>
+        <item>文件</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp">
+
+    <ImageView
+        android:id="@+id/iv_header"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="14dp"
+        android:src="@mipmap/ic_launcher_round"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/iv_header">
+        <TextView
+            android:id="@+id/tv_name_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:text="kong  09-19 10:38"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+            <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
+                android:id="@+id/iv_content"
+                android:layout_width="@dimen/margin_200dp"
+                android:layout_height="@dimen/margin_200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg1"
+                android:background="@drawable/bg_chat_incoming_item_picture_nor"/>
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="invisible"
+                android:layout_toRightOf="@+id/tv_content"
+                android:indeterminateDrawable="@drawable/anim_list_more_loading"
+                android:indeterminateTint="@color/color_666666"/>
+
+            <ImageView
+                android:id="@+id/iv_send_error"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="invisible"
+                android:layout_toRightOf="@+id/tv_content"
+                android:src="@drawable/ic_chat_item_mistake"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

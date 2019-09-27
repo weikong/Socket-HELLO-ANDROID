@@ -32,17 +32,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp">
-            <TextView
-                android:id="@+id/tv_content"
+
+            <RelativeLayout
+                android:id="@+id/layout_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:paddingLeft="14dp"
-                android:paddingRight="8dp"
-                android:textColor="#333333"
-                android:maxWidth="220dp"
-                android:background="@drawable/bg_chat_incoming_item_picture_nor"
-                android:text="你好，我叫孔偉。請多關照"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="8dp"
+                    android:textColor="#333333"
+                    android:maxWidth="220dp"
+                    android:background="@drawable/bg_chat_incoming_item_text_nor"
+                    android:text="你好，我叫孔偉。請多關照"/>
+            </RelativeLayout>
+
 
             <ProgressBar
                 android:id="@+id/progressbar"
@@ -51,7 +58,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginLeft="10dp"
                 android:visibility="invisible"
-                android:layout_toRightOf="@+id/tv_content"
+                android:layout_toRightOf="@+id/layout_content"
                 android:indeterminateDrawable="@drawable/anim_list_more_loading"
                 android:indeterminateTint="@color/color_666666"/>
 
@@ -62,7 +69,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginLeft="10dp"
                 android:visibility="invisible"
-                android:layout_toRightOf="@+id/tv_content"
+                android:layout_toRightOf="@+id/layout_content"
                 android:src="@drawable/ic_chat_item_mistake"/>
         </RelativeLayout>
     </LinearLayout>

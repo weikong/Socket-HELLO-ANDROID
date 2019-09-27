@@ -61,6 +61,14 @@ public class ChatRecordData extends BaseModel implements Serializable {
     public int messagetype;//
 
     /**
+     * 消息类型
+     * {com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType}
+     * 1、文本；2、语音；3；视频；4、文件；5、链接；6、分享；7、红包
+     */
+    @Column
+    public int messagechattype;
+
+    /**
      * 消息状态
      * 0：未接收；1：接收
      */
@@ -184,5 +192,13 @@ public class ChatRecordData extends BaseModel implements Serializable {
 
     public void setMessagetoavatar(String messagetoavatar) {
         this.messagetoavatar = messagetoavatar;
+    }
+
+    public int getMessagechattype() {
+        return messagechattype;
+    }
+
+    public void setMessagechattype(int messagechattype) {
+        this.messagechattype = messagechattype;
     }
 }

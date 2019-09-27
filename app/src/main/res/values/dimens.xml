@@ -64,6 +64,7 @@
     <dimen name="margin_50dp">50dp</dimen>
     <dimen name="margin_60dp">60dp</dimen>
     <dimen name="margin_70dp">70dp</dimen>
+    <dimen name="margin_75dp">75dp</dimen>
     <dimen name="margin_80dp">80dp</dimen>
     <dimen name="margin_90dp">90dp</dimen>
     <dimen name="margin_100dp">100dp</dimen>
@@ -78,6 +79,7 @@
     <dimen name="margin_180dp">180dp</dimen>
     <dimen name="margin_190dp">190dp</dimen>
     <dimen name="margin_200dp">200dp</dimen>
+    <dimen name="margin_220dp">220dp</dimen>
     <dimen name="margin_300dp">300dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

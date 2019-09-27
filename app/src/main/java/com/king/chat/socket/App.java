@@ -1,27 +1,14 @@
 package com.king.chat.socket;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkRequest;
-import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.king.chat.socket.broadcast.ServiceBroadcastReceiver;
-import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
-import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.DisplayUtil;
-import com.king.chat.socket.util.Logger;
-import com.king.chat.socket.util.NetWorkUtil;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import java.util.List;
 
 /**
  * Created by kongwei on 2017/2/16.

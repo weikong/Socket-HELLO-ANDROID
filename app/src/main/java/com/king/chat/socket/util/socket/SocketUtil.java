@@ -126,9 +126,9 @@ public class SocketUtil {
     /**
      * 发送聊天内容
      */
-    public void sendContent(String sendMsg,ContactBean contactBean) {
+    public void sendContent(String sendMsg, int chatType, ContactBean contactBean) {
         // TODO: 2019/9/20 保存数据库
-        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg);
+        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType);
         long insert = DBChatRecordImpl.getInstance().insertChatRecord(chatRecordData);
         SessionData sessionData = new SessionData();
         sessionData.setMessagecontent(chatRecordData.getMessagecontent());
@@ -143,6 +143,7 @@ public class SocketUtil {
         sessionData.setMessagestate(chatRecordData.getMessagestate());
         sessionData.setMessagetime(chatRecordData.getMessagetime());
         sessionData.setMessagetype(chatRecordData.getMessagetype());
+        sessionData.setMessagechattype(chatRecordData.getMessagechattype());
         boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
         if (insert > 0) {
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
@@ -379,6 +380,7 @@ public class SocketUtil {
                                             sessionData.setMessagestate(item.getMessagestate());
                                             sessionData.setMessagetime(item.getMessagetime());
                                             sessionData.setMessagetype(item.getMessagetype());
+                                            sessionData.setMessagechattype(item.getMessagechattype());
                                             String fromid = item.getMessagefromid();
                                             SessionData sessionData1 = DBSessionImpl.getInstance().querySessionDataByFromId(fromid);
                                             if (sessionData1 != null) {
@@ -417,6 +419,7 @@ public class SocketUtil {
                                         sessionData.setMessagestate(baseBean.getMessagestate());
                                         sessionData.setMessagetime(baseBean.getMessagetime());
                                         sessionData.setMessagetype(baseBean.getMessagetype());
+                                        sessionData.setMessagechattype(baseBean.getMessagechattype());
                                         // TODO: 2019/9/20 回执服务器
                                         ackServer(baseBean.getMessageid());
                                         // 2019/9/20 更新UI

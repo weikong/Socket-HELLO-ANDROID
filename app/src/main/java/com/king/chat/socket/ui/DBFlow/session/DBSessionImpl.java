@@ -2,16 +2,11 @@ package com.king.chat.socket.ui.DBFlow.session;
 
 import android.text.TextUtils;
 
-import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
-import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData_Table;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Method;
-import com.raizlabs.android.dbflow.sql.language.NameAlias;
-import com.raizlabs.android.dbflow.sql.language.OperatorGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
-import com.raizlabs.android.dbflow.structure.database.FlowCursor;
 
 import java.util.List;
 

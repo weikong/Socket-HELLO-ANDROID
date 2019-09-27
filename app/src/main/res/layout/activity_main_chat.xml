@@ -91,18 +91,24 @@
             android:layout_height="160dp"
             android:visibility="gone"
             android:layout_below="@+id/layout_bottom">
-            <TextView
-                android:id="@+id/tv_expand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="20sp"
-                android:text="voice"/>
             <com.king.chat.socket.ui.view.chat.VoiceView
+                android:id="@+id/viewVoice"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </com.king.chat.socket.ui.view.chat.VoiceView>
+            <com.king.chat.socket.ui.view.chat.BiaoQingView
+                android:id="@+id/viewBiaoQing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.king.chat.socket.ui.view.chat.BiaoQingView>
+            <com.king.chat.socket.ui.view.chat.MoreView
+                android:id="@+id/viewMore"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.king.chat.socket.ui.view.chat.MoreView>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

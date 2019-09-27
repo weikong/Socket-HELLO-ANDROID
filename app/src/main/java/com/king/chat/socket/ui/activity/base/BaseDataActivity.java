@@ -22,16 +22,9 @@ import java.util.concurrent.Executors;
 
 public class BaseDataActivity extends FragmentActivity {
 
-    public static int REQUEST_ACTION_TYPE_COMPANY = 1004;
-    public static int REQUEST_ACTION_TYPE_CONTACT = 1005;
-    public static int REQUEST_ACTION_TYPE_TEAM = 1006;
-    public static int REQUEST_ACTION_TYPE_PRIMARY_CONTACT = 1007;
-
-    public final int CHOOSE_ADDRESS_CODE = 1101;
-    public final int SEARCH_DATA_CODE = 2101;
+    public static final int INTENT_REQUEST_PHOTO = 101;
     private final int SDK_PERMISSION_REQUEST = 127;
     private String permissionInfo;
-    private ExecutorService executors = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
     /**
      * 调试代码TAG
      */

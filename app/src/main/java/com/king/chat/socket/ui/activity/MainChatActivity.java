@@ -21,22 +21,41 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.bean.UploadFileBean;
+import com.king.chat.socket.bean.base.BaseTaskBean;
+import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.DBChatRecordImpl;
+import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.adapter.MainChatAdapter;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
+import com.king.chat.socket.ui.view.chat.BiaoQingView;
+import com.king.chat.socket.ui.view.chat.MoreView;
+import com.king.chat.socket.ui.view.chat.VoiceView;
+import com.king.chat.socket.ui.view.gridview.CustomGridView;
 import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.BroadCastUtil;
+import com.king.chat.socket.util.ToastUtil;
+import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
+import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
 import com.king.chat.socket.util.socket.SocketUtil;
+import com.squareup.okhttp.Request;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainChatActivity extends BaseDataActivity {
 
@@ -48,7 +67,12 @@ public class MainChatActivity extends BaseDataActivity {
     private MainChatAdapter adapter;
     private ImageView iv_voice, iv_biaoqing;
     private RelativeLayout layout_expand;
-    private TextView tv_expand;
+    @BindView(R.id.viewVoice)
+    VoiceView viewVoice;
+    @BindView(R.id.viewBiaoQing)
+    BiaoQingView viewBiaoQing;
+    @BindView(R.id.viewMore)
+    MoreView viewMore;
     private static final String TAG = "MyChatSccket";
     private boolean inputHasContent = false;
     private boolean isPullScroll = false;
@@ -59,6 +83,7 @@ public class MainChatActivity extends BaseDataActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
+        ButterKnife.bind(this);
         regitserReceiver();
         contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
         actionBar = (CommonActionBar)findViewById(R.id.action_bar);
@@ -123,12 +148,11 @@ public class MainChatActivity extends BaseDataActivity {
         iv_voice = (ImageView) findViewById(R.id.iv_voice);
         iv_biaoqing = (ImageView) findViewById(R.id.iv_biaoqing);
         layout_expand = (RelativeLayout) findViewById(R.id.layout_expand);
-        tv_expand = (TextView) findViewById(R.id.tv_expand);
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (inputHasContent) {
-                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(),contactBean);
+                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT,contactBean);
                 } else {
                     showExpandView("更多");
                 }
@@ -201,6 +225,48 @@ public class MainChatActivity extends BaseDataActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == INTENT_REQUEST_PHOTO){
+                String path = data.getStringExtra("ImagePath");
+                if (TextUtils.isEmpty(path))
+                    return;
+                showProgreessDialog();
+                HttpTaskUtil.getInstance().postUploadTask(UrlConfig.HTTP_UPLOAD_IMAGES, new File(path), "file", new OkHttpClientManager.StringCallback() {
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//                        {"data":[{"fileName":"picture_1569497730337.jpg","suffix":".jpg","filePathMD5":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg","filePathMD5Thumb":"http://172.17.7.164:9090/fad279fc-732c-4261-8c42-684484dc2612.jpg"}],"code":1}
+                        try {
+                            BaseTaskBean resultTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
+                            if (resultTaskBean.getCode() == 1) {
+                                List<UploadFileBean> list = JSONArray.parseArray(resultTaskBean.getData(), UploadFileBean.class);
+                                if (list != null && list.size() > 0){
+                                    UploadFileBean uploadFileBean = list.get(0);
+                                    String filePath = uploadFileBean.getFilePathMD5();
+                                    if (!TextUtils.isEmpty(filePath)){
+                                        SocketUtil.getInstance().sendContent(uploadFileBean.getFilePathMD5(),MessageChatType.TYPE_IMG,contactBean);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            dismissProgressDialog();
+                        } finally {
+                            dismissProgressDialog();
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     private void clearUserHandler(){
         SocketUtil.getInstance().setmHandler(null);
         Config.toUserId = "";
@@ -217,9 +283,26 @@ public class MainChatActivity extends BaseDataActivity {
         }
     }
 
+    private void hideExpandViews(){
+        viewVoice.setVisibility(View.INVISIBLE);
+        viewBiaoQing.setVisibility(View.INVISIBLE);
+        viewMore.setVisibility(View.INVISIBLE);
+    }
+
     private void showExpandView(String more) {
+        hideExpandViews();
+        switch (more){
+            case "语音":
+                viewVoice.setVisibility(View.VISIBLE);
+                break;
+            case "表情":
+                viewBiaoQing.setVisibility(View.VISIBLE);
+                break;
+            case "更多":
+                viewMore.setVisibility(View.VISIBLE);
+                break;
+        }
         hideSoftInput(mEditText);
-        tv_expand.setText(more);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyChatSocket.iml" filepath="$PROJECT_DIR$/MyChatSocket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Socket-HELLO-ANDROID.iml" filepath="$PROJECT_DIR$/Socket-HELLO-ANDROID.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/camera/camera.iml" filepath="$PROJECT_DIR$/camera/camera.iml" />
     </modules>
   </component>
 </project>

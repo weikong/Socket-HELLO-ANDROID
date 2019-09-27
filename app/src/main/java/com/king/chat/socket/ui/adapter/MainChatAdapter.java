@@ -14,6 +14,10 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.config.Config;
+import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
+import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
+import com.king.chat.socket.ui.view.chat.adapter.ChatContentLeftView;
+import com.king.chat.socket.ui.view.chat.adapter.ChatContentRightView;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.TimeFormatUtils;
@@ -104,8 +108,10 @@ public class MainChatAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         int type = getItemViewType(position);
+        final ChatRecordData bean = getItem(position);
+        int messageChatType = bean.getMessagechattype();
         if (convertView == null){
-            convertView = layoutInflater.inflate(R.layout.adapter_chat_text,null);
+            convertView = layoutInflater.inflate(R.layout.adapter_chat,null);
             viewHolder = new ViewHolder(convertView,type);
             convertView.setTag(viewHolder);
         } else {
@@ -115,7 +121,6 @@ public class MainChatAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
         }
-        final ChatRecordData bean = getItem(position);
         String strNameTime = "";
         if (type == 1){
             strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + bean.getMessagefromname();
@@ -125,8 +130,6 @@ public class MainChatAdapter extends BaseAdapter {
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
         }
         viewHolder.tv_name_time.setText(strNameTime);
-        viewHolder.tv_content.setText(bean.getMessagecontent());
-        viewHolder.tv_content.setMaxWidth(DisplayUtil.screenWidth - DisplayUtil.dp2px(100));
         viewHolder.iv_send_error.setVisibility(View.INVISIBLE);
         if (bean.getMessagestate() == 0 && type == 1){
             viewHolder.progressbar.setVisibility(View.VISIBLE);
@@ -142,18 +145,38 @@ public class MainChatAdapter extends BaseAdapter {
                 SocketUtil.getInstance().reSendContent(bean);
             }
         });
+
+        switch (bean.getMessagechattype()){
+            case MessageChatType.TYPE_IMG:
+                if (type == 1){
+                    viewHolder.chatContentRightView.setData(bean);
+                } else {
+                    viewHolder.chatContentLeftView.setData(bean);
+                }
+                break;
+            default:
+                if (type == 1){
+                    viewHolder.chatContentRightView.setData(bean);
+                } else {
+                    viewHolder.chatContentLeftView.setData(bean);
+                }
+                break;
+        }
+
         return convertView;
     }
 
     class ViewHolder{
+        int type = 0;
         View viewLeft;
         View viewRight;
         ImageView iv_header;
         TextView tv_name_time;
-        TextView tv_content;
         ProgressBar progressbar;
         ImageView iv_send_error;
-        int type = 0;
+
+        ChatContentLeftView chatContentLeftView;
+        ChatContentRightView chatContentRightView;
 
         public int getType() {
             return type;
@@ -169,16 +192,16 @@ public class MainChatAdapter extends BaseAdapter {
                 viewRight.setVisibility(View.VISIBLE);
                 this.iv_header = (ImageView)viewRight.findViewById(R.id.iv_header);
                 this.tv_name_time = (TextView)viewRight.findViewById(R.id.tv_name_time);
-                this.tv_content = (TextView)viewRight.findViewById(R.id.tv_content);
                 this.progressbar = (ProgressBar)viewRight.findViewById(R.id.progressbar);
                 this.iv_send_error = (ImageView)viewRight.findViewById(R.id.iv_send_error);
+                this.chatContentRightView = (ChatContentRightView)viewRight.findViewById(R.id.content_right_view);
             } else { //接收到的消息
                 viewLeft.setVisibility(View.VISIBLE);
                 this.iv_header = (ImageView)viewLeft.findViewById(R.id.iv_header);
                 this.tv_name_time = (TextView)viewLeft.findViewById(R.id.tv_name_time);
-                this.tv_content = (TextView)viewLeft.findViewById(R.id.tv_content);
                 this.progressbar = (ProgressBar)viewLeft.findViewById(R.id.progressbar);
                 this.iv_send_error = (ImageView)viewLeft.findViewById(R.id.iv_send_error);
+                this.chatContentLeftView = (ChatContentLeftView)viewLeft.findViewById(R.id.content_left_view);
             }
         }
     }

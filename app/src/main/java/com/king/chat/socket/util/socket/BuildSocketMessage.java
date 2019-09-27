@@ -2,6 +2,7 @@ package com.king.chat.socket.util.socket;
 
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.config.Config;
+import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 
 import java.util.UUID;
 
@@ -24,6 +25,9 @@ public class BuildSocketMessage {
 
     /**
      * 发送聊天内容
+     *
+     * 聊天消息类型
+     * 1、文本；2、语音；3；视频；4、文件；5、链接；6、分享；7、红包
      * */
     public ChatRecordData buildContent(String sendMsg) {
         ChatRecordData chatRecordData = new ChatRecordData();
@@ -37,6 +41,29 @@ public class BuildSocketMessage {
         chatRecordData.messagestate = 0;
         chatRecordData.messagetime = System.currentTimeMillis();
         chatRecordData.messagecontent = sendMsg;
+        chatRecordData.messagechattype = MessageChatType.TYPE_TEXT;
+        return chatRecordData;
+    }
+
+    /**
+     * 发送聊天内容
+     *
+     * 聊天消息类型
+     * 1、文本；2、语音；3；视频；4、文件；5、链接；6、分享；7、红包
+     * */
+    public ChatRecordData buildContent(String sendMsg,int chatType) {
+        ChatRecordData chatRecordData = new ChatRecordData();
+        chatRecordData.messageid = UUID.randomUUID().toString();
+        chatRecordData.sourcesenderid = Config.userId;
+        chatRecordData.messagefromid = Config.userId;
+        chatRecordData.messagefromname = Config.userName;
+        chatRecordData.messagetoid = Config.toUserId;
+        chatRecordData.messagetoname = Config.toUserName;
+        chatRecordData.messagetype = 9;
+        chatRecordData.messagestate = 0;
+        chatRecordData.messagetime = System.currentTimeMillis();
+        chatRecordData.messagecontent = sendMsg;
+        chatRecordData.messagechattype = chatType;
         return chatRecordData;
     }
 
