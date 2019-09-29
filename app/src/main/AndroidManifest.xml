@@ -43,6 +43,9 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.ChooseImages.ChooseImagesActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.media.ShowMediaPlayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"></activity>
     </application>
 
 </manifest>

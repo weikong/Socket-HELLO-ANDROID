@@ -13,7 +13,7 @@
     <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="colorAccent">@color/color_tab_press</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Dialog_loading_noDim" parent="android:style/Theme.Dialog">

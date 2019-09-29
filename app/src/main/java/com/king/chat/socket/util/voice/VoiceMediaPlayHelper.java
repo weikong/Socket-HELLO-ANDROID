@@ -129,10 +129,14 @@ public class VoiceMediaPlayHelper {
     public void openAnim(ImageView imageView) {
         if (imageView == null)
             return;
-        AnimationDrawable mVoiceAnim = (AnimationDrawable) imageView.getDrawable();
-        if (mVoiceAnim != null) {
-            mVoiceAnim.setVisible(true, true);
-            mVoiceAnim.start();
+        try {
+            AnimationDrawable mVoiceAnim = (AnimationDrawable) imageView.getDrawable();
+            if (mVoiceAnim != null) {
+                mVoiceAnim.setVisible(true, true);
+                mVoiceAnim.start();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

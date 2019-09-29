@@ -62,7 +62,7 @@
             android:paddingLeft="@dimen/margin_10dp"
             android:paddingRight="@dimen/margin_10dp"
             android:text="确定"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_size_14sp"
             android:visibility="invisible" />
 
@@ -74,7 +74,6 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/margin_12dp"
             android:scaleType="centerInside"
-            android:tint="@color/color_333333"
             android:visibility="invisible" />
     </RelativeLayout>
 

@@ -18,6 +18,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.camera.CameraActivity;
+import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.adapter.GridMoreAdapter;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
@@ -79,6 +80,12 @@ public class ChatContentLeftView extends RelativeLayout {
                 iv_viedo_play.setVisibility(View.GONE);
                 iv_voice_play.setVisibility(View.GONE);
                 GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+                iv_content.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShowMediaPlayActivity.startActivity(getContext(),bean);
+                    }
+                });
                 break;
             case MessageChatType.TYPE_VIDEO:
                 tv_content.setVisibility(View.GONE);
@@ -89,7 +96,7 @@ public class ChatContentLeftView extends RelativeLayout {
                 iv_viedo_play.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtil.show(bean.getMessagecontent());
+                        ShowMediaPlayActivity.startActivity(getContext(),bean);
                     }
                 });
                 break;

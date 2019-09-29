@@ -45,7 +45,7 @@ public class CommonActionBar extends LinearLayout {
 
 
     private int statusHeight = 0;
-    private boolean fillStatusBar = true;
+    private boolean fillStatusBar = false;
 
     public CommonActionBar(Context context) {
         super(context);
@@ -68,11 +68,15 @@ public class CommonActionBar extends LinearLayout {
         initView(context);
     }
 
-
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.actionbar_common, this);
         ButterKnife.bind(this, view);
-//        setStatusHeight(statusHeight);
+        setStatusHeight(statusHeight);
+    }
+
+    public void setFillStatusBar(boolean fillStatusBar) {
+        this.fillStatusBar = fillStatusBar;
+        setStatusHeight(statusHeight);
     }
 
     private void setStatusHeight(int height) {

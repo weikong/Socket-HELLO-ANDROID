@@ -63,7 +63,7 @@ public class ChatRecordData extends BaseModel implements Serializable {
     /**
      * 消息类型
      * {com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType}
-     * 1、文本；2、语音；3；视频；4、文件；5、链接；6、分享；7、红包
+     * 1、文本；2、语音；3；视频；4、文件；5、链接；6、分享；7、红包；8、图片
      */
     @Column
     public int messagechattype;

@@ -81,6 +81,21 @@ public class DBChatRecordImpl {
         return list;
     }
 
+    public List<ChatRecordData> queryChatRecordImageAndVideo(){
+        OperatorGroup op=OperatorGroup.clause(OperatorGroup.clause()
+                .and(ChatRecordData_Table.messagefromid.eq(Config.userId))
+                .and(ChatRecordData_Table.messagetoid.eq(Config.toUserId))
+                .or(ChatRecordData_Table.messagefromid.eq(Config.toUserId))
+                .and(ChatRecordData_Table.messagetoid.eq(Config.userId)));
+        op.and(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_IMG));
+        op.or(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_VIDEO));
+        List<ChatRecordData> list = SQLite.select().from(ChatRecordData.class)
+                .where(op)
+                .orderBy(ChatRecordData_Table.messagetime,true)
+                .queryList();
+        return list;
+    }
+
     public ChatRecordData queryChatRecordByMessageId(String messageId){
         if (TextUtils.isEmpty(messageId))
             return null;

@@ -385,9 +385,10 @@ public class SocketUtil {
                                     ChatRecordData chatRecordData = DBChatRecordImpl.getInstance().queryChatRecordByMessageId(messageId);
                                     if (chatRecordData == null)
                                         return;
+                                    if (!baseBean.getMessagecontent().equals(chatRecordData.getMessagecontent()))
+                                        chatRecordData.setMessagecontent(baseBean.getMessagecontent());
                                     chatRecordData.setMessagestate(baseBean.getMessagestate());
-//                                    chatRecordData.setMessagetime(baseBean.getMessagetime());
-                                    DBChatRecordImpl.getInstance().updateChatRecord(chatRecordData);
+                                    boolean updateAck = DBChatRecordImpl.getInstance().updateChatRecord(chatRecordData);
                                     FilterTimeOutManager.getInstance().scheduledNotTimeOut(chatRecordData);
                                     if (mHandler != null) {
                                         message = Message.obtain();

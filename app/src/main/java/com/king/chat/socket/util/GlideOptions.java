@@ -71,10 +71,16 @@ public class GlideOptions {
         return requestOptions;
     }
 
-    public static RequestOptions optionsTransparent() {
+    public static RequestOptions optionsTransparentCenterCrop() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.bg_item_transparent);
         requestOptions.centerCrop();
+        return requestOptions;
+    }
+
+    public static RequestOptions optionsTransparent() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.bg_item_transparent);
         return requestOptions;
     }
 
