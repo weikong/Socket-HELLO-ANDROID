@@ -101,13 +101,12 @@ public class ChatContentLeftView extends RelativeLayout {
                 iv_voice_play.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AnimationDrawable mVoiceAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.anim_voice);
-                        iv_voice_play.setImageDrawable(mVoiceAnim);
+                        AnimationDrawable mVoiceAnim = (AnimationDrawable) iv_voice_play.getDrawable();
                         if (mVoiceAnim != null) {
                             mVoiceAnim.setVisible(true, true);
                             mVoiceAnim.start();
                         }
-                        VoiceMediaPlayHelper.getInstance().playVoiceUrl(getContext(),bean.getMessagecontent(),iv_voice_play);
+                        VoiceMediaPlayHelper.getInstance().playVoiceUrl(getContext(),bean,iv_voice_play);
                     }
                 });
                 break;

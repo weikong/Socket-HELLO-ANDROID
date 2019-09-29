@@ -45,5 +45,5 @@
         android:paddingRight="@dimen/margin_10dp"
         android:scaleType="centerInside"
         android:visibility="gone"
-        android:src="@drawable/anim_voice11" />
+        android:src="@drawable/anim_voice" />
 </RelativeLayout>

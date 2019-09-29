@@ -3,6 +3,9 @@
     android:oneshot="false" >
 
     <item
+        android:drawable="@drawable/anim_voice11"
+        android:duration="200"/>
+    <item
         android:drawable="@drawable/anim_voice1"
         android:duration="200"/>
     <item

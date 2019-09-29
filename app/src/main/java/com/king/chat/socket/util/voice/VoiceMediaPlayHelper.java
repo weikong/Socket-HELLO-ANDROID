@@ -5,12 +5,14 @@ package com.king.chat.socket.util.voice;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.widget.ImageView;
 
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.SDCardUtil;
 
@@ -30,6 +32,7 @@ public class VoiceMediaPlayHelper {
      */
     private MediaPlayer mVoiceMediaPlayer = null;
     private ImageView ivAnimVoice;
+    private ChatRecordData chatRecordData;
 
     private static class VoiceMediaPlayHelperHolder {
         private static final VoiceMediaPlayHelper INSTANCE = new VoiceMediaPlayHelper();
@@ -42,13 +45,24 @@ public class VoiceMediaPlayHelper {
         return VoiceMediaPlayHelperHolder.INSTANCE;
     }
 
-    public void playVoiceUrl(Context context, String url, final ImageView ivAnim) {
+    public void playVoiceUrl(Context context, ChatRecordData bean, final ImageView ivAnim) {
+        if (this.chatRecordData != null && bean != null){
+            if (!this.chatRecordData.getMessagecontent().equals(bean.getMessagecontent())){
+                clearAnim(this.ivAnimVoice);
+            }
+        }
+        this.chatRecordData = bean;
+        this.ivAnimVoice = ivAnim;
+        if (bean == null) {
+            Logger.e("--->UN 语音文件测量失败！无效的下载数据!");
+            return;
+        }
+        String url = bean.getMessagecontent();
         if (url == null || url.length() == 0) {
             Logger.e("--->UN 语音文件测量失败！无效的下载地址! url:" + url);
             return;
         }
-        clearAnim(ivAnimVoice);
-        this.ivAnimVoice = ivAnim;
+
         if (!url.startsWith("http") && !url.startsWith("file://"))
             url = "file://" + url;
         try {
@@ -101,9 +115,14 @@ public class VoiceMediaPlayHelper {
     public void clearAnim(ImageView imageView) {
         if (imageView == null)
             return;
-        AnimationDrawable mVoiceAnim = (AnimationDrawable) imageView.getDrawable();
-        if (mVoiceAnim != null && mVoiceAnim.isRunning()) {
-            mVoiceAnim.stop();
+        try {
+            AnimationDrawable mVoiceAnim = (AnimationDrawable) imageView.getDrawable();
+            if (mVoiceAnim != null && mVoiceAnim.isRunning()) {
+                mVoiceAnim.stop();
+                mVoiceAnim.selectDrawable(0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
