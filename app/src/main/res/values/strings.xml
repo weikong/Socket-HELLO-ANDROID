@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HELLO</string>
+
+    <string name="text_chat_image">[图片]</string>
+    <string name="text_chat_voice">[语音]</string>
+    <string name="text_chat_video">[视频]</string>
 </resources>

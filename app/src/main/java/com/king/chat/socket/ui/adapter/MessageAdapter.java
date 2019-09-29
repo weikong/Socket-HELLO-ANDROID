@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.DisplayUtil;
@@ -121,6 +122,18 @@ public class MessageAdapter extends BaseAdapter {
             unreadCount = 99;
         }
         viewHolder.tv_unread.setText("" + unreadCount);
+        int messageChatType = bean.getMessagechattype();
+        switch (messageChatType){
+            case MessageChatType.TYPE_IMG:
+                viewHolder.tv_content.setText(mContext.getString(R.string.text_chat_image));
+                break;
+            case MessageChatType.TYPE_VOICE:
+                viewHolder.tv_content.setText(mContext.getString(R.string.text_chat_voice));
+                break;
+            case MessageChatType.TYPE_VIDEO:
+                viewHolder.tv_content.setText(mContext.getString(R.string.text_chat_video));
+                break;
+        }
         return convertView;
     }
 
