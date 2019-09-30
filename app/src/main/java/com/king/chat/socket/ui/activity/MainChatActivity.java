@@ -242,8 +242,11 @@ public class MainChatActivity extends BaseDataActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == INTENT_REQUEST_PHOTO) {
-                String path = data.getStringExtra("ImagePath");
-                sendFileTask(MessageChatType.TYPE_IMG, path);
+                int type = data.getIntExtra("TYPE",0);
+                String path = data.getStringExtra("Path");
+                if (type>0){
+                    sendFileTask(type, path);
+                }
             } else if (requestCode == REQUEST_ALBUM) {
                 ArrayList<FileItem> chooseItems = data.getParcelableArrayListExtra("images");
                 if (chooseItems != null && chooseItems.size() > 0) {

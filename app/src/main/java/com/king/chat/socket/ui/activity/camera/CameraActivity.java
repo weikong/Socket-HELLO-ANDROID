@@ -16,6 +16,7 @@ import com.cjt2325.cameralibrary.util.DeviceUtil;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.FileItem;
+import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.ChooseImages.ChooseImagesActivity;
 import com.king.chat.socket.ui.activity.MainChatActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
@@ -37,7 +38,7 @@ public class CameraActivity extends BaseDataActivity {
         setContentView(R.layout.activity_camera);
         jCameraView = (JCameraView) findViewById(R.id.jcameraview);
         //设置视频保存路径
-        jCameraView.setSaveVideoPath(FileUtil.initPath() + File.separator + "video");
+        jCameraView.setSaveVideoPath(SDCardUtil.getVideoDir() + File.separator + "video");
         boolean onlyImage = getIntent().getBooleanExtra(ONLY_CAPTURE, false);
         if (!onlyImage) {
             jCameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
@@ -66,16 +67,11 @@ public class CameraActivity extends BaseDataActivity {
             @Override
             public void captureSuccess(Bitmap bitmap) {
                 //获取图片bitmap
-//                Log.i("JCameraView", "bitmap = " + bitmap.getWidth());
-//                String path = FileUtil.saveBitmap("JCamera", bitmap);
-//                Intent intent = new Intent();
-//                intent.putExtra("path", path);
-//                setResult(Activity.RESULT_OK, intent);
-//                finish();
                 SDCardUtil.getImgDir();
                 String path = FileUtil.saveBitmap("JCamera", bitmap);
                 Intent intent = new Intent();
-                intent.putExtra("ImagePath", path);
+                intent.putExtra("TYPE", MessageChatType.TYPE_IMG);
+                intent.putExtra("Path", path);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -83,18 +79,12 @@ public class CameraActivity extends BaseDataActivity {
             @Override
             public void recordSuccess(String url, Bitmap firstFrame) {
                 //获取视频路径
-//                String path = FileUtil.saveBitmap("JCamera", firstFrame);
-//                Log.i("CJT", "url = " + url + ", Bitmap = " + path);
-
-//                Intent intent = new Intent();
-//                intent.putExtra("path", url);
-//                setResult(Activity.RESULT_OK, intent);
-//                finish();
-//                if (Constant.UPLOAD_ADDRESS_LOCAL){
-//                    PublishMediaLocalServerActivity.startActivity(CameraActivity.this, url, null);
-//                } else {
-//                    PublishMediaActivity.startActivity(CameraActivity.this, url, null);
-//                }
+                String path = FileUtil.saveBitmap("JCamera", firstFrame);
+                Log.i("CJT", "url = " + url + ", Bitmap = " + path);
+                Intent intent = new Intent();
+                intent.putExtra("TYPE", MessageChatType.TYPE_VIDEO);
+                intent.putExtra("Path", url);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
