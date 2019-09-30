@@ -6,10 +6,15 @@ package com.king.chat.socket.config;
 
 public class UrlConfig {
 
+
+    /**
+     * MAC IP
+     */
+    public static String HTTP_ROOT = "http://172.17.7.134:9090/";
     /**
      * 公司 IP
      */
-    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
+//    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
     /**
      * 华为云
      */

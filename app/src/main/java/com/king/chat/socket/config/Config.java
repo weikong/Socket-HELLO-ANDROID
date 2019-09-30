@@ -8,7 +8,20 @@ import java.io.Serializable;
 
 public class Config {
 
-    public static final String HOST = "172.17.7.164";
+    /**
+     * 公司 IP
+     */
+//    public static final String HOST = "172.17.7.164";
+    /**
+     * MAC IP
+     */
+    public static final String HOST = "172.17.7.134";
+    /**
+     * 华为云
+     */
+//    public static final String HOST = "https://deepkeep.top/";
+
+
     public static final int PORT = 9999;
     /**
      * socket连接超时
