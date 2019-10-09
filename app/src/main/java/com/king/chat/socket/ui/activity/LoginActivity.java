@@ -45,7 +45,11 @@ public class LoginActivity extends BaseDataActivity {
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginTask();
+                if (checkPermissionAllGranted(permissionAll)){
+                    loginTask();
+                } else {
+                    setExternalStoragePermissions(permissionAll);
+                }
             }
         });
         String strUserName = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_NAME);

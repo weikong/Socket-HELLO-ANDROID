@@ -116,10 +116,8 @@ public class BaseDataActivity extends FragmentActivity {
     protected String[] permissionStorageCamera =  new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     protected String[] permissionAll =  new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION};
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO};
 
     public boolean checkInitPermissions(String[] permission) {
         /**
