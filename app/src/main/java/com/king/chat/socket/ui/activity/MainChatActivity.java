@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.FileItem;
@@ -36,6 +39,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
+import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.adapter.MainChatAdapter;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
@@ -43,13 +47,17 @@ import com.king.chat.socket.ui.view.chat.BiaoQingView;
 import com.king.chat.socket.ui.view.chat.MoreView;
 import com.king.chat.socket.ui.view.chat.VoiceView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
+import com.king.chat.socket.ui.view.popup.CustomPopupWindow;
+import com.king.chat.socket.ui.view.popup.PopChatView;
 import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.FilterTimeOutManager;
+import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
 import com.king.chat.socket.util.socket.SocketUtil;
+import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
 import com.squareup.okhttp.Request;
 
 import java.io.File;
@@ -107,6 +115,19 @@ public class MainChatActivity extends BaseDataActivity {
         listView = (ListView) findViewById(R.id.listview);
         adapter = new MainChatAdapter(this);
         adapter.setContactBean(contactBean);
+        adapter.setCallBack(new MainChatAdapter.CallBack() {
+            @Override
+            public void showLeftPop(View v, ChatRecordData bean) {
+                popChatView.setData(bean);
+                showPopupWindow(customPopupWindow,v);
+            }
+
+            @Override
+            public void showRightPop(View v, ChatRecordData bean) {
+                popChatView.setData(bean);
+                showPopupWindow(customPopupWindow,v);
+            }
+        });
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -198,6 +219,7 @@ public class MainChatActivity extends BaseDataActivity {
                 sendFileTask(MessageChatType.TYPE_VOICE, path);
             }
         });
+        initPopupWindow();
         SocketUtil.getInstance().setmHandler(mHandler);
         clearUnreadCount();
         loadData();
@@ -603,5 +625,91 @@ public class MainChatActivity extends BaseDataActivity {
                 }
             }
         });
+    }
+
+
+    CustomPopupWindow customPopupWindow;
+    PopChatView popChatView;
+
+    private void initPopupWindow() {
+        //筛选分类
+        popChatView = new PopChatView(this);
+        popChatView.setCallBack(new PopChatView.CallBack() {
+            @Override
+            public void actionCopy(ChatRecordData bean) {
+                try {
+                    ToastUtil.show("Copy");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    hidePopupWindow(customPopupWindow);
+                }
+            }
+
+            @Override
+            public void actionForword(ChatRecordData bean) {
+                try {
+                    ToastUtil.show("Forword");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    hidePopupWindow(customPopupWindow);
+                }
+            }
+
+            @Override
+            public void actionSave(ChatRecordData bean) {
+                try {
+                    ToastUtil.show("Save");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    hidePopupWindow(customPopupWindow);
+                }
+            }
+
+            @Override
+            public void actionDel(ChatRecordData bean) {
+                try {
+                    boolean isDel = DBChatRecordImpl.getInstance().deleteChatRecord(bean);
+                    if (isDel){
+                        adapter.getList().remove(bean);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    hidePopupWindow(customPopupWindow);
+                }
+            }
+        });
+        customPopupWindow = new CustomPopupWindow(popChatView);
+        customPopupWindow.enableKeyBackDismiss();
+        customPopupWindow.enablOutsideClickDismiss();
+    }
+
+    /**
+     * 隐藏PopupWindow
+     */
+    private boolean hidePopupWindow(CustomPopupWindow mPopupWindow) {
+        boolean isHide = false;
+        if (null != mPopupWindow && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+            isHide = true;
+        }
+        return isHide;
+    }
+
+    /**
+     * 显示PopupWindow
+     */
+    private boolean showPopupWindow(CustomPopupWindow mPopupWindow, View view) {
+        boolean isShow = false;
+        if (null != mPopupWindow && !mPopupWindow.isShowing()) {
+//            mPopupWindow.showAsDropDown(view);
+            mPopupWindow.showUp(view,popChatView);
+            isShow = true;
+        }
+        return isShow;
     }
 }

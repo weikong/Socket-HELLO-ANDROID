@@ -1,11 +1,13 @@
 package com.king.chat.socket.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,9 +20,13 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentLeftView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentRightView;
+import com.king.chat.socket.ui.view.popup.CustomPopupWindow;
+import com.king.chat.socket.ui.view.popup.PopChatView;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
+import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.TimeFormatUtils;
+import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.socket.SocketUtil;
 
@@ -125,9 +131,57 @@ public class MainChatAdapter extends BaseAdapter {
         if (type == 1){
             strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + bean.getMessagefromname();
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(UserInfoManager.getInstance().getContactBean().getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            viewHolder.chatContentRightView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (callBack != null){
+                        callBack.showRightPop(v,bean);
+                    }
+                    return false;
+                }
+            });
+            viewHolder.chatContentRightView.setCallBack(new ChatContentRightView.CallBack() {
+                @Override
+                public void longClickImage(View v, ChatRecordData bean) {
+                    if (callBack != null){
+                        callBack.showRightPop(v,bean);
+                    }
+                }
+
+                @Override
+                public void longClickVoice(View v, ChatRecordData bean) {
+                    if (callBack != null){
+                        callBack.showRightPop(v,bean);
+                    }
+                }
+            });
         } else {
             strNameTime = bean.getMessagefromname() + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            viewHolder.chatContentLeftView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (callBack != null){
+                        callBack.showLeftPop(v,bean);
+                    }
+                    return false;
+                }
+            });
+            viewHolder.chatContentLeftView.setCallBack(new ChatContentLeftView.CallBack() {
+                @Override
+                public void longClickImage(View v, ChatRecordData bean) {
+                    if (callBack != null){
+                        callBack.showLeftPop(v,bean);
+                    }
+                }
+
+                @Override
+                public void longClickVoice(View v, ChatRecordData bean) {
+                    if (callBack != null){
+                        callBack.showLeftPop(v,bean);
+                    }
+                }
+            });
         }
         viewHolder.tv_name_time.setText(strNameTime);
         viewHolder.iv_send_error.setVisibility(View.INVISIBLE);
@@ -145,7 +199,6 @@ public class MainChatAdapter extends BaseAdapter {
                 SocketUtil.getInstance().reSendContent(bean);
             }
         });
-
         switch (bean.getMessagechattype()){
             case MessageChatType.TYPE_IMG:
                 if (type == 1){
@@ -162,7 +215,6 @@ public class MainChatAdapter extends BaseAdapter {
                 }
                 break;
         }
-
         return convertView;
     }
 
@@ -174,7 +226,6 @@ public class MainChatAdapter extends BaseAdapter {
         TextView tv_name_time;
         ProgressBar progressbar;
         ImageView iv_send_error;
-
         ChatContentLeftView chatContentLeftView;
         ChatContentRightView chatContentRightView;
 
@@ -204,5 +255,16 @@ public class MainChatAdapter extends BaseAdapter {
                 this.chatContentLeftView = (ChatContentLeftView)viewLeft.findViewById(R.id.content_left_view);
             }
         }
+    }
+
+    CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack{
+        public void showLeftPop(View v,ChatRecordData bean);
+        public void showRightPop(View v,ChatRecordData bean);
     }
 }

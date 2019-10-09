@@ -20,6 +20,7 @@ import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.camera.CameraActivity;
 import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.adapter.GridMoreAdapter;
+import com.king.chat.socket.ui.adapter.MainChatAdapter;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
 import com.king.chat.socket.util.GlideOptions;
@@ -86,6 +87,15 @@ public class ChatContentLeftView extends RelativeLayout {
                         ShowMediaPlayActivity.startActivity(getContext(),bean);
                     }
                 });
+                iv_content.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (callBack != null){
+                            callBack.longClickImage(v,bean);
+                        }
+                        return true;
+                    }
+                });
                 break;
             case MessageChatType.TYPE_VIDEO:
                 tv_content.setVisibility(View.GONE);
@@ -116,7 +126,27 @@ public class ChatContentLeftView extends RelativeLayout {
                         VoiceMediaPlayHelper.getInstance().playVoiceUrl(getContext(),bean,iv_voice_play);
                     }
                 });
+                iv_voice_play.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (callBack != null){
+                            callBack.longClickVoice(v,bean);
+                        }
+                        return true;
+                    }
+                });
                 break;
         }
+    }
+
+    CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack{
+        public void longClickImage(View v,ChatRecordData bean);
+        public void longClickVoice(View v,ChatRecordData bean);
     }
 }

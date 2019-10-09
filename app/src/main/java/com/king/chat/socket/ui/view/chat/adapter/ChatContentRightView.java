@@ -88,6 +88,15 @@ public class ChatContentRightView extends RelativeLayout {
                         ShowMediaPlayActivity.startActivity(getContext(),bean);
                     }
                 });
+                iv_content.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (callBack != null){
+                            callBack.longClickImage(v,bean);
+                        }
+                        return true;
+                    }
+                });
                 break;
             case MessageChatType.TYPE_VIDEO:
                 tv_content.setVisibility(View.GONE);
@@ -118,7 +127,27 @@ public class ChatContentRightView extends RelativeLayout {
                         VoiceMediaPlayHelper.getInstance().playVoiceUrl(getContext(), bean, iv_voice_play);
                     }
                 });
+                iv_voice_play.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (callBack != null){
+                            callBack.longClickVoice(v,bean);
+                        }
+                        return true;
+                    }
+                });
                 break;
         }
+    }
+
+    CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack{
+        public void longClickImage(View v,ChatRecordData bean);
+        public void longClickVoice(View v,ChatRecordData bean);
     }
 }

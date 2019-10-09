@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/layout_pop"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:background="@drawable/bg_chat_edit">
+        <TextView
+            android:id="@+id/tv_copy"
+            android:layout_width="@dimen/margin_40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_13sp"
+            android:text="复制"/>
+        <TextView
+            android:id="@+id/tv_forword"
+            android:layout_width="@dimen/margin_40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_13sp"
+            android:text="转发"/>
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="@dimen/margin_40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_13sp"
+            android:text="保存"/>
+        <TextView
+            android:id="@+id/tv_del"
+            android:layout_width="@dimen/margin_40dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_13sp"
+            android:text="删除"/>
+    </LinearLayout>
+
+</LinearLayout>
