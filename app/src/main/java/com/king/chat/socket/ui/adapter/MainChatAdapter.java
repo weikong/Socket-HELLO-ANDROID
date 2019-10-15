@@ -17,6 +17,7 @@ import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
+import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentLeftView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentRightView;
@@ -42,15 +43,25 @@ public class MainChatAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater layoutInflater;
     private List<ChatRecordData> list = new ArrayList<>();
-    private ContactBean contactBean;
+//    private ContactBean contactBean;
+    private SessionData sessionData;
 
     public MainChatAdapter(Context mContext) {
         this.mContext = mContext;
         this.layoutInflater = LayoutInflater.from(mContext);
     }
 
-    public void setContactBean(ContactBean contactBean) {
-        this.contactBean = contactBean;
+//    public void setContactBean(ContactBean contactBean) {
+//        this.contactBean = contactBean;
+//    }
+
+
+    public SessionData getSessionData() {
+        return sessionData;
+    }
+
+    public void setSessionData(SessionData sessionData) {
+        this.sessionData = sessionData;
     }
 
     public List<ChatRecordData> getList() {
@@ -103,7 +114,13 @@ public class MainChatAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (Config.userId.equalsIgnoreCase(getItem(position).getMessagefromid())){
+        ChatRecordData chatRecordData = getItem(position);
+        if (chatRecordData == null)
+            return 0;
+        if (chatRecordData.getMessagetype() == 7){ //通知消息
+            return 7;
+        }
+        if (Config.userId.equalsIgnoreCase(chatRecordData.getSourcesenderid())){
             return 1; //自己发送的消息
         } else {
             return 2; //接收到的消息
@@ -127,9 +144,13 @@ public class MainChatAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
         }
+        if (type == 7){
+            viewHolder.tv_notice.setText(bean.getMessagecontent());
+            return convertView;
+        }
         String strNameTime = "";
         if (type == 1){
-            strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + bean.getMessagefromname();
+            strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + bean.getSourcesendername();
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(UserInfoManager.getInstance().getContactBean().getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
             viewHolder.chatContentRightView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -156,8 +177,8 @@ public class MainChatAdapter extends BaseAdapter {
                 }
             });
         } else {
-            strNameTime = bean.getMessagefromname() + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            strNameTime = bean.getSourcesendername() + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(sessionData.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
             viewHolder.chatContentLeftView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -222,6 +243,7 @@ public class MainChatAdapter extends BaseAdapter {
         int type = 0;
         View viewLeft;
         View viewRight;
+        TextView tv_notice;
         ImageView iv_header;
         TextView tv_name_time;
         ProgressBar progressbar;
@@ -237,9 +259,13 @@ public class MainChatAdapter extends BaseAdapter {
             this.type = type;
             this.viewLeft = (View)view.findViewById(R.id.layout_left);
             this.viewRight = (View)view.findViewById(R.id.layout_right);
+            this.tv_notice = (TextView)view.findViewById(R.id.tv_notice);
             viewLeft.setVisibility(View.GONE);
             viewRight.setVisibility(View.GONE);
-            if (type == 1){ //自己发送的消息
+            tv_notice.setVisibility(View.GONE);
+            if (type == 7){
+                tv_notice.setVisibility(View.VISIBLE);
+            } else if (type == 1){ //自己发送的消息
                 viewRight.setVisibility(View.VISIBLE);
                 this.iv_header = (ImageView)viewRight.findViewById(R.id.iv_header);
                 this.tv_name_time = (TextView)viewRight.findViewById(R.id.tv_name_time);

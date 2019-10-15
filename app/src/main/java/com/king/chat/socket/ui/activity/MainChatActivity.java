@@ -89,7 +89,8 @@ public class MainChatActivity extends BaseDataActivity {
     private boolean inputHasContent = false;
     private boolean isPullScroll = false;
     private float oldY = 0;
-    private ContactBean contactBean;
+//    private ContactBean contactBean;
+    private SessionData sessionData;
     public static Activity activity;
 
     @Override
@@ -99,9 +100,10 @@ public class MainChatActivity extends BaseDataActivity {
         setContentView(R.layout.activity_main_chat);
         ButterKnife.bind(this);
         regitserReceiver();
-        contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
+        sessionData = (SessionData) getIntent().getSerializableExtra("DATA");
+//        contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
         actionBar = (CommonActionBar) findViewById(R.id.action_bar);
-        actionBar.setTitle(contactBean.getName());
+        actionBar.setTitle(sessionData.getMessagefromname());
         actionBar.setIvBackVisiable(View.VISIBLE);
         if (SocketUtil.IM_CONNECT_STATE == SocketUtil.IM_CONNECTED) {
             actionBar.setTitleVisiable(View.VISIBLE);
@@ -114,7 +116,7 @@ public class MainChatActivity extends BaseDataActivity {
         initSwipeRefreshLayout();
         listView = (ListView) findViewById(R.id.listview);
         adapter = new MainChatAdapter(this);
-        adapter.setContactBean(contactBean);
+        adapter.setSessionData(sessionData);
         adapter.setCallBack(new MainChatAdapter.CallBack() {
             @Override
             public void showLeftPop(View v, ChatRecordData bean) {
@@ -179,7 +181,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void onClick(View v) {
                 if (inputHasContent) {
-                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT, contactBean);
+                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT, sessionData,sessionData.getGroupdata());
                 } else {
                     showExpandView("更多");
                 }
@@ -378,7 +380,12 @@ public class MainChatActivity extends BaseDataActivity {
     private void loadData() {
         try {
             int offset = adapter.getCount();
-            List<ChatRecordData> list = DBChatRecordImpl.getInstance().queryChatRecord(offset, Config.PageSize);
+            List<ChatRecordData> list;
+            if (sessionData != null && sessionData.getGroupdata() == 1){
+                list = DBChatRecordImpl.getInstance().queryGroupChatRecord(offset, Config.PageSize);
+            } else {
+                list = DBChatRecordImpl.getInstance().queryChatRecord(offset, Config.PageSize);
+            }
             if (list == null || list.size() == 0) {
                 if (pageNum > 0) {
                     pageNum--;
@@ -525,7 +532,7 @@ public class MainChatActivity extends BaseDataActivity {
                     switch (action) {
                         case BroadCastUtil.ACTION_UPDATE_MESSAGE:
                             ChatRecordData chatRecordData = (ChatRecordData) intent.getSerializableExtra("DATA");
-                            if (adapter != null && chatRecordData != null && chatRecordData.getMessagetoid().equals(contactBean.getAccount())) {
+                            if (adapter != null && chatRecordData != null && chatRecordData.getMessagetoid().equals(sessionData.getMessagefromid())) {
                                 List<ChatRecordData> list = adapter.getList();
                                 for (ChatRecordData item : list) {
                                     item.setMessagestate(chatRecordData.getMessagestate());
@@ -570,7 +577,7 @@ public class MainChatActivity extends BaseDataActivity {
             ToastUtil.show("文件不存在");
             return;
         }
-        final ChatRecordData chatRecordData = SocketUtil.getInstance().sendContentFilePre(file.getAbsolutePath(), fileType, contactBean);
+        final ChatRecordData chatRecordData = SocketUtil.getInstance().sendContentFilePre(file.getAbsolutePath(), fileType, sessionData,sessionData.getGroupdata());
         if (chatRecordData == null)
             return;
         HttpTaskUtil.getInstance().postUploadTask(UrlConfig.HTTP_UPLOAD_IMAGES, new File(path), "file", new OkHttpClientManager.StringCallback() {

@@ -126,9 +126,9 @@ public class SocketUtil {
     /**
      * 发送聊天内容
      */
-    public ChatRecordData sendContentFilePre(String sendMsg, int chatType, ContactBean contactBean) {
+    public ChatRecordData sendContentFilePre(String sendMsg, int chatType, SessionData sessionDataAvatar,int groupData) {
         // TODO: 2019/9/20 保存数据库
-        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType);
+        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType,sessionDataAvatar.getMessagefromid());
         long insert = DBChatRecordImpl.getInstance().insertChatRecord(chatRecordData);
         if (insert > 0) {
             SessionData sessionData = new SessionData();
@@ -136,8 +136,8 @@ public class SocketUtil {
             sessionData.setMessagefromid(chatRecordData.getMessagetoid());
             sessionData.setMessagefromname(chatRecordData.getMessagetoname());
             String headerAvatar = "";
-            if (contactBean != null)
-                headerAvatar = contactBean.getHeadPortrait();
+            if (sessionDataAvatar != null)
+                headerAvatar = sessionDataAvatar.getMessagefromavatar();
             if (!TextUtils.isEmpty(headerAvatar))
                 sessionData.setMessagefromavatar(headerAvatar);
             sessionData.setMessageid(chatRecordData.getMessageid());
@@ -145,6 +145,7 @@ public class SocketUtil {
             sessionData.setMessagetime(chatRecordData.getMessagetime());
             sessionData.setMessagetype(chatRecordData.getMessagetype());
             sessionData.setMessagechattype(chatRecordData.getMessagechattype());
+            sessionData.setGroupdata(groupData);
             boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
             if (mHandler != null) {
@@ -170,9 +171,9 @@ public class SocketUtil {
     /**
      * 发送聊天内容
      */
-    public void sendContent(String sendMsg, int chatType, ContactBean contactBean) {
+    public void sendContent(String sendMsg, int chatType, SessionData sessionDataAvatar,int groupData) {
         // TODO: 2019/9/20 保存数据库
-        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType);
+        ChatRecordData chatRecordData = BuildSocketMessage.getInstance().buildContent(sendMsg,chatType,sessionDataAvatar.getMessagefromid());
         long insert = DBChatRecordImpl.getInstance().insertChatRecord(chatRecordData);
         if (insert > 0) {
             SessionData sessionData = new SessionData();
@@ -180,8 +181,8 @@ public class SocketUtil {
             sessionData.setMessagefromid(chatRecordData.getMessagetoid());
             sessionData.setMessagefromname(chatRecordData.getMessagetoname());
             String headerAvatar = "";
-            if (contactBean != null)
-                headerAvatar = contactBean.getHeadPortrait();
+            if (sessionDataAvatar != null)
+                headerAvatar = sessionDataAvatar.getMessagefromavatar();
             if (!TextUtils.isEmpty(headerAvatar))
                 sessionData.setMessagefromavatar(headerAvatar);
             sessionData.setMessageid(chatRecordData.getMessageid());
@@ -189,6 +190,7 @@ public class SocketUtil {
             sessionData.setMessagetime(chatRecordData.getMessagetime());
             sessionData.setMessagetype(chatRecordData.getMessagetype());
             sessionData.setMessagechattype(chatRecordData.getMessagechattype());
+            sessionData.setGroupdata(groupData);
             boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
             if (mHandler != null) {
@@ -444,6 +446,27 @@ public class SocketUtil {
                                     }
                                     BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
                                     break;
+                                case 7: //群通知消息
+                                    long insertNotice = DBChatRecordImpl.getInstance().insertChatRecord(baseBean);
+                                    // TODO: 2019/9/20 回执服务器
+                                    ackServer(baseBean.getMessageid());
+                                    if (insertNotice > 0) {
+                                        //更新Session表
+                                        SessionData sessionData = new SessionData();
+                                        sessionData.setMessagecontent(baseBean.getMessagecontent());
+                                        sessionData.setMessagefromid(baseBean.getMessagefromid());
+                                        sessionData.setMessagefromname(baseBean.getMessagefromname());
+                                        sessionData.setMessagefromavatar(baseBean.getMessagefromavatar());
+                                        sessionData.setMessageid(baseBean.getMessageid());
+                                        sessionData.setMessagestate(baseBean.getMessagestate());
+                                        sessionData.setMessagetime(baseBean.getMessagetime());
+                                        sessionData.setMessagetype(baseBean.getMessagetype());
+                                        sessionData.setMessagechattype(baseBean.getMessagechattype());
+                                        sessionData.setGroupdata(baseBean.getGroupdata());
+                                        boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
+                                        BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
+                                    }
+                                    break;
                                 case 9: //聊天内容
                                     ChatRecordData crd = DBChatRecordImpl.getInstance().queryChatRecordByMessageId(baseBean.getMessageid());
                                     long insert;
@@ -465,6 +488,7 @@ public class SocketUtil {
                                         sessionData.setMessagetime(baseBean.getMessagetime());
                                         sessionData.setMessagetype(baseBean.getMessagetype());
                                         sessionData.setMessagechattype(baseBean.getMessagechattype());
+                                        sessionData.setGroupdata(baseBean.getGroupdata());
                                         // TODO: 2019/9/20 回执服务器
                                         ackServer(baseBean.getMessageid());
                                         // 2019/9/20 更新UI

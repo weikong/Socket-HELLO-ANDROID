@@ -150,6 +150,14 @@ public class CommonActionBar extends LinearLayout {
         }
     }
 
+    public void setIvRightSrc(int src, OnClickListener listener) {
+        if (iv_right != null) {
+            iv_right.setImageResource(src);
+            iv_right.setVisibility(View.VISIBLE);
+            iv_right.setOnClickListener(listener);
+        }
+    }
+
     /**
      * connect:
      * 0、连接成功

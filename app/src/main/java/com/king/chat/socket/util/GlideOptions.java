@@ -50,6 +50,13 @@ public class GlideOptions {
         return requestOptions;
     }
 
+    public static RequestOptions optionDefaultHeader3() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_change_herd_press);
+        requestOptions.centerCrop();
+        return requestOptions;
+    }
+
     public static RequestOptions optionsRoundedCorners() {
         RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(6)).override(200,200);
         requestOptions.placeholder(R.mipmap.ic_launcher);

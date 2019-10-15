@@ -46,6 +46,8 @@
         <activity android:name=".ui.activity.media.ShowMediaPlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
+        <activity android:name=".ui.activity.contact.ContactSelectActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -111,7 +111,11 @@ public class MessageAdapter extends BaseAdapter {
         viewHolder.tv_name.setText(bean.getMessagefromname());
         viewHolder.tv_time.setText(TimeFormatUtils.getSessionFormatDate2(bean.getMessagetime()));
         viewHolder.tv_content.setText(bean.getMessagecontent());
-        GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+        if (bean.groupdata == 1){
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load("").dontAnimate().into(viewHolder.iv_header);
+        } else {
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+        }
         int unreadCount = bean.getMessage_unread_count();
         if (unreadCount > 0) {
             viewHolder.tv_unread.setVisibility(View.VISIBLE);

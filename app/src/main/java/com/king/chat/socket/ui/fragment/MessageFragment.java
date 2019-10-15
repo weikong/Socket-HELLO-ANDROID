@@ -19,6 +19,8 @@ import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.MainChatActivity;
+import com.king.chat.socket.ui.activity.contact.ContactSelectActivity;
+import com.king.chat.socket.ui.adapter.ContactSelectAdapter;
 import com.king.chat.socket.ui.adapter.MessageAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
@@ -132,6 +134,12 @@ public class MessageFragment extends BaseFragment {
 
     private void initActionBar() {
         actionBar.setTitle("hi");
+        actionBar.setIvRightSrc(R.drawable.ic_time_add_press, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent2Activity(ContactSelectActivity.class);
+            }
+        });
     }
 
     private void initView(View view) {
@@ -143,12 +151,11 @@ public class MessageFragment extends BaseFragment {
                 SessionData sessionData = adapter.getItem(position);
                 Config.toUserId = sessionData.getMessagefromid();
                 Config.toUserName = sessionData.getMessagefromname();
-                ContactBean contactBean = new ContactBean();
-                contactBean.setAccount(sessionData.getMessagefromid());
-                contactBean.setHeadPortrait(sessionData.getMessagefromavatar());
-                contactBean.setName(sessionData.getMessagefromname());
-//                intent2Activity(MainChatActivity.class);
-                intent2Activity(MainChatActivity.class, contactBean);
+//                ContactBean contactBean = new ContactBean();
+//                contactBean.setAccount(sessionData.getMessagefromid());
+//                contactBean.setHeadPortrait(sessionData.getMessagefromavatar());
+//                contactBean.setName(sessionData.getMessagefromname());
+                intent2Activity(MainChatActivity.class, sessionData);
             }
         });
     }

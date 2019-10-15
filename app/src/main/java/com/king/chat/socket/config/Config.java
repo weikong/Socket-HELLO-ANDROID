@@ -11,11 +11,11 @@ public class Config {
     /**
      * 公司 IP
      */
-//    public static final String HOST = "172.17.7.164";
+    public static final String HOST = "172.17.7.164";
     /**
      * MAC IP
      */
-    public static final String HOST = "172.17.7.134";
+//    public static final String HOST = "172.17.7.134";
     /**
      * 华为云
      */

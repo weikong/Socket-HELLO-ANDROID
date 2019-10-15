@@ -16,6 +16,7 @@ public class ContactBean implements Serializable {
     private long createAt;
     private String account;
     private int type;
+    private boolean isCheck;
 
     public int getId() {
         return id;
@@ -79,5 +80,13 @@ public class ContactBean implements Serializable {
 
     public void setCreateAt(long createAt) {
         this.createAt = createAt;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
     }
 }

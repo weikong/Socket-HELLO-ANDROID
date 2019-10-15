@@ -2,6 +2,7 @@ package com.king.chat.socket.util;
 
 
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.config.Config;
 
 /**
  * Created by kongwei on 2017/3/10.
@@ -26,6 +27,13 @@ public class UserInfoManager {
 
     public void setContactBean(ContactBean contactBean) {
         this.contactBean = contactBean;
+        if (contactBean != null){
+            Config.userId = contactBean.getAccount();
+            Config.userName = contactBean.getName();
+        } else {
+            Config.userId = "";
+            Config.userName = "";
+        }
     }
 
     public String getAccount() {

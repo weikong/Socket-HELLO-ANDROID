@@ -54,8 +54,14 @@ public class ChatRecordData extends BaseModel implements Serializable {
     public String sourcesenderid;//
 
     /**
+     * 消息來源
+     */
+    @Column
+    public String sourcesendername;//
+
+    /**
      * 消息类型
-     * 9：聊天内容； 1：Ping； 2：Connect；3：Disconnect； 4：Login； 5：ACK回执
+     * 9：聊天内容； 1：Ping； 2：Connect；3：Disconnect； 4：Login； 5：ACK回执；6：离线数据；7：群通知消息
      */
     @Column
     public int messagetype;//
@@ -86,6 +92,13 @@ public class ChatRecordData extends BaseModel implements Serializable {
      */
     @Column
     public String messagecontent;//
+
+    /**
+     * 群聊类型
+     * 0：单聊；1：群聊
+     */
+    @Column
+    public int groupdata;//
 
     public String messagefromavatar;
     public String messagetoavatar;
@@ -201,4 +214,22 @@ public class ChatRecordData extends BaseModel implements Serializable {
     public void setMessagechattype(int messagechattype) {
         this.messagechattype = messagechattype;
     }
+
+    public int getGroupdata() {
+        return groupdata;
+    }
+
+    public void setGroupdata(int groupdata) {
+        this.groupdata = groupdata;
+    }
+
+    public String getSourcesendername() {
+        return sourcesendername;
+    }
+
+    public void setSourcesendername(String sourcesendername) {
+        this.sourcesendername = sourcesendername;
+    }
+
+
 }

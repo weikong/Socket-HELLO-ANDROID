@@ -80,6 +80,25 @@ public class SessionData extends BaseModel implements Serializable {
     @Column
     public int message_unread_count;//
 
+    /**
+     * 群聊类型
+     * 0：单聊；1：群聊
+     */
+    @Column
+    public int groupdata;//
+
+    /**
+     * 消息來源
+     */
+    @Column
+    public String sourcesenderid;//
+
+    /**
+     * 消息來源
+     */
+    @Column
+    public String sourcesendername;//
+
     public String getMessagefromid() {
         return messagefromid;
     }
@@ -158,5 +177,29 @@ public class SessionData extends BaseModel implements Serializable {
 
     public void setMessagechattype(int messagechattype) {
         this.messagechattype = messagechattype;
+    }
+
+    public int getGroupdata() {
+        return groupdata;
+    }
+
+    public void setGroupdata(int groupdata) {
+        this.groupdata = groupdata;
+    }
+
+    public String getSourcesenderid() {
+        return sourcesenderid;
+    }
+
+    public void setSourcesenderid(String sourcesenderid) {
+        this.sourcesenderid = sourcesenderid;
+    }
+
+    public String getSourcesendername() {
+        return sourcesendername;
+    }
+
+    public void setSourcesendername(String sourcesendername) {
+        this.sourcesendername = sourcesendername;
     }
 }

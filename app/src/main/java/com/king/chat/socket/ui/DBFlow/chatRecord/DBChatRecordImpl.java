@@ -81,6 +81,17 @@ public class DBChatRecordImpl {
         return list;
     }
 
+    public List<ChatRecordData> queryGroupChatRecord(int offset,int pageSize){
+        OperatorGroup op=OperatorGroup.clause(ChatRecordData_Table.messagefromid.eq(Config.toUserId));
+        List<ChatRecordData> list = SQLite.select().from(ChatRecordData.class)
+                .where(op)
+                .orderBy(ChatRecordData_Table.messagetime,false)
+                .limit(pageSize)
+                .offset(offset)
+                .queryList();
+        return list;
+    }
+
     public List<ChatRecordData> queryChatRecordImageAndVideo(){
         OperatorGroup op=OperatorGroup.clause(OperatorGroup.clause()
                 .and(ChatRecordData_Table.messagefromid.eq(Config.userId))

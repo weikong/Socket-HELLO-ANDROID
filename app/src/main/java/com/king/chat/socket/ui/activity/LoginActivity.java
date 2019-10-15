@@ -93,8 +93,6 @@ public class LoginActivity extends BaseDataActivity {
                         SharePreferceTool.getInstance().setCache(Config.LOGIN_USER_PSD, params.get("password"));
                         ContactBean contactBean = JSONObject.parseObject(baseTaskBean.getData(), ContactBean.class);
                         UserInfoManager.getInstance().setContactBean(contactBean);
-                        Config.userId = contactBean.getAccount();
-                        Config.userName = contactBean.getName();
                         SocketUtil.getInstance().connect();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

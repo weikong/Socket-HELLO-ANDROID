@@ -10,11 +10,11 @@ public class UrlConfig {
     /**
      * MAC IP
      */
-    public static String HTTP_ROOT = "http://172.17.7.134:9090/";
+//    public static String HTTP_ROOT = "http://172.17.7.134:9090/";
     /**
      * 公司 IP
      */
-//    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
+    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
     /**
      * 华为云
      */
@@ -123,4 +123,19 @@ public class UrlConfig {
      * 系统注册人员
      */
     public static String HTTP_ACCOUNT_LIST = HTTP_ROOT + "account/list";
+
+    /**
+     * 创建群组
+     */
+    public static String HTTP_GROUP_CREATE = HTTP_ROOT + "group/groupCreate";
+
+    /**
+     * 查询群组
+     */
+    public static String HTTP_GROUP_QUERY = HTTP_ROOT + "group/groupQueryById";
+
+    /**
+     * 更新群组
+     */
+    public static String HTTP_GROUP_UPDATE = HTTP_ROOT + "group/groupUpdate";
 }
