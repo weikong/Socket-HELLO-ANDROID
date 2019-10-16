@@ -335,34 +335,6 @@ public class BaseUIActivity extends BaseDataActivity {
         return ColorUtils.calculateLuminance(color) >= 0.5;
     }
 
-    protected void intent2Activity(Class c) {
-        Intent intent = new Intent(this, c);
-        startActivity(intent);
-    }
-
-    protected void intent2Activity(Class c, Bundle b) {
-        Intent intent = new Intent(this, c);
-        intent.putExtra("DATA", b);
-        startActivity(intent);
-    }
-
-    protected void intent2Activity(Class c, Object o) {
-        Intent intent = new Intent(this, c);
-        intent.putExtra("DATA", (Serializable) o);
-        startActivity(intent);
-    }
-
-    protected void intentForResult2Activity(Class c, int requestCode) {
-        Intent intent = new Intent(this, c);
-        startActivityForResult(intent, requestCode);
-    }
-
-    protected void intentForResult2Activity(Class c, int requestCode, boolean choose) {
-        Intent intent = new Intent(this, c);
-        intent.putExtra("DATA", choose);
-        startActivityForResult(intent, requestCode);
-    }
-
     /**
      * 更新時間
      */

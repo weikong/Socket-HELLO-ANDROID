@@ -285,4 +285,12 @@ public class GroupInfo implements Serializable {
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
+
+    public List<ContactBean> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<ContactBean> members) {
+        this.members = members;
+    }
 }

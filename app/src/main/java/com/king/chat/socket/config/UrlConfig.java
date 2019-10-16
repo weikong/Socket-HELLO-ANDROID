@@ -132,7 +132,12 @@ public class UrlConfig {
     /**
      * 查询群组
      */
-    public static String HTTP_GROUP_QUERY = HTTP_ROOT + "group/groupQueryById";
+    public static String HTTP_GROUP_QUERY_BY_ID = HTTP_ROOT + "group/groupQueryById";
+
+    /**
+     * 查询群组
+     */
+    public static String HTTP_GROUP_QUERY_BY_GROUP_ACCOUNT = HTTP_ROOT + "group/groupQueryByGroupAccount";
 
     /**
      * 更新群组

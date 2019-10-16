@@ -17,7 +17,7 @@ import com.king.chat.socket.bean.base.BaseTaskBean;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
-import com.king.chat.socket.ui.activity.MainChatActivity;
+import com.king.chat.socket.ui.activity.chat.MainChatActivity;
 import com.king.chat.socket.ui.adapter.ContactAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;

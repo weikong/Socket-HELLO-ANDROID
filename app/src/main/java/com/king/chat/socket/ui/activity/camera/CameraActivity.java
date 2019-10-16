@@ -1,6 +1,5 @@
 package com.king.chat.socket.ui.activity.camera;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -15,15 +14,13 @@ import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.DeviceUtil;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.king.chat.socket.R;
-import com.king.chat.socket.bean.FileItem;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.ChooseImages.ChooseImagesActivity;
-import com.king.chat.socket.ui.activity.MainChatActivity;
+import com.king.chat.socket.ui.activity.chat.MainChatActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.util.SDCardUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class CameraActivity extends BaseDataActivity {
     private JCameraView jCameraView;

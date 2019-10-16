@@ -14,18 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.king.chat.socket.R;
-import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
-import com.king.chat.socket.ui.activity.MainChatActivity;
+import com.king.chat.socket.ui.activity.chat.MainChatActivity;
 import com.king.chat.socket.ui.activity.contact.ContactSelectActivity;
-import com.king.chat.socket.ui.adapter.ContactSelectAdapter;
 import com.king.chat.socket.ui.adapter.MessageAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.BroadCastUtil;
-import com.king.chat.socket.util.UserInfoManager;
 
 import java.util.List;
 

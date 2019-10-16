@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/margin_8dp"
+    android:paddingBottom="@dimen/margin_6dp">
+
+    <com.king.chat.socket.ui.view.gridview.CustomGridView
+        android:id="@+id/grid_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="@dimen/margin_5dp"
+        android:listSelector="@color/color_transparent"
+        android:numColumns="5"
+        android:verticalSpacing="@dimen/margin_5dp"></com.king.chat.socket.ui.view.gridview.CustomGridView>
+
+    <TextView
+        android:id="@+id/tv_more_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_8dp"
+        android:text="查看更多群成员"
+        android:textSize="13sp" />
+</LinearLayout>

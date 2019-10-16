@@ -3,6 +3,7 @@ package com.king.chat.socket.ui.activity.base;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.king.chat.socket.App;
 import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
 import com.king.chat.socket.util.AppManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -212,5 +214,33 @@ public class BaseDataActivity extends FragmentActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void intent2Activity(Class c) {
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
+    }
+
+    protected void intent2Activity(Class c, Bundle b) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra("DATA", b);
+        startActivity(intent);
+    }
+
+    protected void intent2Activity(Class c, Object o) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra("DATA", (Serializable) o);
+        startActivity(intent);
+    }
+
+    protected void intentForResult2Activity(Class c, int requestCode) {
+        Intent intent = new Intent(this, c);
+        startActivityForResult(intent, requestCode);
+    }
+
+    protected void intentForResult2Activity(Class c, int requestCode, boolean choose) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra("DATA", choose);
+        startActivityForResult(intent, requestCode);
     }
 }

@@ -1,4 +1,4 @@
-package com.king.chat.socket.ui.activity;
+package com.king.chat.socket.ui.activity.chat;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -30,6 +30,7 @@ import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.FileItem;
+import com.king.chat.socket.bean.GroupInfo;
 import com.king.chat.socket.bean.UploadFileBean;
 import com.king.chat.socket.bean.base.BaseTaskBean;
 import com.king.chat.socket.config.UrlConfig;
@@ -38,6 +39,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.DBChatRecordImpl;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
+import com.king.chat.socket.ui.activity.MainActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.adapter.MainChatAdapter;
@@ -64,7 +66,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,6 +96,8 @@ public class MainChatActivity extends BaseDataActivity {
 //    private ContactBean contactBean;
     private SessionData sessionData;
     public static Activity activity;
+    private GroupInfo groupInfo;
+    private boolean isGroup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +107,22 @@ public class MainChatActivity extends BaseDataActivity {
         ButterKnife.bind(this);
         regitserReceiver();
         sessionData = (SessionData) getIntent().getSerializableExtra("DATA");
+        if (sessionData != null && sessionData.getGroupdata() == 1){
+            isGroup = true;
+            groupQueryTask(sessionData.getMessagefromid());
+        }
 //        contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
         actionBar = (CommonActionBar) findViewById(R.id.action_bar);
         actionBar.setTitle(sessionData.getMessagefromname());
         actionBar.setIvBackVisiable(View.VISIBLE);
+        actionBar.setIvRightSrc(R.drawable.icon_home_category_white, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isGroup && groupInfo != null){
+                    intent2Activity(ChatGroupInfoActivity.class,groupInfo);
+                }
+            }
+        });
         if (SocketUtil.IM_CONNECT_STATE == SocketUtil.IM_CONNECTED) {
             actionBar.setTitleVisiable(View.VISIBLE);
         } else {
@@ -718,5 +736,38 @@ public class MainChatActivity extends BaseDataActivity {
             isShow = true;
         }
         return isShow;
+    }
+
+
+    private void groupQueryTask(String groupAccount) {
+        showProgreessDialog();
+        Map<String,String> params = new HashMap<>();
+        params.put("groupaccount", groupAccount);
+        HttpTaskUtil.getInstance().postTask(UrlConfig.HTTP_GROUP_QUERY_BY_GROUP_ACCOUNT,params, new OkHttpClientManager.StringCallback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    BaseTaskBean baseTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
+                    if (baseTaskBean.getCode() == 1) {
+                        groupInfo = JSONObject.parseObject(baseTaskBean.getData(),GroupInfo.class);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgressDialog();
+                        }
+                    });
+                }
+
+            }
+        });
     }
 }

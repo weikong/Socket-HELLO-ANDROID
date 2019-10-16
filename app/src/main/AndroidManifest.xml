@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".ui.activity.MainTestActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.MainChatActivity"
+        <activity android:name=".ui.activity.chat.MainChatActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
@@ -47,6 +47,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
         <activity android:name=".ui.activity.contact.ContactSelectActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.chat.ChatGroupInfoActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

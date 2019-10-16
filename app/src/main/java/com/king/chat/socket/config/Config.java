@@ -46,4 +46,6 @@ public class Config {
     public static String LOGIN_USER_PSD = "LOGIN_USER_PSD";
 
     public static int PageSize = 20;
+
+    public static int MaxMembers = 100;
 }
