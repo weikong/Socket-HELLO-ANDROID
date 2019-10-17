@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 多媒体相关 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LoginActivity"
+        <activity
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,23 +33,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainTestActivity"
+        <activity
+            android:name=".ui.activity.MainTestActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.chat.MainChatActivity"
+        <activity
+            android:name=".ui.activity.chat.MainChatActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.MainActivity"
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.camera.CameraActivity"
+        <activity
+            android:name=".ui.activity.camera.CameraActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.ChooseImages.ChooseImagesActivity"
+        <activity
+            android:name=".ui.activity.ChooseImages.ChooseImagesActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.media.ShowMediaPlayActivity"
+        <activity
+            android:name=".ui.activity.media.ShowMediaPlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
-        <activity android:name=".ui.activity.contact.ContactSelectActivity"
+        <activity
+            android:name=".ui.activity.contact.ContactSelectActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.chat.ChatGroupInfoActivity"
+        <activity
+            android:name=".ui.activity.chat.ChatGroupInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.group.MyGroupsActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.edit.SingleInputEditActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

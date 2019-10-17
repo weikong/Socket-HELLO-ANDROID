@@ -18,10 +18,12 @@ import com.king.chat.socket.config.Config;
 import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.chat.MainChatActivity;
+import com.king.chat.socket.ui.activity.group.MyGroupsActivity;
 import com.king.chat.socket.ui.adapter.ContactAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.ContactManager;
+import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
 import com.squareup.okhttp.Request;
@@ -131,6 +133,13 @@ public class ContactFragment extends BaseFragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0: //新的朋友
+                        return;
+                    case 1: //群聊
+                        intent2Activity(MyGroupsActivity.class);
+                        return;
+                }
                 ContactBean contactBean = adapter.getItem(position);
                 Config.toUserId = contactBean.getAccount();
                 Config.toUserName = contactBean.getName();
@@ -143,6 +152,15 @@ public class ContactFragment extends BaseFragment {
             }
         });
         initSwipeRefreshLayout();
+    }
+
+    private void initHeaderView(){
+        ContactBean contactFriendBean = new ContactBean();
+        contactFriendBean.setName("FRIEND");
+        adapter.addData(contactFriendBean);
+        ContactBean contactGroupBean = new ContactBean();
+        contactGroupBean.setName("GROUP");
+        adapter.addData(contactGroupBean);
     }
 
     /**
@@ -182,9 +200,11 @@ public class ContactFragment extends BaseFragment {
                 try {
                     BaseTaskBean baseTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
                     if (baseTaskBean.getCode() == 1) {
+                        adapter.clearData();
                         List<ContactBean> list = JSONObject.parseArray(baseTaskBean.getData(), ContactBean.class);
                         ContactManager.getInstance().setContactList(list);
-                        adapter.setList(list);
+                        initHeaderView();
+                        adapter.addList(list);
                         adapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {

@@ -143,4 +143,9 @@ public class UrlConfig {
      * 更新群组
      */
     public static String HTTP_GROUP_UPDATE = HTTP_ROOT + "group/groupUpdate";
+
+    /**
+     * 查询我的群聊
+     */
+    public static String HTTP_GROUP_QUERY_MY_GROUPS = HTTP_ROOT + "group/queryMyGroups";
 }

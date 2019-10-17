@@ -174,6 +174,7 @@ public class MessageFragment extends BaseFragment {
         intentFilter.addAction(BroadCastUtil.ACTION_RECIEVE_MESSAGE);
 //        intentFilter.addAction(BroadCastUtil.ACTION_UPDATE_MESSAGE);
         intentFilter.addAction(BroadCastUtil.ACTION_UPDATE_SESSION);
+        intentFilter.addAction(BroadCastUtil.ACTION_GROUP_UPDATE);
         if (receiver == null) {
             receiver = new BroadcastReceiver() {
                 @Override

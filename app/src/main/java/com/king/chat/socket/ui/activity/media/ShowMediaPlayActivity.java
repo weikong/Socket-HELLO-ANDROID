@@ -90,7 +90,11 @@ public class ShowMediaPlayActivity extends BaseUIActivity {
 
     private void loadData(){
         chatRecordData = (ChatRecordData) getIntent().getSerializableExtra("DATA");
-        list = DBChatRecordImpl.getInstance().queryChatRecordImageAndVideo();
+        if (chatRecordData != null && chatRecordData.getGroupdata() == 1){
+            list = DBChatRecordImpl.getInstance().queryGroupChatRecordImageAndVideo();
+        } else {
+            list = DBChatRecordImpl.getInstance().queryChatRecordImageAndVideo();
+        }
         if (chatRecordData == null || list == null || list.size() == 0)
             return;
         for (int i=list.size()-1;i>=0;i--){

@@ -48,6 +48,21 @@ public class DBChatRecordImpl {
         return adapter.delete(ChatRecordData);//删除
     }
 
+    public void deleteGroupChatMessage(String groupAccount) {
+        SQLite.delete(ChatRecordData.class)
+                .where(ChatRecordData_Table.messagefromid.is(groupAccount))
+                .execute();
+    }
+
+    public void deleteSingleChatMessage(String from,String to) {
+        OperatorGroup op=OperatorGroup.clause(OperatorGroup.clause()
+                .and(ChatRecordData_Table.messagefromid.eq(from))
+                .and(ChatRecordData_Table.messagetoid.eq(to))
+                .or(ChatRecordData_Table.messagefromid.eq(to))
+                .and(ChatRecordData_Table.messagetoid.eq(from)));
+        SQLite.delete(ChatRecordData.class).where(op).execute();
+    }
+
     public List<ChatRecordData> queryChatRecord(){
         List<ChatRecordData> list = SQLite.select().from(ChatRecordData.class).queryList();
         return list;
@@ -98,6 +113,17 @@ public class DBChatRecordImpl {
                 .and(ChatRecordData_Table.messagetoid.eq(Config.toUserId))
                 .or(ChatRecordData_Table.messagefromid.eq(Config.toUserId))
                 .and(ChatRecordData_Table.messagetoid.eq(Config.userId)));
+        op.and(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_IMG));
+        op.or(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_VIDEO));
+        List<ChatRecordData> list = SQLite.select().from(ChatRecordData.class)
+                .where(op)
+                .orderBy(ChatRecordData_Table.messagetime,true)
+                .queryList();
+        return list;
+    }
+
+    public List<ChatRecordData> queryGroupChatRecordImageAndVideo(){
+        OperatorGroup op=OperatorGroup.clause(ChatRecordData_Table.messagefromid.eq(Config.toUserId));
         op.and(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_IMG));
         op.or(ChatRecordData_Table.messagechattype.eq(MessageChatType.TYPE_VIDEO));
         List<ChatRecordData> list = SQLite.select().from(ChatRecordData.class)

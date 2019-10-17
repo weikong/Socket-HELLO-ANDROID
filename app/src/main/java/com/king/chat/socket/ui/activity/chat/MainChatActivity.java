@@ -109,7 +109,6 @@ public class MainChatActivity extends BaseDataActivity {
         sessionData = (SessionData) getIntent().getSerializableExtra("DATA");
         if (sessionData != null && sessionData.getGroupdata() == 1){
             isGroup = true;
-            groupQueryTask(sessionData.getMessagefromid());
         }
 //        contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
         actionBar = (CommonActionBar) findViewById(R.id.action_bar);
@@ -243,6 +242,9 @@ public class MainChatActivity extends BaseDataActivity {
         SocketUtil.getInstance().setmHandler(mHandler);
         clearUnreadCount();
         loadData();
+        if (sessionData != null && sessionData.getGroupdata() == 1){
+            groupQueryTask(sessionData.getMessagefromid());
+        }
     }
 
     /**
@@ -405,6 +407,7 @@ public class MainChatActivity extends BaseDataActivity {
                 list = DBChatRecordImpl.getInstance().queryChatRecord(offset, Config.PageSize);
             }
             if (list == null || list.size() == 0) {
+                adapter.notifyDataSetChanged();
                 if (pageNum > 0) {
                     pageNum--;
                 }
@@ -542,6 +545,8 @@ public class MainChatActivity extends BaseDataActivity {
         intentFilter.addAction(BroadCastUtil.ACTION_CONNECTED);
         intentFilter.addAction(BroadCastUtil.ACTION_CONNECTING);
         intentFilter.addAction(BroadCastUtil.ACTION_DISCONNECT);
+        intentFilter.addAction(BroadCastUtil.ACTION_CLEAR_CHAT_MESSAGE);
+        intentFilter.addAction(BroadCastUtil.ACTION_GROUP_UPDATE);
         if (receiver == null) {
             receiver = new BroadcastReceiver() {
                 @Override
@@ -570,6 +575,18 @@ public class MainChatActivity extends BaseDataActivity {
                         case BroadCastUtil.ACTION_DISCONNECT:
                             actionBar.setTitleVisiable(View.INVISIBLE);
                             actionBar.connectSocket(SocketUtil.IM_DISCONNECT);
+                            break;
+                        case BroadCastUtil.ACTION_CLEAR_CHAT_MESSAGE:
+                            mHandler.sendEmptyMessage(3);
+                            break;
+                        case BroadCastUtil.ACTION_GROUP_UPDATE:
+                            GroupInfo gi = (GroupInfo) intent.getSerializableExtra("DATA");
+                            if (gi != null) {
+                                groupInfo = gi;
+                                actionBar.setTitle(groupInfo.getGroupname());
+                                sessionData.setMessagefromname(groupInfo.getGroupname());
+                                Config.toUserName = groupInfo.getGroupname();
+                            }
                             break;
                     }
                 }
@@ -755,6 +772,10 @@ public class MainChatActivity extends BaseDataActivity {
                     BaseTaskBean baseTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
                     if (baseTaskBean.getCode() == 1) {
                         groupInfo = JSONObject.parseObject(baseTaskBean.getData(),GroupInfo.class);
+                        if (adapter != null){
+                            adapter.setGroupInfo(groupInfo);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

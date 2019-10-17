@@ -3,6 +3,7 @@ package com.king.chat.socket.ui.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,12 +111,16 @@ public class MessageAdapter extends BaseAdapter {
         SessionData bean = getItem(position);
         viewHolder.tv_name.setText(bean.getMessagefromname());
         viewHolder.tv_time.setText(TimeFormatUtils.getSessionFormatDate2(bean.getMessagetime()));
-        viewHolder.tv_content.setText(bean.getMessagecontent());
-        if (bean.groupdata == 1){
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load("").dontAnimate().into(viewHolder.iv_header);
+       String strContent = bean.getMessagecontent();
+        if (bean.groupdata == 1) {
+            if (!TextUtils.isEmpty(bean.getSourcesendername())){
+                strContent = bean.getSourcesendername()+"："+bean.getMessagecontent();
+            }
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         } else {
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         }
+        viewHolder.tv_content.setText(strContent);
         int unreadCount = bean.getMessage_unread_count();
         if (unreadCount > 0) {
             viewHolder.tv_unread.setVisibility(View.VISIBLE);
@@ -127,7 +132,7 @@ public class MessageAdapter extends BaseAdapter {
         }
         viewHolder.tv_unread.setText("" + unreadCount);
         int messageChatType = bean.getMessagechattype();
-        switch (messageChatType){
+        switch (messageChatType) {
             case MessageChatType.TYPE_IMG:
                 viewHolder.tv_content.setText(mContext.getString(R.string.text_chat_image));
                 break;

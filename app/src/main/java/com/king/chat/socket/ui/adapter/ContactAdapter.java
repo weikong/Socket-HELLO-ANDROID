@@ -102,8 +102,18 @@ public class ContactAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ContactBean bean = getItem(position);
-        viewHolder.tv_name.setText(bean.getName());
-        GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+        if (bean.getId() == 0){
+            if (bean.getName().equals("FRIEND")){
+                viewHolder.tv_name.setText("新的朋友");
+                GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultFriend()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            } else if (bean.getName().equals("GROUP")){
+                viewHolder.tv_name.setText("群聊");
+                GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultGroup()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            }
+        } else {
+            viewHolder.tv_name.setText(bean.getName());
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+        }
         return convertView;
     }
 

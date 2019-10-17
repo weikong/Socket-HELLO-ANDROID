@@ -463,6 +463,24 @@ public class SocketUtil {
                                         sessionData.setMessagetype(baseBean.getMessagetype());
                                         sessionData.setMessagechattype(baseBean.getMessagechattype());
                                         sessionData.setGroupdata(baseBean.getGroupdata());
+
+                                        // 2019/9/20 更新UI
+                                        String fromid = baseBean.getMessagefromid();
+                                        if (!TextUtils.isEmpty(fromid) && fromid.equals(Config.toUserId) && mHandler != null) {
+                                            //接收的消息与正在聊天的人是相同的
+                                            message = Message.obtain();
+                                            message.what = 1;
+                                            message.obj = baseBean;
+                                            mHandler.sendMessage(message);
+                                        } else {
+                                            SessionData sessionData1 = DBSessionImpl.getInstance().querySessionDataByFromId(fromid);
+                                            if (sessionData1 != null) {
+                                                sessionData.setMessage_unread_count(sessionData1.getMessage_unread_count() + 1);
+                                            } else {
+                                                sessionData.setMessage_unread_count(1);
+                                            }
+                                            NotificationUtils.getInstance().sendNotification(baseBean.getMessagefromname(), baseBean.getMessagecontent());
+                                        }
                                         boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
                                         BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
                                     }
@@ -503,6 +521,8 @@ public class SocketUtil {
                                             SessionData sessionData1 = DBSessionImpl.getInstance().querySessionDataByFromId(fromid);
                                             if (sessionData1 != null) {
                                                 sessionData.setMessage_unread_count(sessionData1.getMessage_unread_count() + 1);
+                                            } else {
+                                                sessionData.setMessage_unread_count(1);
                                             }
                                             NotificationUtils.getInstance().sendNotification(baseBean.getMessagefromname(), baseBean.getMessagecontent());
                                         }

@@ -21,6 +21,9 @@ public class BroadCastUtil {
     public static final String ACTION_CONNECTING = "action_connecting";
     public static final String ACTION_DISCONNECT = "action_disconnect";
 
+    public static final String ACTION_CLEAR_CHAT_MESSAGE = "action_clear_chat_message";
+    public static final String ACTION_GROUP_UPDATE = "action_group_update";
+
     /**
      * 发送广播
      *

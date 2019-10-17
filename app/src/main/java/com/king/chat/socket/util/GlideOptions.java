@@ -57,6 +57,20 @@ public class GlideOptions {
         return requestOptions;
     }
 
+    public static RequestOptions optionDefaultGroup() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.notice_icon_group);
+        requestOptions.centerCrop();
+        return requestOptions;
+    }
+
+    public static RequestOptions optionDefaultFriend() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.notice_icon_friend);
+        requestOptions.centerCrop();
+        return requestOptions;
+    }
+
     public static RequestOptions optionsRoundedCorners() {
         RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(6)).override(200,200);
         requestOptions.placeholder(R.mipmap.ic_launcher);

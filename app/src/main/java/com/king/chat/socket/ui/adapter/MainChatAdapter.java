@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.bean.GroupInfo;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
@@ -32,7 +33,10 @@ import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.socket.SocketUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Handler;
 
 /**
  * Created by maesinfo on 2019/9/19.
@@ -46,6 +50,9 @@ public class MainChatAdapter extends BaseAdapter {
 //    private ContactBean contactBean;
     private SessionData sessionData;
 
+    private GroupInfo groupInfo;
+    private Map<String,ContactBean> contactBeanMap = new HashMap<>();
+
     public MainChatAdapter(Context mContext) {
         this.mContext = mContext;
         this.layoutInflater = LayoutInflater.from(mContext);
@@ -55,6 +62,18 @@ public class MainChatAdapter extends BaseAdapter {
 //        this.contactBean = contactBean;
 //    }
 
+
+    public void setGroupInfo(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
+        if (groupInfo == null)
+            return;
+        List<ContactBean> contactBeanList = groupInfo.getMembers();
+        if (contactBeanList == null || contactBeanList.size() == 0)
+            return;
+        for (ContactBean contactBean : contactBeanList){
+            contactBeanMap.put(contactBean.getAccount(),contactBean);
+        }
+    }
 
     public SessionData getSessionData() {
         return sessionData;
@@ -149,9 +168,20 @@ public class MainChatAdapter extends BaseAdapter {
             return convertView;
         }
         String strNameTime = "";
+        String strSourceAccount = bean.getSourcesenderid();
+        String strName = bean.getSourcesendername();
+        String strHeader = "";
+        ContactBean contactBean = null;
+        if (contactBeanMap.containsKey(strSourceAccount)){
+            contactBean = contactBeanMap.get(strSourceAccount);
+            strName = contactBean.getName();
+            strHeader = contactBean.getHeadPortrait();
+        }
         if (type == 1){
-            strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + bean.getSourcesendername();
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(UserInfoManager.getInstance().getContactBean().getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + strName;
+            if (TextUtils.isEmpty(strHeader))
+                strHeader = UserInfoManager.getInstance().getContactBean().getHeadPortrait();
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(strHeader).dontAnimate().into(viewHolder.iv_header);
             viewHolder.chatContentRightView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -177,8 +207,10 @@ public class MainChatAdapter extends BaseAdapter {
                 }
             });
         } else {
-            strNameTime = bean.getSourcesendername() + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(sessionData.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+            strNameTime = strName + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
+            if (TextUtils.isEmpty(strHeader))
+                strHeader = sessionData.getMessagefromavatar();
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(strHeader).dontAnimate().into(viewHolder.iv_header);
             viewHolder.chatContentLeftView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

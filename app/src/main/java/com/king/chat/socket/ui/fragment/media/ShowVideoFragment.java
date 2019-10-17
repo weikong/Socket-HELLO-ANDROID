@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.king.chat.socket.GlideApp;
@@ -37,6 +38,8 @@ public class ShowVideoFragment extends BaseFragment {
     ImageView iv_image;
     @BindView(R.id.iv_play)
     ImageView iv_play;
+    @BindView(R.id.progressbar)
+    ProgressBar progressbar;
     ChatRecordData chatRecordData;
     private boolean videoPrepared = false;
 
@@ -100,15 +103,17 @@ public class ShowVideoFragment extends BaseFragment {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     videoPrepared = true;
-                    if (videoview.isPlaying() && iv_image.getAlpha() > 0){
+                    if (iv_image.getAlpha() > 0){
                         AnimUtil.alphaAnimInVisible(iv_image,0,100);
                     }
+                    progressbar.setVisibility(View.INVISIBLE);
                 }
             });
             videoview.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     iv_play.setVisibility(View.VISIBLE);
+                    progressbar.setVisibility(View.INVISIBLE);
                     return false;
                 }
             });
@@ -116,9 +121,10 @@ public class ShowVideoFragment extends BaseFragment {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     iv_play.setVisibility(View.VISIBLE);
+                    progressbar.setVisibility(View.INVISIBLE);
                 }
             });
-            videoview.setVideoPath(chatRecordData.getMessagecontent());
+//            videoview.setVideoPath(chatRecordData.getMessagecontent());
             GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(chatRecordData.getMessagecontent()).dontAnimate().into(iv_image);
         }
     }
@@ -133,6 +139,10 @@ public class ShowVideoFragment extends BaseFragment {
     }
 
     private void playVideo(){
+        if (!videoPrepared){
+            progressbar.setVisibility(View.VISIBLE);
+            videoview.setVideoPath(chatRecordData.getMessagecontent());
+        }
         if (videoview != null && !videoview.isPlaying()) {
             videoview.start();
             iv_play.setVisibility(View.INVISIBLE);
