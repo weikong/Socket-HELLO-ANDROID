@@ -24,6 +24,7 @@ import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.BitmapUtil;
 import com.king.chat.socket.util.CombineNineRect;
 import com.king.chat.socket.util.ContactManager;
+import com.king.chat.socket.util.ExpressionHelper;
 import com.king.chat.socket.util.GlideOptions;
 
 import java.util.ArrayList;
@@ -114,19 +115,21 @@ public class DiscoveryFragment extends BaseFragment{
         tv_hecheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BitmapCount++;
-                if (BitmapCount > 9)
-                    BitmapCount = 3;
-                bitmaps.clear();
-                List<ContactBean> contactBeanList = ContactManager.getInstance().getContactList();
-                if (contactBeanList.size() > BitmapCount){
-                    showProgreessDialog();
-                    for (int i=contactBeanList.size() - 1;i>contactBeanList.size()-BitmapCount-1;i--){
-                        ContactBean contactBean = contactBeanList.get(i);
-//                        GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionDefaultFriend()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
-                        loadImageSimpleTarget(contactBean.getHeadPortrait());
-                    }
-                }
+//                BitmapCount++;
+//                if (BitmapCount > 9)
+//                    BitmapCount = 3;
+//                bitmaps.clear();
+//                List<ContactBean> contactBeanList = ContactManager.getInstance().getContactList();
+//                if (contactBeanList.size() > BitmapCount){
+//                    showProgreessDialog();
+//                    for (int i=contactBeanList.size() - 1;i>contactBeanList.size()-BitmapCount-1;i--){
+//                        ContactBean contactBean = contactBeanList.get(i);
+////                        GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionDefaultFriend()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+//                        loadImageSimpleTarget(contactBean.getHeadPortrait());
+//                    }
+//                }
+
+                ExpressionHelper.getInstance().loadSmilyFile(getActivity(),ExpressionHelper.getInstance().buildFaceFileNameList().getExpList().get(2).getFileName(),iv_test);
             }
         });
     }

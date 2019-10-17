@@ -5,14 +5,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,9 +33,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.FileItem;
 import com.king.chat.socket.bean.GroupInfo;
 import com.king.chat.socket.bean.UploadFileBean;
@@ -53,6 +63,8 @@ import com.king.chat.socket.ui.view.popup.CustomPopupWindow;
 import com.king.chat.socket.ui.view.popup.PopChatView;
 import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.BroadCastUtil;
+import com.king.chat.socket.util.DisplayUtil;
+import com.king.chat.socket.util.ExpressionHelper;
 import com.king.chat.socket.util.FilterTimeOutManager;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.ToastUtil;
@@ -236,6 +248,27 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void recordVoice(String path) {
                 sendFileTask(MessageChatType.TYPE_VOICE, path);
+            }
+        });
+        viewBiaoQing.setCallBack(new BiaoQingView.CallBack() {
+            @Override
+            public void delSmiley() {
+                KeyEvent keyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL);
+                mEditText.onKeyDown(KeyEvent.KEYCODE_DEL, keyEventDown);
+            }
+
+            @Override
+            public void clickSmiley(final Expression expression) {
+                GlideApp.with(MainChatActivity.this).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asBitmap().load(ExpressionHelper.getInstance().getAssetUri(expression.getFileName())).into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        ImageSpan imageSpan = new ImageSpan(getApplicationContext(), resource);
+                        imageSpan.getDrawable().setBounds(0, 0, DisplayUtil.dp2px(16), DisplayUtil.dp2px(16));
+                        SpannableString spannableText = new SpannableString(expression.getFlag());
+                        spannableText.setSpan(imageSpan, 0, expression.getFlag().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        mEditText.append(spannableText);
+                    }
+                });
             }
         });
         initPopupWindow();

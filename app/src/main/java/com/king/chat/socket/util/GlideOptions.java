@@ -4,11 +4,15 @@
 package com.king.chat.socket.util;
 
 import android.annotation.SuppressLint;
+import android.os.Environment;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.king.chat.socket.R;
+
+import java.io.File;
 
 /**
  * ImageLoaderOptions.java - ImageLoader config parameters
@@ -19,7 +23,15 @@ import com.king.chat.socket.R;
  */
 public class GlideOptions {
 
-
+//    File file =new File(Environment.getExternalStorageDirectory().getPath(),"test.jpg");
+//    //本地
+//    Glide.with(this).load(R.mipmap.ic_launcher).into(imageview);
+//    //assets资产目录
+//    Glide.with(this).load("file:///android_asset/test.jpg").into(imageview0);
+//    //sd卡
+//    Glide.with(this).load("file:///storage/emulated/0/test.jpg").into(imageview1);
+//    Glide.with(this).load(file).into(imageview2);
+//    Glide.with(this).load("file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg").into(imageview3);
 
    /* public void loadImage(Context context, ImageView imageView){
         Glide.with(context).load(R.mipmap.ic_launcher)
@@ -102,6 +114,7 @@ public class GlideOptions {
     public static RequestOptions optionsTransparent() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.bg_item_transparent);
+        requestOptions.fitCenter();
         return requestOptions;
     }
 

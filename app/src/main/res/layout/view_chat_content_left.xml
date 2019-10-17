@@ -16,7 +16,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="@dimen/margin_4dp"
-        android:text="你好，我叫孔偉。請多關照"
+        android:text=""
         android:textColor="#333333"
         android:textSize="14sp"
         android:visibility="gone" />

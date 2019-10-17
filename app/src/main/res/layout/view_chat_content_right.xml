@@ -18,7 +18,7 @@
         android:textColor="#333333"
         android:maxWidth="220dp"
         android:visibility="gone"
-        android:text="你好，我叫孔偉。請多關照"/>
+        android:text=""/>
 
     <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
         android:id="@+id/iv_content"

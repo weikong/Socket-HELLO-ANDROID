@@ -23,6 +23,7 @@ import com.king.chat.socket.ui.adapter.GridMoreAdapter;
 import com.king.chat.socket.ui.adapter.MainChatAdapter;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.gridview.CustomGridView;
+import com.king.chat.socket.util.ChatFaceInputUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
@@ -73,7 +74,8 @@ public class ChatContentLeftView extends RelativeLayout {
                 iv_content.setVisibility(View.GONE);
                 iv_viedo_play.setVisibility(View.GONE);
                 iv_voice_play.setVisibility(View.GONE);
-                tv_content.setText(bean.getMessagecontent());
+//                tv_content.setText(bean.getMessagecontent());
+                ChatFaceInputUtil.getInstance().setExpressionTextView(getContext(),bean.getMessagecontent(),tv_content);
                 break;
             case MessageChatType.TYPE_IMG:
                 tv_content.setVisibility(View.GONE);

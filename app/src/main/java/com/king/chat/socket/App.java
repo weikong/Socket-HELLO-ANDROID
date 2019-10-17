@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.king.chat.socket.broadcast.ServiceBroadcastReceiver;
 import com.king.chat.socket.util.DisplayUtil;
+import com.king.chat.socket.util.ExpressionHelper;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
@@ -31,6 +32,12 @@ public class App extends Application {
         regitserConnReceiver();
         DisplayUtil.displayScreen(this);
         FlowManager.init(new FlowConfig.Builder(this).build());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ExpressionHelper.getInstance().buildFaceFileNameList();
+            }
+        }).start();
     }
 
     @Override

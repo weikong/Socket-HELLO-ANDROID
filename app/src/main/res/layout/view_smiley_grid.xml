@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/margin_150dp">
+
+    <com.king.chat.socket.ui.view.gridview.CustomGridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="8"
+        android:paddingLeft="@dimen/margin_8dp"
+        android:paddingRight="@dimen/margin_8dp"
+        android:scrollbars="none">
+
+    </com.king.chat.socket.ui.view.gridview.CustomGridView>
+
+</RelativeLayout>
