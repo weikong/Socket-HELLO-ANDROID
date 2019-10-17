@@ -471,10 +471,16 @@ public class MainChatActivity extends BaseDataActivity {
                                 break;
                             case 4: //Login
                                 break;
+                            case 5: //接收到消息后回执服务器
+                                break;
+                            case 6: //离线数据
+                                break;
+                            case 7: //群通知消息
+                                break;
                             case 9: //聊天内容
                                 break;
                         }
-                        if (type != 9)
+                        if (type != 9 && type != 7)
                             return;
                         adapter.addData(baseBean);
                         adapter.notifyDataSetChanged();

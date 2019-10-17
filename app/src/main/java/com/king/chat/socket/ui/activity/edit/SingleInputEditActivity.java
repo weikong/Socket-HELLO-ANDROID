@@ -81,6 +81,8 @@ public class SingleInputEditActivity extends BaseDataActivity {
         Map<String, String> params = new HashMap<>();
         params.put("id", "" + groupInfo.getId());
         params.put("groupname", groupName);
+        params.put("updateusername", UserInfoManager.getInstance().getContactBean().getName());
+        params.put("userid", ""+UserInfoManager.getInstance().getAccountId());
         showProgreessDialog();
         HttpTaskUtil.getInstance().postTask(UrlConfig.HTTP_GROUP_UPDATE, params, new OkHttpClientManager.StringCallback() {
             @Override
