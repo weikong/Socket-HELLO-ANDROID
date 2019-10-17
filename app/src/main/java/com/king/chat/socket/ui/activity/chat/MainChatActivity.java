@@ -796,7 +796,7 @@ public class MainChatActivity extends BaseDataActivity {
 
 
     private void groupQueryTask(String groupAccount) {
-        showProgreessDialog();
+//        showProgreessDialog();
         Map<String,String> params = new HashMap<>();
         params.put("groupaccount", groupAccount);
         HttpTaskUtil.getInstance().postTask(UrlConfig.HTTP_GROUP_QUERY_BY_GROUP_ACCOUNT,params, new OkHttpClientManager.StringCallback() {

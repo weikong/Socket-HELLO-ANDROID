@@ -68,7 +68,12 @@ public class MyGroupsActivity extends BaseDataActivity {
         initActionBar();
         initView();
         swipeRefreshLayout.setRefreshing(true);
-        loadDataTask();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadDataTask();
+            }
+        },1000);
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
+import com.king.chat.socket.util.ChatFaceInputUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.TimeFormatUtils;
@@ -120,7 +121,8 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         }
-        viewHolder.tv_content.setText(strContent);
+//        viewHolder.tv_content.setText(strContent);
+        ChatFaceInputUtil.getInstance().setExpressionTextView(mContext,strContent,viewHolder.tv_content);
         int unreadCount = bean.getMessage_unread_count();
         if (unreadCount > 0) {
             viewHolder.tv_unread.setVisibility(View.VISIBLE);
