@@ -124,6 +124,7 @@ public class ContactFragment extends BaseFragment {
     }
 
     private void initActionBar() {
+        actionBar.setFillStatusBar(true);
         actionBar.setTitle("通讯录");
     }
 

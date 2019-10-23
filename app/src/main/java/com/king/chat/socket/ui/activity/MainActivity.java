@@ -17,6 +17,7 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
+import com.king.chat.socket.ui.activity.base.BaseUIActivity;
 import com.king.chat.socket.ui.fragment.ContactFragment;
 import com.king.chat.socket.ui.fragment.DiscoveryFragment;
 import com.king.chat.socket.ui.fragment.MessageFragment;
@@ -30,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseDataActivity implements View.OnClickListener {
+public class MainActivity extends BaseUIActivity implements View.OnClickListener {
 
     @BindView(R.id.viewpager)
     CustomViewPager viewPager;

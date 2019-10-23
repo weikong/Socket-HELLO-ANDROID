@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +10,20 @@
     <com.king.chat.socket.ui.view.actionbar.CommonActionBar
         android:id="@+id/action_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.king.chat.socket.ui.view.actionbar.CommonActionBar>
+        android:layout_height="wrap_content"
+        android:visibility="gone"></com.king.chat.socket.ui.view.actionbar.CommonActionBar>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_300dp"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        android:src="@drawable/h20004"/>
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:divider="@color/color_dddddd"
+        android:dividerHeight="@dimen/margin_1dp"></ListView>
+</RelativeLayout>

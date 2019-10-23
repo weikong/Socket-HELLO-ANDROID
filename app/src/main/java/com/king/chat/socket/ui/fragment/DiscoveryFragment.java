@@ -104,6 +104,7 @@ public class DiscoveryFragment extends BaseFragment{
     }
 
     private void initActionBar() {
+        actionBar.setFillStatusBar(true);
         actionBar.setTitle("发现");
     }
 

@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.adapter.MineAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
+import com.king.chat.socket.ui.view.mine.MineHeaderActionBar;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +37,9 @@ public class MineFragment extends BaseFragment {
     CommonActionBar actionBar;
     @BindView(R.id.listview)
     ListView listview;
+
+    MineAdapter adapter;
+    MineHeaderActionBar mineHeaderActionBar;
 
     private Handler handler = new Handler();
 
@@ -88,9 +95,17 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initActionBar() {
+        actionBar.setFillStatusBar(true);
         actionBar.setTitle("我");
     }
 
     private void initView(View view) {
+        mineHeaderActionBar = new MineHeaderActionBar(getActivity());
+        listview.addHeaderView(mineHeaderActionBar);
+        adapter = new MineAdapter(getActivity());
+        listview.setAdapter(adapter);
+        String[] array = getResources().getStringArray(R.array.array_grid_more);
+        adapter.setList(Arrays.asList(array));
+        adapter.addList(Arrays.asList(array));
     }
 }

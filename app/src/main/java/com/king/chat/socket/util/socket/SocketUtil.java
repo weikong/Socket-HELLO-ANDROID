@@ -146,6 +146,8 @@ public class SocketUtil {
             sessionData.setMessagetype(chatRecordData.getMessagetype());
             sessionData.setMessagechattype(chatRecordData.getMessagechattype());
             sessionData.setGroupdata(groupData);
+            sessionData.setSourcesenderid(chatRecordData.getSourcesenderid());
+            sessionData.setSourcesendername(chatRecordData.getSourcesendername());
             boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
             if (mHandler != null) {
@@ -191,6 +193,8 @@ public class SocketUtil {
             sessionData.setMessagetype(chatRecordData.getMessagetype());
             sessionData.setMessagechattype(chatRecordData.getMessagechattype());
             sessionData.setGroupdata(groupData);
+            sessionData.setSourcesenderid(chatRecordData.getSourcesenderid());
+            sessionData.setSourcesendername(chatRecordData.getSourcesendername());
             boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
             BroadCastUtil.sendActionBroadCast(App.getInstance(), BroadCastUtil.ACTION_RECIEVE_MESSAGE);
             if (mHandler != null) {
@@ -428,10 +432,15 @@ public class SocketUtil {
                                             sessionData.setMessagetime(item.getMessagetime());
                                             sessionData.setMessagetype(item.getMessagetype());
                                             sessionData.setMessagechattype(item.getMessagechattype());
+                                            sessionData.setGroupdata(item.getGroupdata());
+                                            sessionData.setSourcesenderid(item.getSourcesenderid());
+                                            sessionData.setSourcesendername(item.getSourcesendername());
                                             String fromid = item.getMessagefromid();
                                             SessionData sessionData1 = DBSessionImpl.getInstance().querySessionDataByFromId(fromid);
                                             if (sessionData1 != null) {
                                                 sessionData.setMessage_unread_count(sessionData1.getMessage_unread_count() + 1);
+                                            } else {
+                                                sessionData.setMessage_unread_count(1);
                                             }
                                             boolean update = DBSessionImpl.getInstance().updateSession(sessionData);
                                         }
@@ -507,6 +516,8 @@ public class SocketUtil {
                                         sessionData.setMessagetype(baseBean.getMessagetype());
                                         sessionData.setMessagechattype(baseBean.getMessagechattype());
                                         sessionData.setGroupdata(baseBean.getGroupdata());
+                                        sessionData.setSourcesenderid(baseBean.getSourcesenderid());
+                                        sessionData.setSourcesendername(baseBean.getSourcesendername());
                                         // TODO: 2019/9/20 回执服务器
                                         ackServer(baseBean.getMessageid());
                                         // 2019/9/20 更新UI

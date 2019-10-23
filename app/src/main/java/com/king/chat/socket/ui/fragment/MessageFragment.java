@@ -130,6 +130,7 @@ public class MessageFragment extends BaseFragment {
     }
 
     private void initActionBar() {
+        actionBar.setFillStatusBar(true);
         actionBar.setTitle("hi");
         actionBar.setIvRightSrc(R.drawable.ic_time_add_press, new View.OnClickListener() {
             @Override

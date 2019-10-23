@@ -114,7 +114,7 @@ public class MessageAdapter extends BaseAdapter {
         viewHolder.tv_time.setText(TimeFormatUtils.getSessionFormatDate2(bean.getMessagetime()));
        String strContent = bean.getMessagecontent();
         if (bean.groupdata == 1) {
-            if (!TextUtils.isEmpty(bean.getSourcesendername())){
+            if (!TextUtils.isEmpty(bean.getSourcesendername()) && bean.getMessagetype() == 9){
                 strContent = bean.getSourcesendername()+"："+bean.getMessagecontent();
             }
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
