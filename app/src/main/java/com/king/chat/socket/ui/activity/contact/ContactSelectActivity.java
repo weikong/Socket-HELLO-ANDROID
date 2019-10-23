@@ -2,6 +2,7 @@ package com.king.chat.socket.ui.activity.contact;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +19,11 @@ import android.widget.ListView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
@@ -40,6 +45,7 @@ import com.king.chat.socket.util.CombineNineRect;
 import com.king.chat.socket.util.ContactManager;
 import com.king.chat.socket.util.FileUtil;
 import com.king.chat.socket.util.FilterTimeOutManager;
+import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
@@ -299,6 +305,20 @@ public class ContactSelectActivity extends BaseDataActivity {
         });
     }
 
+    private void jump2SingleChat(ContactBean contactBean){
+        if (contactBean == null)
+            return;
+        Config.toUserId = contactBean.getAccount();
+        Config.toUserName = contactBean.getName();
+        SessionData sessionData = new SessionData();
+        sessionData.setMessagefromid(contactBean.getAccount());
+        sessionData.setMessagefromname(contactBean.getName());
+        sessionData.setMessagefromavatar(contactBean.getHeadPortrait());
+        sessionData.setGroupdata(0);
+        intent2Activity(MainChatActivity.class, sessionData);
+        finish();
+    }
+
     public void hechengUploadImage(){
         if (!UserInfoManager.getInstance().isLogin()){
             ToastUtil.show("请先登录");
@@ -308,6 +328,30 @@ public class ContactSelectActivity extends BaseDataActivity {
             ToastUtil.show("请选择群成员");
             return;
         }
+        int selectCount = selectContacts.size();
+        if (selectCount == 1){
+            ContactBean contactBean = selectContacts.get(0);
+            if (contactBean.getAccount().equals(UserInfoManager.getInstance().getAccount())){
+                ToastUtil.show("你只选择了自己");
+                return;
+            }
+            jump2SingleChat(contactBean);
+            return;
+        }else if (selectCount == 2){
+            ContactBean contactBean = null;
+            ContactBean contactBean1 = selectContacts.get(0);
+            ContactBean contactBean2 = selectContacts.get(1);
+            if (contactBean1.getAccount().equals(UserInfoManager.getInstance().getAccount())){
+                contactBean = contactBean2;
+            }
+            if (contactBean2.getAccount().equals(UserInfoManager.getInstance().getAccount())){
+                contactBean = contactBean1;
+            }
+            if (contactBean != null){
+                jump2SingleChat(contactBean);
+                return;
+            }
+        }
         showProgreessDialog();
         List<ContactBean> list;
         if (selectContacts.size() > 9){
@@ -315,33 +359,59 @@ public class ContactSelectActivity extends BaseDataActivity {
         } else {
             list = selectContacts;
         }
+        bitmaps.clear();
+        headerCount = 0;
         for (ContactBean contactBean : list){
-            loadImageSimpleTarget(contactBean.getHeadPortrait(),selectContacts.size());
+            loadImageSimpleTarget(contactBean.getHeadPortrait(),list.size());
         }
     }
 
+    int headerCount = 0;
     List<Bitmap> bitmaps = new ArrayList<>();
 
-    private void loadImageSimpleTarget(String url, final int count) {
-        GlideApp.with(this).asBitmap().load(url).into(new SimpleTarget<Bitmap>(CombineNineRect.imgWidth,CombineNineRect.imgHeight) {
+    private void loadImageSimpleTarget(final String url, final int count) {
+        GlideApp.with(this).asBitmap().load(url).addListener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                Logger.e("onLoadFailed loadImageSimpleTarget url : "+url);
+                headerCount++;
+                Bitmap bitmap = null;
+                try {
+                    bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.icon_default_user);
+                } catch (Exception e2){
+                    e2.printStackTrace();
+                }
+                loadBitmap2Image(bitmap,count);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                Logger.e("onResourceReady loadImageSimpleTarget resource width : "+resource.getWidth() +"  height : "+resource.getHeight() +"  url : "+url);
+                headerCount++;
+                loadBitmap2Image(resource,count);
+                return false;
+            }
+        }).into(new SimpleTarget<Bitmap>(CombineNineRect.imgWidth,CombineNineRect.imgHeight) {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                if (resource != null){
-                    bitmaps.add(resource);
-                }
-                if (bitmaps.size() == count){
-                    Bitmap bitmap = BitmapUtil.getInstance().combimeBitmap(ContactSelectActivity.this, CombineNineRect.imgWidth,CombineNineRect.imgHeight,bitmaps);
-                    try {
-                        File file = FileUtil.getInstance().saveFile(bitmap,System.currentTimeMillis()+".jpg");
-                        uploadGroupImage(file.getAbsolutePath());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        dismissProgressDialog();
-                    }
-                }
             }
         });
     }
 
-
+    private void loadBitmap2Image(Bitmap resource,int count){
+        if (resource != null){
+            bitmaps.add(resource);
+        }
+        if (headerCount == count){
+            Bitmap bitmap = BitmapUtil.getInstance().combimeBitmap(ContactSelectActivity.this, CombineNineRect.imgWidth,CombineNineRect.imgHeight,bitmaps);
+            try {
+                File file = FileUtil.getInstance().saveFile(bitmap,System.currentTimeMillis()+".jpg");
+                uploadGroupImage(file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                dismissProgressDialog();
+            }
+        }
+    }
 }

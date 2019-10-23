@@ -33,7 +33,7 @@ public class HttpTaskUtil {
 
     public static String mToken = "";
 
-    public final static int CONNECT_TIMEOUT = 60;
+    public final static int CONNECT_TIMEOUT = 30;
     public final static int READ_TIMEOUT = 60;
     public final static int WRITE_TIMEOUT = 60;
     public final OkHttpClient client = new OkHttpClient();

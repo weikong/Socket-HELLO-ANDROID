@@ -119,7 +119,7 @@ public class MessageAdapter extends BaseAdapter {
             }
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         } else {
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         }
 //        viewHolder.tv_content.setText(strContent);
         ChatFaceInputUtil.getInstance().setExpressionTextView(mContext,strContent,viewHolder.tv_content);

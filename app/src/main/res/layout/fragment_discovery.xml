@@ -11,22 +11,4 @@
         android:id="@+id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.king.chat.socket.ui.view.actionbar.CommonActionBar>
-
-    <ImageView
-        android:id="@+id/iv_test"
-        android:layout_width="@dimen/margin_100dp"
-        android:layout_height="@dimen/margin_100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_10dp"/>
-
-    <TextView
-        android:id="@+id/tv_hecheng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_20dp"
-        android:background="@color/color_666666"
-        android:textColor="@color/color_ffffff"
-        android:text="合成图片"
-        android:padding="@dimen/margin_10dp"/>
 </LinearLayout>

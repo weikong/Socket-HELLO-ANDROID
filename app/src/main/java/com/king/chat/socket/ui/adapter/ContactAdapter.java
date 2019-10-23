@@ -112,7 +112,7 @@ public class ContactAdapter extends BaseAdapter {
             }
         } else {
             viewHolder.tv_name.setText(bean.getName());
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader2()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
         }
         return convertView;
     }

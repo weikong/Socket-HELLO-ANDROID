@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.king.chat.socket.broadcast.ServiceBroadcastReceiver;
+import com.king.chat.socket.exception.CrashHandler;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -29,6 +30,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        CrashHandler.getInstance().init(this);
         regitserConnReceiver();
         DisplayUtil.displayScreen(this);
         FlowManager.init(new FlowConfig.Builder(this).build());

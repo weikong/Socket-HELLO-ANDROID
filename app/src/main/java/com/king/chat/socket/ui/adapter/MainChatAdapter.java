@@ -208,8 +208,6 @@ public class MainChatAdapter extends BaseAdapter {
             });
         } else {
             strNameTime = strName + "  " + TimeFormatUtils.getSessionFormatDate(bean.getMessagetime());
-            if (TextUtils.isEmpty(strHeader))
-                strHeader = sessionData.getMessagefromavatar();
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader()).load(strHeader).dontAnimate().into(viewHolder.iv_header);
             viewHolder.chatContentLeftView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

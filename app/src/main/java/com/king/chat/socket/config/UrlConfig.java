@@ -14,11 +14,12 @@ public class UrlConfig {
     /**
      * 公司 IP
      */
-    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
+//    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
     /**
      * 华为云
      */
-//    public static String HTTP_ROOT = "https://deepkeep.top/";
+//    public static String HTTP_ROOT = "https://114.116.124.23:9090/";
+    public static String HTTP_ROOT = "https://deepkeep.top/";
 
     public static final String DOWNLOAD_SERVER_URL = "http://pic.melinked.com/";//文件下载地址
     public static final String BASE_URL_V3_5050 = "https://www.melinked.com/";

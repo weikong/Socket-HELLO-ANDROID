@@ -1,4 +1,4 @@
-package com.king.chat.socket.ui.activity;
+package com.king.chat.socket.ui.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.base.BaseTaskBean;
 import com.king.chat.socket.config.UrlConfig;
+import com.king.chat.socket.ui.activity.MainActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.activity.register.RegisterActivity;
 import com.king.chat.socket.util.SharePreferceTool;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
@@ -24,13 +26,12 @@ import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LoginActivity extends BaseDataActivity {
 
     EditText et_name, et_psd;
-    EditText et_name2, et_psd2;
+    TextView tv_register;
     TextView tv_login;
 
     @Override
@@ -39,9 +40,8 @@ public class LoginActivity extends BaseDataActivity {
         setContentView(R.layout.activity_login);
         et_name = (EditText) findViewById(R.id.et_name);
         et_psd = (EditText) findViewById(R.id.et_psd);
-        et_name2 = (EditText) findViewById(R.id.et_name2);
-        et_psd2 = (EditText) findViewById(R.id.et_psd2);
         tv_login = (TextView) findViewById(R.id.tv_login);
+        tv_register = (TextView) findViewById(R.id.tv_register);
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +52,17 @@ public class LoginActivity extends BaseDataActivity {
                 }
             }
         });
+        tv_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent2Activity(RegisterActivity.class);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String strUserName = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_NAME);
         et_name.setText(strUserName);
         et_name.setSelection(strUserName.length());

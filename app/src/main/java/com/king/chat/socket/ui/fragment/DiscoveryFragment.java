@@ -49,10 +49,6 @@ public class DiscoveryFragment extends BaseFragment{
 
     @BindView(R.id.action_bar)
     CommonActionBar actionBar;
-    @BindView(R.id.iv_test)
-    ImageView iv_test;
-    @BindView(R.id.tv_hecheng)
-    TextView tv_hecheng;
 
     private Handler handler = new Handler();
 
@@ -112,44 +108,5 @@ public class DiscoveryFragment extends BaseFragment{
     }
 
     private void initView(View view) {
-        tv_hecheng.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                BitmapCount++;
-//                if (BitmapCount > 9)
-//                    BitmapCount = 3;
-//                bitmaps.clear();
-//                List<ContactBean> contactBeanList = ContactManager.getInstance().getContactList();
-//                if (contactBeanList.size() > BitmapCount){
-//                    showProgreessDialog();
-//                    for (int i=contactBeanList.size() - 1;i>contactBeanList.size()-BitmapCount-1;i--){
-//                        ContactBean contactBean = contactBeanList.get(i);
-////                        GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionDefaultFriend()).load(contactBean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
-//                        loadImageSimpleTarget(contactBean.getHeadPortrait());
-//                    }
-//                }
-
-                ExpressionHelper.getInstance().loadSmilyFile(getActivity(),ExpressionHelper.getInstance().buildFaceFileNameList().getExpList().get(2).getFileName(),iv_test);
-            }
-        });
-    }
-
-    int BitmapCount = 2;
-    List<Bitmap> bitmaps = new ArrayList<>();
-
-    private void loadImageSimpleTarget(String url) {
-        GlideApp.with(getActivity()).asBitmap().load(url).into(new SimpleTarget<Bitmap>(CombineNineRect.imgWidth,CombineNineRect.imgHeight) {
-            @Override
-            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                if (resource != null){
-                    bitmaps.add(resource);
-                }
-                if (bitmaps.size() == BitmapCount){
-                    Bitmap bitmap = BitmapUtil.getInstance().combimeBitmap(getActivity(), CombineNineRect.imgWidth,CombineNineRect.imgHeight,bitmaps);
-                    iv_test.setImageBitmap(bitmap);
-                    dismissProgressDialog();
-                }
-            }
-        });
     }
 }
