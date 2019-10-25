@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,13 @@ public class ChatContentRightView extends RelativeLayout {
                 iv_content.setVisibility(View.VISIBLE);
                 iv_viedo_play.setVisibility(View.GONE);
                 iv_voice_play.setVisibility(View.GONE);
-                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+//                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).asGif().load(bean.getMessagecontent()).into(iv_content);
+                String url = bean.getMessagecontent();
+                if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif"))
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).into(iv_content);
+                else {
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(url).into(iv_content);
+                }
                 iv_content.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

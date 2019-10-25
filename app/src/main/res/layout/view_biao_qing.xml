@@ -72,21 +72,6 @@
             android:background="@color/color_line"
             android:paddingLeft="@dimen/margin_8dp"
             android:paddingRight="@dimen/margin_8dp"/>
-
-        <View
-            android:layout_width="@dimen/margin_1dp"
-            android:layout_height="@dimen/margin_12dp"
-            android:background="@color/color_f4f4f4"/>
-
-        <TextView
-            android:id="@+id/tv_more_gif"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="动图"
-            android:gravity="center"
-            android:paddingLeft="@dimen/margin_8dp"
-            android:paddingRight="@dimen/margin_8dp"/>
-
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
@@ -97,6 +82,20 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="收藏"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_8dp"
+            android:paddingRight="@dimen/margin_8dp"/>
+
+        <View
+            android:layout_width="@dimen/margin_1dp"
+            android:layout_height="@dimen/margin_12dp"
+            android:background="@color/color_f4f4f4"/>
+
+        <TextView
+            android:id="@+id/tv_more_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="rabbit"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
             android:paddingRight="@dimen/margin_8dp"/>

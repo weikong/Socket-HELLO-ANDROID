@@ -3,6 +3,7 @@ package com.king.chat.socket.ui.fragment.media;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,12 @@ public class ShowImageFragment extends BaseFragment {
 
     private void initView() {
         if (chatRecordData != null){
-            GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(chatRecordData.getMessagecontent()).dontAnimate().into(iv_image);
+            String url = chatRecordData.getMessagecontent();
+            if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif"))
+                GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(chatRecordData.getMessagecontent()).into(iv_image);
+            else {
+                GlideApp.with(getActivity()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(chatRecordData.getMessagecontent()).into(iv_image);
+            }
         }
     }
 }

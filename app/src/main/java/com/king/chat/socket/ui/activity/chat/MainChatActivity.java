@@ -270,6 +270,11 @@ public class MainChatActivity extends BaseDataActivity {
                     }
                 });
             }
+
+            @Override
+            public void clickGif(String url) {
+                SocketUtil.getInstance().sendContent(url, MessageChatType.TYPE_IMG, sessionData,sessionData.getGroupdata());
+            }
         });
         initPopupWindow();
         SocketUtil.getInstance().setmHandler(mHandler);

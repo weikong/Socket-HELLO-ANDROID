@@ -24,8 +24,11 @@ import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
 import com.king.chat.socket.util.AnimUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
+import com.king.chat.socket.util.SDCardUtil;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -68,6 +71,8 @@ public class BiaoQingView extends RelativeLayout {
 
     int dotNomalWidth = 6;
     int dotSelectWidth = 12;
+
+    String gifPath = "";
 
     public BiaoQingView(Context context) {
         super(context);
@@ -114,6 +119,10 @@ public class BiaoQingView extends RelativeLayout {
                 tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
                 tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                 tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                if (gifAdapter.getItemCount() == 0 && gifUrls != null){
+                    gifAdapter.setDatas(Arrays.asList(gifUrls));
+                    gifAdapter.notifyDataSetChanged();
+                }
             }
         });
         tv_shoucang.setOnClickListener(new OnClickListener() {
@@ -129,6 +138,9 @@ public class BiaoQingView extends RelativeLayout {
         });
     }
 
+    File[] gifFiles;
+    String[] gifUrls = {"https://deepkeep.top/gif/cat/01.gif","https://deepkeep.top/gif/cat/02.gif","https://deepkeep.top/gif/cat/03.gif","https://deepkeep.top/gif/cat/04.gif"};
+
     private void initGifRecyclerView(){
         //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
         LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
@@ -139,6 +151,19 @@ public class BiaoQingView extends RelativeLayout {
         //设置Adapter
         gifAdapter = new RecyclerGifAdapter(getContext());
         recyclerview.setAdapter(gifAdapter);
+        gifAdapter.setCallBack(new RecyclerGifAdapter.CallBack() {
+            @Override
+            public void clickGif(String url) {
+                if (callBack != null){
+                    callBack.clickGif(url);
+                }
+            }
+        });
+//        gifPath = SDCardUtil.getGifDir()+ File.separator+"rabbit";
+//        File gifDir = new File(gifPath);
+//        if (gifDir.exists()){
+//            gifFiles = gifDir.listFiles();
+//        }
     }
 
     private void loadSmileyData(){
@@ -251,5 +276,6 @@ public class BiaoQingView extends RelativeLayout {
     public interface CallBack{
         public void delSmiley();
         public void clickSmiley(Expression expression);
+        public void clickGif(String url);
     }
 }

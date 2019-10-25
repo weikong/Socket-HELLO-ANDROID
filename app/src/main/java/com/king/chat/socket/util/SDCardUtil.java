@@ -19,10 +19,6 @@ public class SDCardUtil {
     public static final String localAppVoiceDir = "VOICE";
     public static final String localAppVideoDir = "VIDEO";
 
-    private SDCardUtil() {
-        throw new UnsupportedOperationException("cannot be instantiated");
-    }
-
     /**
      * 判断SDCard是否可用
      */

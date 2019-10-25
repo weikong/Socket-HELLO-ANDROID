@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
+import com.king.chat.socket.ui.view.chat.BiaoQingView;
 import com.king.chat.socket.util.GlideOptions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,8 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
 
     private List<String> datas = new ArrayList<>();
 
-    private int[] srcs = {R.drawable.gif_gouzi,R.drawable.gif_maomi};
+//    private int[] srcs = {R.drawable.gif_gouzi,R.drawable.gif_maomi};
+
 
     public RecyclerGifAdapter(Context context) {
         this.context = context;
@@ -47,13 +51,22 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
     }
 
     @Override
-    public void onBindViewHolder(RecyclerGifAdapter.ViewHolder holder, int position) {
-        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(srcs[position]).into(holder.itemImage);
+    public void onBindViewHolder(RecyclerGifAdapter.ViewHolder holder, final int position) {
+//        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(srcs[position]).into(holder.itemImage);
+        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(datas.get(position)).into(holder.itemImage);
+        holder.itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callBack != null){
+                    callBack.clickGif(datas.get(position));
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return srcs.length;
+        return datas.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,5 +76,15 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
             super(view);
             itemImage = (ImageView) view.findViewById(R.id.iv_gif);
         }
+    }
+
+    public CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack{
+        public void clickGif(String url);
     }
 }
