@@ -21,18 +21,7 @@
             android:visibility="invisible"
             android:src="@drawable/h20004"/>
 
-        <ImageView
-            android:id="@+id/iv_mine_bg"
-            android:layout_width="@dimen/margin_70dp"
-            android:layout_height="@dimen/margin_70dp"
-            android:layout_marginTop="148dp"
-            android:layout_marginLeft="8dp"
-            android:alpha="0.8"
-            android:visibility="gone"
-            android:tint="@color/color_biaozhu"
-            android:src="@drawable/icon_cat"/>
-
-        <ImageView
+        <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
             android:id="@+id/iv_mine"
             android:layout_width="@dimen/margin_70dp"
             android:layout_height="@dimen/margin_70dp"

@@ -1,11 +1,13 @@
 package com.king.chat.socket.ui.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.king.chat.socket.R;
@@ -13,6 +15,9 @@ import com.king.chat.socket.ui.adapter.MineAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.ui.view.mine.MineHeaderActionBar;
+import com.king.chat.socket.util.DisplayUtil;
+import com.king.chat.socket.util.Logger;
+import com.king.chat.socket.util.UserInfoManager;
 
 import java.util.Arrays;
 
@@ -40,6 +45,7 @@ public class MineFragment extends BaseFragment {
 
     MineAdapter adapter;
     MineHeaderActionBar mineHeaderActionBar;
+    int headerImageHeight = 300;
 
     private Handler handler = new Handler();
 
@@ -89,14 +95,17 @@ public class MineFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         ButterKnife.bind(this, view);
+        headerImageHeight = DisplayUtil.dp2px(300) - DisplayUtil.dp2px(40) - DisplayUtil.getStatusBarHeight(getActivity());
         initActionBar();
         initView(view);
         return view;
     }
 
     private void initActionBar() {
+        actionBar.setBackgroundAlpha(true);
         actionBar.setFillStatusBar(true);
-        actionBar.setTitle("我");
+        actionBar.setTitle(UserInfoManager.getInstance().getContactBean().getName());
+        actionBar.setTitleAlpha(0);
     }
 
     private void initView(View view) {
@@ -107,5 +116,29 @@ public class MineFragment extends BaseFragment {
         String[] array = getResources().getStringArray(R.array.array_grid_more);
         adapter.setList(Arrays.asList(array));
         adapter.addList(Arrays.asList(array));
+        adapter.addList(Arrays.asList(array));
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                Logger.e(TAG,"onScrollStateChanged scrollState = "+scrollState);
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                View topView  = listview.getChildAt(0);
+                if (topView != null){
+                    float alpha = 1.0f;
+                    if (firstVisibleItem == 0){
+                        int top = listview.getChildAt(0).getTop();
+                        alpha = Math.abs(top * 1.0f/headerImageHeight);
+                        actionBar.setBackgroundAlpha(alpha);
+                    } else {
+                        actionBar.setBackgroundAlpha(alpha);
+                    }
+                    actionBar.setTitleAlpha(alpha);
+                }
+            }
+        });
     }
 }

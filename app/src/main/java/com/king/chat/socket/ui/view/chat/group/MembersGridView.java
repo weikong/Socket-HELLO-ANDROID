@@ -63,8 +63,8 @@ public class MembersGridView extends RelativeLayout {
             return;
         List<ContactBean> members = groupInfo.getMembers();
         List<ContactBean> membersShow = null;
-        if (members.size() >= 10){
-            membersShow = members.subList(0,9);
+        if (members.size() >= 20){
+            membersShow = members.subList(0,19);
             tv_more_members.setVisibility(View.VISIBLE);
         } else {
             membersShow = members;

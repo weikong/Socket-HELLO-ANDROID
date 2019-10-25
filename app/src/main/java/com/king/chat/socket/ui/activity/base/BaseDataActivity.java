@@ -108,6 +108,16 @@ public class BaseDataActivity extends FragmentActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // TODO Auto-generated method stub
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean allGranted = true;
+        for (int result : grantResults){
+            if (result != PackageManager.PERMISSION_GRANTED){
+                allGranted = false;
+            }
+        }
+        resultPermissions(allGranted);
+    }
+
+    public void resultPermissions(boolean result){
 
     }
 

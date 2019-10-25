@@ -40,11 +40,16 @@ dependencies {
     /**
      *  DBFlow
      * */
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
-    // sql-cipher database encyrption (optional)
-    implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+//    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+//    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+//    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+//    // sql-cipher database encyrption (optional)
+//    implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+
+    compile "com.github.joyrun.DBFlow:dbflow-core:4.2.5"
+    compile "com.github.joyrun.DBFlow:dbflow:4.2.5"
+    annotationProcessor "com.github.joyrun.DBFlow:dbflow-processor:4.2.5"
+
     /**
      *  okhttp
      * */

@@ -103,7 +103,7 @@ public class ContactSelectActivity extends BaseDataActivity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
         LinearLayoutManager layoutmanager = new LinearLayoutManager(this);
         //设置RecyclerView 布局

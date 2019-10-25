@@ -33,7 +33,7 @@ public class App extends Application {
         CrashHandler.getInstance().init(this);
         regitserConnReceiver();
         DisplayUtil.displayScreen(this);
-        FlowManager.init(new FlowConfig.Builder(this).build());
+//        FlowManager.init(new FlowConfig.Builder(this).build());
         new Thread(new Runnable() {
             @Override
             public void run() {

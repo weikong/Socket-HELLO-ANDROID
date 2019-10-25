@@ -750,6 +750,17 @@ public class MainChatActivity extends BaseDataActivity {
             }
 
             @Override
+            public void actionCollect(ChatRecordData bean) {
+                try {
+                    ToastUtil.show("Collect");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    hidePopupWindow(customPopupWindow);
+                }
+            }
+
+            @Override
             public void actionDel(ChatRecordData bean) {
                 try {
                     boolean isDel = DBChatRecordImpl.getInstance().deleteChatRecord(bean);

@@ -69,6 +69,13 @@ public class GlideOptions {
         return requestOptions;
     }
 
+    public static RequestOptions optionDefaultMineHeader() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.icon_cat);
+        requestOptions.centerCrop();
+        return requestOptions;
+    }
+
     public static RequestOptions optionDefaultHeader4() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.icon_default_user);

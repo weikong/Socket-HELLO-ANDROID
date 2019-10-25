@@ -3,6 +3,9 @@ package com.king.chat.socket.ui.view.chat;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +19,8 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.ExpressionList;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
+import com.king.chat.socket.ui.adapter.RecyclerContactSelctAdapter;
+import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
 import com.king.chat.socket.util.AnimUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
@@ -32,8 +37,13 @@ import butterknife.ButterKnife;
 
 public class BiaoQingView extends RelativeLayout {
 
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
     @BindView(R.id.viewpager)
     ViewPager viewPager;
+
+    @BindView(R.id.layout_dot)
+    LinearLayout layout_dot;
 
     @BindView(R.id.iv_dot1)
     ImageView iv_dot1;
@@ -53,6 +63,8 @@ public class BiaoQingView extends RelativeLayout {
 
     BasePagerAdapter adapter;
     List<View> viewList = new ArrayList<>();
+
+    RecyclerGifAdapter gifAdapter;
 
     int dotNomalWidth = 6;
     int dotSelectWidth = 12;
@@ -77,6 +89,7 @@ public class BiaoQingView extends RelativeLayout {
         ButterKnife.bind(this,view);
         dotNomalWidth = DisplayUtil.dp2px(6);
         dotSelectWidth = DisplayUtil.dp2px(12);
+        initGifRecyclerView();
         adapter = new BasePagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pageChangeListener);
@@ -84,6 +97,9 @@ public class BiaoQingView extends RelativeLayout {
         tv_biaoqing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewPager.setVisibility(View.VISIBLE);
+                layout_dot.setVisibility(View.VISIBLE);
+                recyclerview.setVisibility(View.INVISIBLE);
                 tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
                 tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                 tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
@@ -92,6 +108,9 @@ public class BiaoQingView extends RelativeLayout {
         tv_gif.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewPager.setVisibility(View.INVISIBLE);
+                layout_dot.setVisibility(View.INVISIBLE);
+                recyclerview.setVisibility(View.VISIBLE);
                 tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
                 tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                 tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
@@ -100,11 +119,26 @@ public class BiaoQingView extends RelativeLayout {
         tv_shoucang.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewPager.setVisibility(View.INVISIBLE);
+                layout_dot.setVisibility(View.INVISIBLE);
+                recyclerview.setVisibility(View.INVISIBLE);
                 tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
                 tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                 tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
             }
         });
+    }
+
+    private void initGifRecyclerView(){
+        //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
+        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
+        //设置RecyclerView 布局
+        recyclerview.setLayoutManager(layoutmanager);
+        //设置为水平布局，这也是默认的
+        layoutmanager.setOrientation(OrientationHelper.HORIZONTAL);
+        //设置Adapter
+        gifAdapter = new RecyclerGifAdapter(getContext());
+        recyclerview.setAdapter(gifAdapter);
     }
 
     private void loadSmileyData(){

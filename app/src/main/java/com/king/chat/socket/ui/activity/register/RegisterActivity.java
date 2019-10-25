@@ -16,6 +16,7 @@ import com.king.chat.socket.config.Config;
 import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.activity.MainActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
+import com.king.chat.socket.util.DBFlowUtil;
 import com.king.chat.socket.util.SharePreferceTool;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
@@ -51,6 +52,13 @@ public class RegisterActivity extends BaseDataActivity {
         });
     }
 
+    @Override
+    public void resultPermissions(boolean result) {
+        if (result){
+            registerTask();
+        }
+    }
+
     private Map<String, String> buildRegister() {
         Map<String, String> params = new HashMap<>();
         String name = et_name.getText().toString();
@@ -84,6 +92,7 @@ public class RegisterActivity extends BaseDataActivity {
                         SharePreferceTool.getInstance().setCache(Config.LOGIN_USER_PSD, params.get("password"));
                         ContactBean contactBean = JSONObject.parseObject(baseTaskBean.getData(), ContactBean.class);
                         UserInfoManager.getInstance().setContactBean(contactBean);
+                        DBFlowUtil.getInstance().initDBFlow();
                         SocketUtil.getInstance().connect();
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(intent);

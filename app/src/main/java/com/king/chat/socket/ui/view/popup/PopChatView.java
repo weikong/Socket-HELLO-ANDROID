@@ -40,6 +40,8 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
     TextView tv_forword;
     @BindView(R.id.tv_save)
     TextView tv_save;
+    @BindView(R.id.tv_collect)
+    TextView tv_collect;
     @BindView(R.id.tv_del)
     TextView tv_del;
 
@@ -77,7 +79,7 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
         this.bean = bean;
         if (bean == null)
             return;
-        if (Config.userId.equalsIgnoreCase(bean.getMessagefromid())){
+        if (Config.userId.equalsIgnoreCase(bean.getSourcesenderid())){
             //自己发送的消息
             layout_root.setGravity(Gravity.RIGHT);
             layout_pop.setBackgroundResource(R.drawable.bg_chat_edit_pop_right);
@@ -95,18 +97,22 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
             case MessageChatType.TYPE_TEXT:
                 tv_copy.setVisibility(View.VISIBLE);
                 tv_save.setVisibility(View.GONE);
+                tv_collect.setVisibility(View.GONE);
                 break;
             case MessageChatType.TYPE_IMG:
                 tv_copy.setVisibility(View.GONE);
                 tv_save.setVisibility(View.VISIBLE);
+                tv_collect.setVisibility(View.VISIBLE);
                 break;
             case MessageChatType.TYPE_VIDEO:
                 tv_copy.setVisibility(View.GONE);
                 tv_save.setVisibility(View.VISIBLE);
+                tv_collect.setVisibility(View.VISIBLE);
                 break;
             case MessageChatType.TYPE_VOICE:
                 tv_copy.setVisibility(View.GONE);
                 tv_save.setVisibility(View.GONE);
+                tv_collect.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -123,7 +129,10 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
                 callBack.actionForword(bean);
                 break;
             case R.id.tv_save:
-                callBack.actionForword(bean);
+                callBack.actionSave(bean);
+                break;
+            case R.id.tv_collect:
+                callBack.actionCollect(bean);
                 break;
             case R.id.tv_del:
                 callBack.actionDel(bean);
@@ -141,6 +150,7 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
         void actionCopy(ChatRecordData bean);
         void actionForword(ChatRecordData bean);
         void actionSave(ChatRecordData bean);
+        void actionCollect(ChatRecordData bean);
         void actionDel(ChatRecordData bean);
     }
 }

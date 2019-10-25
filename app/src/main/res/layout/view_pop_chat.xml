@@ -15,36 +15,45 @@
         android:background="@drawable/bg_chat_edit">
         <TextView
             android:id="@+id/tv_copy"
-            android:layout_width="@dimen/margin_40dp"
+            android:layout_width="@dimen/margin_45dp"
             android:gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@color/color_ffffff"
             android:padding="@dimen/margin_4dp"
             android:textSize="@dimen/text_size_13sp"
             android:text="复制"/>
         <TextView
             android:id="@+id/tv_forword"
-            android:layout_width="@dimen/margin_40dp"
+            android:layout_width="@dimen/margin_45dp"
             android:gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@color/color_ffffff"
             android:padding="@dimen/margin_4dp"
             android:textSize="@dimen/text_size_13sp"
             android:text="转发"/>
         <TextView
             android:id="@+id/tv_save"
-            android:layout_width="@dimen/margin_40dp"
+            android:layout_width="@dimen/margin_45dp"
             android:gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@color/color_ffffff"
             android:padding="@dimen/margin_4dp"
             android:textSize="@dimen/text_size_13sp"
             android:text="保存"/>
         <TextView
-            android:id="@+id/tv_del"
-            android:layout_width="@dimen/margin_40dp"
+            android:id="@+id/tv_collect"
+            android:layout_width="@dimen/margin_45dp"
             android:gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/color_ffffff"
+            android:padding="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_13sp"
+            android:text="收藏"/>
+        <TextView
+            android:id="@+id/tv_del"
+            android:layout_width="@dimen/margin_45dp"
+            android:gravity="center"
+            android:layout_height="match_parent"
             android:textColor="@color/color_ffffff"
             android:padding="@dimen/margin_4dp"
             android:textSize="@dimen/text_size_13sp"

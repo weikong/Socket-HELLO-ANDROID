@@ -1,6 +1,7 @@
 package com.king.chat.socket.ui.DBFlow;
 
 import com.king.chat.socket.ui.DBFlow.user.UserData;
+import com.king.chat.socket.util.UserInfoManager;
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.SQLiteType;

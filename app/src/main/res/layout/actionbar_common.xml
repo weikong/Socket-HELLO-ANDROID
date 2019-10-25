@@ -40,7 +40,7 @@
             android:layout_centerInParent="true"
             android:textColor="@color/color_ffffff"
             android:visibility="visible"
-            android:text=""
+            android:text="asdf"
             android:textSize="@dimen/text_size_18sp" />
 
         <ImageView

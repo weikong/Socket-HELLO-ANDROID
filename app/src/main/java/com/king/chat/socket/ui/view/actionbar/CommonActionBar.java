@@ -2,6 +2,7 @@ package com.king.chat.socket.ui.view.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -17,7 +18,10 @@ import android.widget.TextView;
 import com.king.chat.socket.R;
 import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.DisplayUtil;
+import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.socket.SocketUtil;
+
+import java.math.BigInteger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,6 +111,27 @@ public class CommonActionBar extends LinearLayout {
             root.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
     }
 
+    public void setBackgroundAlpha(float alpha){
+        if (alpha < 0)
+            alpha = 0;
+        else if (alpha > 1)
+            alpha = 1;
+        int alpha255 = (int) (255 * alpha);
+        String a1 = Integer.toHexString(alpha255 / 16);
+        String a2 = Integer.toHexString(alpha255 % 16);
+        String strColor = "#"+a1+a2+"4db4ff";
+        Logger.e("strColor = "+strColor);
+        root.setBackgroundColor(Color.parseColor(strColor));
+    }
+
+    public String str2HexStr(String str) {
+        byte[] bytes = str.getBytes();
+        // 如果不是宽类型的可以用Integer
+        BigInteger bigInteger = new BigInteger(1, bytes);
+        return bigInteger.toString(16);
+    }
+
+
     public void setTitle(String title) {
         if (tv_title != null) {
             tv_title.setText(title);
@@ -116,6 +141,12 @@ public class CommonActionBar extends LinearLayout {
     public void setTitleVisiable(int visiable) {
         if (tv_title != null) {
             tv_title.setVisibility(visiable);
+        }
+    }
+
+    public void setTitleAlpha(float alpha) {
+        if (tv_title != null) {
+            tv_title.setAlpha(alpha);
         }
     }
 

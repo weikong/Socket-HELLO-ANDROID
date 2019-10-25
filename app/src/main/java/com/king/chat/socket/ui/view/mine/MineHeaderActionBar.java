@@ -14,8 +14,11 @@ import android.widget.TextView;
 
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
+import com.king.chat.socket.bean.ContactBean;
+import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
+import com.king.chat.socket.util.UserInfoManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +35,7 @@ public class MineHeaderActionBar extends LinearLayout {
     View viewStatus;
 
     @BindView(R.id.iv_mine)
-    ImageView iv_mine;
+    RoundAngleImageView iv_mine;
     @BindView(R.id.tv_name)
     TextView tv_name;
     @BindView(R.id.tv_account)
@@ -73,6 +76,7 @@ public class MineHeaderActionBar extends LinearLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.actionbar_mine_header,this);
         ButterKnife.bind(this,view);
         setStatusHeight(statusHeight);
+        setData();
     }
 
     private void setStatusHeight(int height) {
@@ -97,5 +101,11 @@ public class MineHeaderActionBar extends LinearLayout {
     }
 
     public void setData(){
+        ContactBean contactBean = UserInfoManager.getInstance().getContactBean();
+        if (contactBean == null)
+            return;
+        tv_name.setText(contactBean.getName());
+        tv_account.setText(contactBean.getAccount());
+        GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(contactBean.getHeadPortrait()).dontAnimate().into(iv_mine);
     }
 }

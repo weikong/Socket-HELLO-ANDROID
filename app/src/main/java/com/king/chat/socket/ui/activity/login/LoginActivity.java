@@ -17,6 +17,7 @@ import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.R;
 import com.king.chat.socket.ui.activity.register.RegisterActivity;
+import com.king.chat.socket.util.DBFlowUtil;
 import com.king.chat.socket.util.SharePreferceTool;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
@@ -61,14 +62,25 @@ public class LoginActivity extends BaseDataActivity {
     }
 
     @Override
+    public void resultPermissions(boolean result) {
+        if (result){
+            loginTask();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         String strUserName = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_NAME);
-        et_name.setText(strUserName);
-        et_name.setSelection(strUserName.length());
+        if (!TextUtils.isEmpty(strUserName)){
+            et_name.setText(strUserName);
+            et_name.setSelection(strUserName.length());
+        }
         String strPsd = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_PSD);
-        et_psd.setText(strPsd);
-        et_psd.setSelection(strPsd.length());
+        if (!TextUtils.isEmpty(strPsd)){
+            et_psd.setText(strPsd);
+            et_psd.setSelection(strPsd.length());
+        }
     }
 
     private Map<String, String> buildLogin() {
@@ -104,6 +116,7 @@ public class LoginActivity extends BaseDataActivity {
                         SharePreferceTool.getInstance().setCache(Config.LOGIN_USER_PSD, params.get("password"));
                         ContactBean contactBean = JSONObject.parseObject(baseTaskBean.getData(), ContactBean.class);
                         UserInfoManager.getInstance().setContactBean(contactBean);
+                        DBFlowUtil.getInstance().initDBFlow();
                         SocketUtil.getInstance().connect();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
