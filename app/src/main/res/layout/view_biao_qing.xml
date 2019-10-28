@@ -63,6 +63,21 @@
         android:gravity="center_vertical"
         android:background="@color/color_ffffff"
         android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tv_more_add"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/icon_add"
+            android:gravity="center"
+            android:drawableTint="@color/color_999999"
+            android:paddingLeft="@dimen/margin_12dp"
+            android:paddingRight="@dimen/margin_12dp"/>
+        <View
+            android:layout_width="@dimen/margin_1dp"
+            android:layout_height="@dimen/margin_12dp"
+            android:background="@color/color_f4f4f4"/>
+
         <TextView
             android:id="@+id/tv_more_biaoqing"
             android:layout_width="wrap_content"

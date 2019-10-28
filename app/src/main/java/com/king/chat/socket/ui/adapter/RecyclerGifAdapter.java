@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
@@ -13,6 +14,7 @@ import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.chat.BiaoQingView;
+import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 
 import java.io.File;
@@ -28,6 +30,7 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
     private Context context;
 
     private List<String> datas = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 
 //    private int[] srcs = {R.drawable.gif_gouzi,R.drawable.gif_maomi};
 
@@ -43,6 +46,13 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
         this.datas.addAll(list);
     }
 
+    public void setFileDatas(List<File> list) {
+        this.files.clear();
+        if (list == null)
+            return;
+        this.files.addAll(list);
+    }
+
     @Override
     public RecyclerGifAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_gif, parent, false);
@@ -53,7 +63,7 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
     @Override
     public void onBindViewHolder(RecyclerGifAdapter.ViewHolder holder, final int position) {
 //        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(srcs[position]).into(holder.itemImage);
-        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(datas.get(position)).into(holder.itemImage);
+        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(files.get(position)).into(holder.itemImage);
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +76,7 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return files.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,6 +85,10 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
         public ViewHolder(View view) {
             super(view);
             itemImage = (ImageView) view.findViewById(R.id.iv_gif);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemImage.getLayoutParams();
+            params.height = (DisplayUtil.screenWidth - 6 * DisplayUtil.dp2px(4)) / 5;
+            params.width = params.height;
+            itemImage.setLayoutParams(params);
         }
     }
 

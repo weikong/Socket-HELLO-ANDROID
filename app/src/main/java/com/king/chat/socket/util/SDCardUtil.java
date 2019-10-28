@@ -19,6 +19,8 @@ public class SDCardUtil {
     public static final String localAppVoiceDir = "VOICE";
     public static final String localAppVideoDir = "VIDEO";
 
+    public static final String localPrivateResDir = "res";
+
     /**
      * 判断SDCard是否可用
      */
@@ -130,9 +132,15 @@ public class SDCardUtil {
         return buildPrivateDataDir(context, pathName);
     }
 
+    // 构建私有资源路径
+    public static String buildResDir(Context context) {
+        // Logger.i("--->UN 不存在SD卡,将返回data路径!");
+        return buildPrivateDataDir(context, localPrivateResDir);
+    }
+
     // 构建私有路径
     public static String buildPrivateDataDir(Context context, String pathName) {
-        // Logger.i("--->UN 不存在SD卡,将返回data路径!");
+         Logger.i("--->UN 不存在SD卡,将返回data路径!");
         return context.getDir(pathName, Context.MODE_PRIVATE).toString() + File.separator;
     }
 
@@ -140,4 +148,27 @@ public class SDCardUtil {
         return Environment.getDataDirectory().toString();
     }
 
+    public static String buildDataRootGifDir() {
+        File dir = new File(Environment.getDataDirectory().toString()+ File.separator + localAppDir + File.separator + localAppGifDir);
+        if (!dir.exists())
+            dir.mkdirs();
+        return dir != null ? dir.getAbsolutePath() : buildDataDir();
+    }
+
+    //路径例如： /SD卡/Android/data/程序的包名/cache/uniqueName
+    public static String getDiskCacheDir(Context context, String uniqueName) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment
+                .getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        File dir = new File(cachePath+File.separator+localAppDir+File.separator+uniqueName);
+        if (!dir.exists())
+            dir.mkdirs();
+        return dir != null ? dir.getAbsolutePath() : buildDataDir();
+//        return new File(cachePath + File.separator + uniqueName);
+    }
 }

@@ -1,12 +1,19 @@
 package com.king.chat.socket.ui.view.chat;
 
 import android.animation.AnimatorSet;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Rect;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,12 +28,18 @@ import com.king.chat.socket.bean.ExpressionList;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerContactSelctAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
+import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
 import com.king.chat.socket.util.AnimUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
+import com.king.chat.socket.util.FileUtil;
+import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.SDCardUtil;
+import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
+import com.squareup.okhttp.Request;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +70,8 @@ public class BiaoQingView extends RelativeLayout {
     @BindView(R.id.iv_dot4)
     ImageView iv_dot4;
 
+    @BindView(R.id.tv_more_add)
+    TextView tv_more_add;
     @BindView(R.id.tv_more_biaoqing)
     TextView tv_biaoqing;
     @BindView(R.id.tv_more_gif)
@@ -99,6 +114,40 @@ public class BiaoQingView extends RelativeLayout {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pageChangeListener);
         loadSmileyData();
+        tv_more_add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgreessDialog();
+                String gifZipUrlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
+                final String destDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+                OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Logger.e("biaoqing","onResponse biaoqing = "+response);
+                        if (!TextUtils.isEmpty(response)){
+                            try {
+                                File file = new File(response);
+                                if (file.exists()){
+                                    boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
+                                    if (isUnZip){
+                                        file.delete();
+                                    }
+                                }
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+            }
+        });
         tv_biaoqing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,10 +168,23 @@ public class BiaoQingView extends RelativeLayout {
                 tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
                 tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                 tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                if (gifAdapter.getItemCount() == 0 && gifUrls != null){
-                    gifAdapter.setDatas(Arrays.asList(gifUrls));
-                    gifAdapter.notifyDataSetChanged();
-                }
+//                if (gifAdapter.getItemCount() == 0){
+                    String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+                    File GifDirFile = new File(GIFDir);
+                    if (GifDirFile.exists()){
+                        File[] childFiles = GifDirFile.listFiles();
+                        if (childFiles.length > 0){
+                            File child = childFiles[tabIndex];
+                            File[] gifFiles = child.listFiles();
+                            gifAdapter.setFileDatas(Arrays.asList(gifFiles));
+                            gifAdapter.notifyDataSetChanged();
+                            tabIndex++;
+                            if (tabIndex >= childFiles.length){
+                                tabIndex = 0;
+                            }
+                        }
+                    }
+//                }
             }
         });
         tv_shoucang.setOnClickListener(new OnClickListener() {
@@ -138,16 +200,18 @@ public class BiaoQingView extends RelativeLayout {
         });
     }
 
-    File[] gifFiles;
-    String[] gifUrls = {"https://deepkeep.top/gif/cat/01.gif","https://deepkeep.top/gif/cat/02.gif","https://deepkeep.top/gif/cat/03.gif","https://deepkeep.top/gif/cat/04.gif"};
+    int tabIndex = 0;
 
     private void initGifRecyclerView(){
         //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
-        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
+//        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
+//        //设置为水平布局，这也是默认的
+//        layoutmanager.setOrientation(OrientationHelper.HORIZONTAL);
+
+        GridLayoutManager layoutmanager = new GridLayoutManager(getContext(),5,RecyclerView.VERTICAL,false);
         //设置RecyclerView 布局
         recyclerview.setLayoutManager(layoutmanager);
-        //设置为水平布局，这也是默认的
-        layoutmanager.setOrientation(OrientationHelper.HORIZONTAL);
+        recyclerview.addItemDecoration(new EvenItemDecoration());
         //设置Adapter
         gifAdapter = new RecyclerGifAdapter(getContext());
         recyclerview.setAdapter(gifAdapter);
@@ -164,6 +228,27 @@ public class BiaoQingView extends RelativeLayout {
 //        if (gifDir.exists()){
 //            gifFiles = gifDir.listFiles();
 //        }
+    }
+
+    class EvenItemDecoration extends RecyclerView.ItemDecoration {
+        int space = DisplayUtil.dp2px(4);
+        int column = 5;
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            int position = parent.getChildAdapterPosition(view);
+            // 每个span分配的间隔大小
+            int spanSpace = space * (column + 1) / column;
+            // 列索引
+            int colIndex = position % column;
+            // 列左、右间隙
+            outRect.left = space * (colIndex + 1) - spanSpace * colIndex;
+            outRect.right = spanSpace * (colIndex + 1) - space * (colIndex + 1);
+            // 行间距
+            if (position >= column) {
+                outRect.top = space;
+            }
+        }
     }
 
     private void loadSmileyData(){
@@ -277,5 +362,47 @@ public class BiaoQingView extends RelativeLayout {
         public void delSmiley();
         public void clickSmiley(Expression expression);
         public void clickGif(String url);
+    }
+
+    private ProgressDialogMyBg pDialog;
+
+    /**
+     * 显示等待对话框 当点击返回键取消对话框并停留在该界面
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void showProgreessDialog() {
+        if (pDialog == null) {
+            pDialog = new ProgressDialogMyBg(getContext());
+            pDialog.setCanceledOnTouchOutside(false);
+        }
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+        pDialog.show();
+        pDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    try {
+                        dismissProgressDialog();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 销毁对话框
+     */
+    public void dismissProgressDialog() {
+        try {
+            if (pDialog != null && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
