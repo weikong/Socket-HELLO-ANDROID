@@ -10,10 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
-import com.king.chat.socket.bean.ContactBean;
-import com.king.chat.socket.bean.Expression;
-import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
-import com.king.chat.socket.ui.view.chat.BiaoQingView;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 

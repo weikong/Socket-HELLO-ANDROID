@@ -88,7 +88,7 @@
         <RelativeLayout
             android:id="@+id/layout_expand"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="180dp"
             android:visibility="gone"
             android:layout_below="@+id/layout_bottom">
             <com.king.chat.socket.ui.view.chat.VoiceView

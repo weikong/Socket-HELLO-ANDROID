@@ -1,6 +1,5 @@
 package com.king.chat.socket.ui.view.chat;
 
-import android.animation.AnimatorSet;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,14 +7,11 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +22,8 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.ExpressionList;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
-import com.king.chat.socket.ui.adapter.RecyclerContactSelctAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
 import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
-import com.king.chat.socket.util.AnimUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
 import com.king.chat.socket.util.FileUtil;
@@ -113,7 +107,7 @@ public class BiaoQingView extends RelativeLayout {
         adapter = new BasePagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pageChangeListener);
-        loadSmileyData();
+//        loadSmileyData();
         tv_more_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,7 +245,9 @@ public class BiaoQingView extends RelativeLayout {
         }
     }
 
-    private void loadSmileyData(){
+    public void loadSmileyData(){
+        if (adapter.getCount() > 0)
+            return;
         viewList.clear();
         ExpressionList list = ExpressionHelper.getInstance().buildFaceFileNameList();
 //        int pagerCount = list.getExpList().size() / 24;
