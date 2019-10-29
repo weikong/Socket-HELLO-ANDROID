@@ -171,4 +171,21 @@ public class SDCardUtil {
         return dir != null ? dir.getAbsolutePath() : buildDataDir();
 //        return new File(cachePath + File.separator + uniqueName);
     }
+
+    //路径例如： /SD卡/Android/data/程序的包名/cache/gif
+    public static String getDiskCacheGifDir(Context context) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment
+                .getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        File dir = new File(cachePath+File.separator+localAppDir+File.separator+"gif");
+        if (!dir.exists())
+            dir.mkdirs();
+        return dir != null ? dir.getAbsolutePath() : buildDataDir();
+//        return new File(cachePath + File.separator + uniqueName);
+    }
 }

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,19 +20,15 @@ import android.widget.TextView;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.ExpressionList;
+import com.king.chat.socket.ui.activity.chat.face.FaceSourceDownActivity;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
 import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
-import com.king.chat.socket.util.FileUtil;
-import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.SDCardUtil;
-import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
-import com.squareup.okhttp.Request;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,35 +106,36 @@ public class BiaoQingView extends RelativeLayout {
         tv_more_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgreessDialog();
-                String gifZipUrlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
-                final String destDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
-                OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
-                    @Override
-                    public void onFailure(Request request, IOException e) {
-                        Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
-                        dismissProgressDialog();
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        Logger.e("biaoqing","onResponse biaoqing = "+response);
-                        if (!TextUtils.isEmpty(response)){
-                            try {
-                                File file = new File(response);
-                                if (file.exists()){
-                                    boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
-                                    if (isUnZip){
-                                        file.delete();
-                                    }
-                                }
-                            } catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                        dismissProgressDialog();
-                    }
-                });
+                FaceSourceDownActivity.startActivity(getContext());
+//                showProgreessDialog();
+//                String gifZiprlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
+//                final String destDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+//                OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
+//                    @Override
+//                    public void onFailure(Request request, IOException e) {
+//                        Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
+//                        dismissProgressDialog();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Logger.e("biaoqing","onResponse biaoqing = "+response);
+//                        if (!TextUtils.isEmpty(response)){
+//                            try {
+//                                File file = new File(response);
+//                                if (file.exists()){
+//                                    boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
+//                                    if (isUnZip){
+//                                        file.delete();
+//                                    }
+//                                }
+//                            } catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        dismissProgressDialog();
+//                    }
+//                });
             }
         });
         tv_biaoqing.setOnClickListener(new OnClickListener() {
