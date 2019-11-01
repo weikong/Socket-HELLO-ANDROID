@@ -263,6 +263,62 @@ public class OkHttpClientManager {
         });
     }
 
+    /**
+     * 异步下载文件
+     *
+     * @param url
+     * @param destFileDir 本地文件存储的文件夹
+     * @param callback
+     */
+    private void _downloadAsyn(final String url, final String destFileDir, final StringProgressCallback callback) {
+        final Request request = new Request.Builder()
+                .url(url)
+                .build();
+        final Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(final Request request, final IOException e) {
+                sendFailedStringCallback(request, e, callback);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                InputStream is = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                FileOutputStream fos = null;
+                try {
+                    long contentLenth = response.body().contentLength();
+                    is = response.body().byteStream();
+                    File file = new File(destFileDir, getFileName(url));
+                    fos = new FileOutputStream(file);
+                    int nowLenth = 0;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                        nowLenth += len;
+                        float progress = nowLenth * 1.0f / contentLenth;
+                        sendProgressStringCallback(progress, callback);
+                    }
+                    fos.flush();
+                    //如果下载文件成功，第一个参数为文件的绝对路径
+                    sendSuccessStringCallback(file.getAbsolutePath(), callback);
+                } catch (IOException e) {
+                    sendFailedStringCallback(response.request(), e, callback);
+                } finally {
+                    try {
+                        if (is != null) is.close();
+                    } catch (IOException e) {
+                    }
+                    try {
+                        if (fos != null) fos.close();
+                    } catch (IOException e) {
+                    }
+                }
+
+            }
+        });
+    }
+
     private String getFileName(String path) {
         int separatorIndex = path.lastIndexOf("/");
         return (separatorIndex < 0) ? path : path.substring(separatorIndex + 1, path.length());
@@ -490,6 +546,10 @@ public class OkHttpClientManager {
         getInstance()._downloadAsyn(url, destDir, callback);
     }
 
+    public static void downloadAsyn(String url, String destDir, StringProgressCallback callback) {
+        getInstance()._downloadAsyn(url, destDir, callback);
+    }
+
     //****************************
 
 
@@ -592,6 +652,16 @@ public class OkHttpClientManager {
         });
     }
 
+    private void sendProgressStringCallback(final float string, final StringProgressCallback callback) {
+        mDelivery.post(new Runnable() {
+            @Override
+            public void run() {
+                if (callback != null)
+                    callback.onProgress(string);
+            }
+        });
+    }
+
     private Request buildPostRequest(String url, Param[] params) {
         if (params == null) {
             params = new Param[0];
@@ -612,6 +682,10 @@ public class OkHttpClientManager {
         void onFailure(Request request, IOException e);
 
         void onResponse(String response);
+    }
+
+    public interface StringProgressCallback extends StringCallback {
+        void onProgress(float progress);
     }
 
     public static class Param {

@@ -125,7 +125,8 @@ public class FaceSourceDownAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (callBack != null && finalViewHolder.tv_down.getText().toString().equals("下载")){
-                    callBack.downLoadGifZip(bean.getZip());
+                    callBack.downLoadGifZip(finalViewHolder.tv_down,bean.getZip());
+                    finalViewHolder.tv_down.setText("0%");
                 }
             }
         });
@@ -150,6 +151,6 @@ public class FaceSourceDownAdapter extends BaseAdapter {
     }
 
     public interface CallBack{
-        public void downLoadGifZip(String url);
+        public void downLoadGifZip(TextView tv_down,String url);
     }
 }

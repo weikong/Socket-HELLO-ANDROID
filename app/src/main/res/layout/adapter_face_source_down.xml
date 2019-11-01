@@ -31,11 +31,11 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/bg_item_theme"
-        android:paddingLeft="@dimen/margin_12dp"
+        android:minWidth="@dimen/margin_60dp"
         android:paddingTop="@dimen/margin_6dp"
-        android:paddingRight="@dimen/margin_12dp"
         android:paddingBottom="@dimen/margin_6dp"
-        android:text="下载"
+        android:gravity="center"
+        android:text=""
         android:textColor="@color/color_ffffff" />
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.R;
@@ -20,7 +21,6 @@ import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.FileUtil;
 import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.SDCardUtil;
-import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
@@ -72,8 +72,8 @@ public class FaceSourceDownActivity extends BaseUIActivity {
         listview.setAdapter(adapter);
         adapter.setCallBack(new FaceSourceDownAdapter.CallBack() {
             @Override
-            public void downLoadGifZip(String url) {
-                downLoadGifSource(url);
+            public void downLoadGifZip(TextView tv_down, String url) {
+                downLoadGifSource(tv_down,url);
             }
         });
     }
@@ -107,15 +107,18 @@ public class FaceSourceDownActivity extends BaseUIActivity {
         });
     }
 
-    private void downLoadGifSource(String gifZipUrlPath){
-        showProgreessDialog();
-        String gifZiprlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
+    private void downLoadGifSource(final TextView tv_down, String gifZipUrlPath){
         final String destDir = SDCardUtil.getDiskCacheDir(this,"gif");
-        OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
+        OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringProgressCallback() {
+            @Override
+            public void onProgress(float progress) {
+                int progressInt = (int) (progress * 100);
+                tv_down.setText(progressInt+"%");
+            }
+
             @Override
             public void onFailure(Request request, IOException e) {
                 Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
-                dismissProgressDialog();
             }
 
             @Override
@@ -128,16 +131,17 @@ public class FaceSourceDownActivity extends BaseUIActivity {
                             boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
                             if (isUnZip){
                                 file.delete();
+                            } else {
+                                file.delete();
                             }
-                            ToastUtil.show("下载完成");
                             adapter.notifyDataSetChanged();
                         }
                         BroadCastUtil.sendActionBroadCast(FaceSourceDownActivity.this,BroadCastUtil.ACTION_GIF_UPDATE);
                     } catch (Exception e){
                         e.printStackTrace();
+                        tv_down.setText("下载");
                     }
                 }
-                dismissProgressDialog();
             }
         });
     }
