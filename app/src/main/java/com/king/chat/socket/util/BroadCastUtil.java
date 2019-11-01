@@ -24,6 +24,8 @@ public class BroadCastUtil {
     public static final String ACTION_CLEAR_CHAT_MESSAGE = "action_clear_chat_message";
     public static final String ACTION_GROUP_UPDATE = "action_group_update";
 
+    public static final String ACTION_GIF_UPDATE = "action_gif_update";
+
     /**
      * 发送广播
      *

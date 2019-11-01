@@ -14,12 +14,12 @@ public class UrlConfig {
     /**
      * 公司 IP
      */
-//    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
+    public static String HTTP_ROOT = "http://172.17.7.164:9090/";
     /**
      * 华为云
      */
 //    public static String HTTP_ROOT = "https://114.116.124.23:9090/";
-    public static String HTTP_ROOT = "https://deepkeep.top/";
+//    public static String HTTP_ROOT = "https://deepkeep.top/";
 
     public static final String DOWNLOAD_SERVER_URL = "http://pic.melinked.com/";//文件下载地址
     public static final String BASE_URL_V3_5050 = "https://www.melinked.com/";
@@ -149,4 +149,10 @@ public class UrlConfig {
      * 查询我的群聊
      */
     public static String HTTP_GROUP_QUERY_MY_GROUPS = HTTP_ROOT + "group/queryMyGroups";
+
+
+    /**
+     * gifZipFiles
+     */
+    public static String HTTP_GIF_ZIP_FILES = HTTP_ROOT + "test_rest/gifZipFiles";
 }

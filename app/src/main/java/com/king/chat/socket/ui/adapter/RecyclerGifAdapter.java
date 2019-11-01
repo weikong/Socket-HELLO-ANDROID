@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
+import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 
@@ -58,13 +59,20 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
 
     @Override
     public void onBindViewHolder(RecyclerGifAdapter.ViewHolder holder, final int position) {
-//        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(srcs[position]).into(holder.itemImage);
-        GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(files.get(position)).into(holder.itemImage);
+        final File file = files.get(position);
+        if (file != null && file.getName().toLowerCase().endsWith(".gif")){
+            GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(file).into(holder.itemImage);
+        } else {
+            GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(file).into(holder.itemImage);
+        }
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (callBack != null){
-                    callBack.clickGif(datas.get(position));
+                    String name = file.getName();
+                    String parent = file.getParentFile().getName();
+                    String url = UrlConfig.HTTP_ROOT + "gif/res"+File.separator+parent+File.separator+name;
+                    callBack.clickGif(url);
                 }
             }
         });

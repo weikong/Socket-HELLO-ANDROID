@@ -1,7 +1,5 @@
 package com.king.chat.socket.config;
 
-import java.io.Serializable;
-
 /**
  * Created by maesinfo on 2019/9/18.
  */
@@ -11,7 +9,7 @@ public class Config {
     /**
      * 公司 IP
      */
-//    public static final String HOST = "172.17.7.164";
+    public static final String HOST = "172.17.7.164";
     /**
      * MAC IP
      */
@@ -19,7 +17,7 @@ public class Config {
     /**
      * 华为云
      */
-    public static final String HOST = "deepkeep.top";
+//    public static final String HOST = "deepkeep.top";
 //    public static final String HOST = "114.116.124.23";
 
 

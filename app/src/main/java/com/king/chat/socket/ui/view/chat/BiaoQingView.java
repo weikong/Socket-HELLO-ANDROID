@@ -7,6 +7,8 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -22,6 +24,7 @@ import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.ExpressionList;
 import com.king.chat.socket.ui.activity.chat.face.FaceSourceDownActivity;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
+import com.king.chat.socket.ui.adapter.RecyclerFaceBottomUtilAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
 import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
 import com.king.chat.socket.util.DisplayUtil;
@@ -44,8 +47,14 @@ public class BiaoQingView extends RelativeLayout {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
+
+    RecyclerGifAdapter gifAdapter;
+
     @BindView(R.id.viewpager)
     ViewPager viewPager;
+
+    BasePagerAdapter adapter;
+    List<View> viewList = new ArrayList<>();
 
     @BindView(R.id.layout_dot)
     LinearLayout layout_dot;
@@ -68,10 +77,10 @@ public class BiaoQingView extends RelativeLayout {
     @BindView(R.id.tv_more_shoucang)
     TextView tv_shoucang;
 
-    BasePagerAdapter adapter;
-    List<View> viewList = new ArrayList<>();
+    @BindView(R.id.recyclerview_face)
+    RecyclerView recyclerview_face;
 
-    RecyclerGifAdapter gifAdapter;
+    RecyclerFaceBottomUtilAdapter faceBottomUtilAdapter;
 
     int dotNomalWidth = 6;
     int dotSelectWidth = 12;
@@ -99,43 +108,14 @@ public class BiaoQingView extends RelativeLayout {
         dotNomalWidth = DisplayUtil.dp2px(6);
         dotSelectWidth = DisplayUtil.dp2px(12);
         initGifRecyclerView();
+        initBottomFaceUtilRecyclerView();
         adapter = new BasePagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pageChangeListener);
-//        loadSmileyData();
         tv_more_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 FaceSourceDownActivity.startActivity(getContext());
-//                showProgreessDialog();
-//                String gifZiprlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
-//                final String destDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
-//                OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
-//                    @Override
-//                    public void onFailure(Request request, IOException e) {
-//                        Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
-//                        dismissProgressDialog();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Logger.e("biaoqing","onResponse biaoqing = "+response);
-//                        if (!TextUtils.isEmpty(response)){
-//                            try {
-//                                File file = new File(response);
-//                                if (file.exists()){
-//                                    boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
-//                                    if (isUnZip){
-//                                        file.delete();
-//                                    }
-//                                }
-//                            } catch (Exception e){
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        dismissProgressDialog();
-//                    }
-//                });
             }
         });
         tv_biaoqing.setOnClickListener(new OnClickListener() {
@@ -193,11 +173,6 @@ public class BiaoQingView extends RelativeLayout {
     int tabIndex = 0;
 
     private void initGifRecyclerView(){
-        //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
-//        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
-//        //设置为水平布局，这也是默认的
-//        layoutmanager.setOrientation(OrientationHelper.HORIZONTAL);
-
         GridLayoutManager layoutmanager = new GridLayoutManager(getContext(),5,RecyclerView.VERTICAL,false);
         //设置RecyclerView 布局
         recyclerview.setLayoutManager(layoutmanager);
@@ -213,11 +188,84 @@ public class BiaoQingView extends RelativeLayout {
                 }
             }
         });
-//        gifPath = SDCardUtil.getGifDir()+ File.separator+"rabbit";
-//        File gifDir = new File(gifPath);
-//        if (gifDir.exists()){
-//            gifFiles = gifDir.listFiles();
-//        }
+    }
+
+    private void initBottomFaceUtilRecyclerView(){
+        //创建LinearLayoutManager 对象 这里使用 <span style="font-family:'Source Code Pro';">LinearLayoutManager 是线性布局的意思</span>
+        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
+        //设置为水平布局，这也是默认的
+        layoutmanager.setOrientation(OrientationHelper.HORIZONTAL);
+        //设置RecyclerView 布局
+        recyclerview_face.setLayoutManager(layoutmanager);
+        //设置Adapter
+        faceBottomUtilAdapter = new RecyclerFaceBottomUtilAdapter(getContext());
+        recyclerview_face.setAdapter(faceBottomUtilAdapter);
+        faceBottomUtilAdapter.setCallBack(new RecyclerFaceBottomUtilAdapter.CallBack() {
+            @Override
+            public void clickGif(int index, String name) {
+                switch (index){
+                    case 0:
+                        viewPager.setVisibility(View.VISIBLE);
+                        layout_dot.setVisibility(View.VISIBLE);
+                        recyclerview.setVisibility(View.INVISIBLE);
+                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
+                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        break;
+                    case 1:
+                        viewPager.setVisibility(View.INVISIBLE);
+                        layout_dot.setVisibility(View.INVISIBLE);
+                        recyclerview.setVisibility(View.INVISIBLE);
+                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
+                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        break;
+                    default:
+                        viewPager.setVisibility(View.INVISIBLE);
+                        layout_dot.setVisibility(View.INVISIBLE);
+                        recyclerview.setVisibility(View.VISIBLE);
+                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
+                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+                        String gifFileDir = GIFDir+File.separator+name;
+                        File file = new File(gifFileDir);
+                        File[] gifFiles = file.listFiles();
+                        gifAdapter.setFileDatas(Arrays.asList(gifFiles));
+                        gifAdapter.notifyDataSetChanged();
+                        break;
+                }
+                faceBottomUtilAdapter.notifyDataSetChanged();
+            }
+        });
+        loadBottomFaceUtil();
+    }
+
+    public void loadBottomFaceUtil(){
+        List<String> fileDirs = new ArrayList<>();
+        fileDirs.add("表情");
+        fileDirs.add("收藏");
+        String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+        File GifDirFile = new File(GIFDir);
+        if (GifDirFile.exists()){
+            File[] childFiles = GifDirFile.listFiles();
+            if (childFiles.length > 0){
+                for (File file : childFiles){
+                    if (file.isDirectory())
+                        fileDirs.add(file.getName());
+                }
+            }
+        }
+        faceBottomUtilAdapter.setFileDatas(fileDirs);
+        faceBottomUtilAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        if (visibility == View.VISIBLE && faceBottomUtilAdapter != null){
+            faceBottomUtilAdapter.notifyDataSetChanged();
+        }
     }
 
     class EvenItemDecoration extends RecyclerView.ItemDecoration {
@@ -246,8 +294,6 @@ public class BiaoQingView extends RelativeLayout {
             return;
         viewList.clear();
         ExpressionList list = ExpressionHelper.getInstance().buildFaceFileNameList();
-//        int pagerCount = list.getExpList().size() / 24;
-//        int pagerYu = (list.getExpList().size() % 24) > 0 ? 1 : 0;
         int pagerCount = list.getExpList().size() / 23;
         int pagerYu = (list.getExpList().size() % 23) > 0 ? 1 : 0;
         int count = pagerCount+pagerYu;

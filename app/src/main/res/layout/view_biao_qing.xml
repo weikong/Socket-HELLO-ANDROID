@@ -84,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="表情"
+            android:visibility="gone"
             android:gravity="center"
             android:background="@color/color_line"
             android:paddingLeft="@dimen/margin_8dp"
@@ -91,6 +92,7 @@
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
+            android:visibility="gone"
             android:background="@color/color_f4f4f4"/>
 
         <TextView
@@ -98,6 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="收藏"
+            android:visibility="gone"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
             android:paddingRight="@dimen/margin_8dp"/>
@@ -105,6 +108,7 @@
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
+            android:visibility="gone"
             android:background="@color/color_f4f4f4"/>
 
         <TextView
@@ -112,8 +116,15 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="rabbit"
+            android:visibility="gone"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
             android:paddingRight="@dimen/margin_8dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
     </LinearLayout>
 </RelativeLayout>

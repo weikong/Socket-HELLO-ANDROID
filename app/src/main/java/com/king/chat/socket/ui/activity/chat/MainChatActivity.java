@@ -586,6 +586,7 @@ public class MainChatActivity extends BaseDataActivity {
         intentFilter.addAction(BroadCastUtil.ACTION_DISCONNECT);
         intentFilter.addAction(BroadCastUtil.ACTION_CLEAR_CHAT_MESSAGE);
         intentFilter.addAction(BroadCastUtil.ACTION_GROUP_UPDATE);
+        intentFilter.addAction(BroadCastUtil.ACTION_GIF_UPDATE);
         if (receiver == null) {
             receiver = new BroadcastReceiver() {
                 @Override
@@ -626,6 +627,9 @@ public class MainChatActivity extends BaseDataActivity {
                                 sessionData.setMessagefromname(groupInfo.getGroupname());
                                 Config.toUserName = groupInfo.getGroupname();
                             }
+                            break;
+                        case BroadCastUtil.ACTION_GIF_UPDATE:
+                            viewBiaoQing.loadBottomFaceUtil();
                             break;
                     }
                 }

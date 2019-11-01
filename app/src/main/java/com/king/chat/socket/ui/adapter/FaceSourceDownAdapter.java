@@ -120,11 +120,13 @@ public class FaceSourceDownAdapter extends BaseAdapter {
                 }
             }
         }
+        final ViewHolder finalViewHolder = viewHolder;
         viewHolder.tv_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2019/10/29 下載 bean.getFaceSource()
-
+                if (callBack != null && finalViewHolder.tv_down.getText().toString().equals("下载")){
+                    callBack.downLoadGifZip(bean.getZip());
+                }
             }
         });
         return convertView;
@@ -139,5 +141,15 @@ public class FaceSourceDownAdapter extends BaseAdapter {
             this.tv_name = (TextView) view.findViewById(R.id.tv_name);
             this.tv_down = (TextView) view.findViewById(R.id.tv_down);
         }
+    }
+
+    public CallBack callBack;
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public interface CallBack{
+        public void downLoadGifZip(String url);
     }
 }

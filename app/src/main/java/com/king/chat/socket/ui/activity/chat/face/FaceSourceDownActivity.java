@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
@@ -15,11 +16,17 @@ import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.activity.base.BaseUIActivity;
 import com.king.chat.socket.ui.adapter.FaceSourceDownAdapter;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
+import com.king.chat.socket.util.BroadCastUtil;
+import com.king.chat.socket.util.FileUtil;
+import com.king.chat.socket.util.Logger;
+import com.king.chat.socket.util.SDCardUtil;
+import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
 import com.squareup.okhttp.Request;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +70,12 @@ public class FaceSourceDownActivity extends BaseUIActivity {
     private void initView() {
         adapter = new FaceSourceDownAdapter(this);
         listview.setAdapter(adapter);
+        adapter.setCallBack(new FaceSourceDownAdapter.CallBack() {
+            @Override
+            public void downLoadGifZip(String url) {
+                downLoadGifSource(url);
+            }
+        });
     }
 
     private void gifZipFilesTask() {
@@ -90,6 +103,41 @@ public class FaceSourceDownActivity extends BaseUIActivity {
                 } finally {
                     dismissProgressDialog();
                 }
+            }
+        });
+    }
+
+    private void downLoadGifSource(String gifZipUrlPath){
+        showProgreessDialog();
+        String gifZiprlPath = "https://deepkeep.top/gif/zip/rabbit.zip";
+        final String destDir = SDCardUtil.getDiskCacheDir(this,"gif");
+        OkHttpClientManager.downloadAsyn(gifZipUrlPath, destDir, new OkHttpClientManager.StringCallback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Logger.e("biaoqing","onFailure biaoqing = "+e.getMessage());
+                dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                Logger.e("biaoqing","onResponse biaoqing = "+response);
+                if (!TextUtils.isEmpty(response)){
+                    try {
+                        File file = new File(response);
+                        if (file.exists()){
+                            boolean isUnZip = FileUtil.getInstance().unZip(file,destDir);
+                            if (isUnZip){
+                                file.delete();
+                            }
+                            ToastUtil.show("下载完成");
+                            adapter.notifyDataSetChanged();
+                        }
+                        BroadCastUtil.sendActionBroadCast(FaceSourceDownActivity.this,BroadCastUtil.ACTION_GIF_UPDATE);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                dismissProgressDialog();
             }
         });
     }
