@@ -1,30 +1,19 @@
 package com.king.chat.socket.ui.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.ChatFaceInputUtil;
-import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.TimeFormatUtils;
 
@@ -75,6 +64,17 @@ public class MessageAdapter extends BaseAdapter {
         }
     }
 
+    public synchronized void removeData(SessionData bean) {
+        int position = -1;
+        for (int i = 0; i < list.size(); i++) {
+            SessionData sessionData = list.get(i);
+            if (sessionData.getMessagefromid() == bean.getMessagefromid()) {
+                position = i;
+            }
+        }
+        list.remove(position);
+    }
+
     public void clearData() {
         this.list.clear();
     }
@@ -112,17 +112,17 @@ public class MessageAdapter extends BaseAdapter {
         SessionData bean = getItem(position);
         viewHolder.tv_name.setText(bean.getMessagefromname());
         viewHolder.tv_time.setText(TimeFormatUtils.getSessionFormatDate2(bean.getMessagetime()));
-       String strContent = bean.getMessagecontent();
+        String strContent = bean.getMessagecontent();
         if (bean.groupdata == 1) {
-            if (!TextUtils.isEmpty(bean.getSourcesendername()) && bean.getMessagetype() == 9){
-                strContent = bean.getSourcesendername()+"："+bean.getMessagecontent();
+            if (!TextUtils.isEmpty(bean.getSourcesendername()) && bean.getMessagetype() == 9) {
+                strContent = bean.getSourcesendername() + "：" + bean.getMessagecontent();
             }
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         } else {
             GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
         }
 //        viewHolder.tv_content.setText(strContent);
-        ChatFaceInputUtil.getInstance().setExpressionTextView(mContext,strContent,viewHolder.tv_content);
+        ChatFaceInputUtil.getInstance().setExpressionTextView(mContext, strContent, viewHolder.tv_content);
         int unreadCount = bean.getMessage_unread_count();
         if (unreadCount > 0) {
             viewHolder.tv_unread.setVisibility(View.VISIBLE);

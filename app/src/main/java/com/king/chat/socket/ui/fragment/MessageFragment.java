@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.king.chat.socket.R;
 import com.king.chat.socket.config.Config;
+import com.king.chat.socket.ui.DBFlow.chatRecord.DBChatRecordImpl;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.chat.MainChatActivity;
@@ -23,6 +24,7 @@ import com.king.chat.socket.ui.adapter.MessageAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.BroadCastUtil;
+import com.king.chat.socket.util.UserInfoManager;
 
 import java.util.List;
 
@@ -154,6 +156,26 @@ public class MessageFragment extends BaseFragment {
 //                contactBean.setHeadPortrait(sessionData.getMessagefromavatar());
 //                contactBean.setName(sessionData.getMessagefromname());
                 intent2Activity(MainChatActivity.class, sessionData);
+            }
+        });
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    SessionData sessionData = adapter.getItem(position);
+                    int group = sessionData.getGroupdata();
+                    if (group == 1) {
+                        DBChatRecordImpl.getInstance().deleteGroupChatMessage(sessionData.getMessagefromid());
+                    } else {
+                        DBChatRecordImpl.getInstance().deleteSingleChatMessage(UserInfoManager.getInstance().getAccount(), sessionData.getMessagefromid());
+                    }
+                    DBSessionImpl.getInstance().deleteSession(sessionData);
+                    adapter.removeData(sessionData);
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
             }
         });
     }
