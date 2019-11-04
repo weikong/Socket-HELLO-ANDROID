@@ -2,8 +2,6 @@ package com.king.chat.socket.ui.view.chat.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,12 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
@@ -24,9 +17,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.ChatFaceInputUtil;
-import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
-import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
 
 import butterknife.BindView;
@@ -38,6 +29,8 @@ import butterknife.ButterKnife;
 
 public class ChatContentRightView extends RelativeLayout {
 
+    @BindView(R.id.layout_root)
+    RelativeLayout layout_root;
     @BindView(R.id.tv_content)
     TextView tv_content;
     @BindView(R.id.iv_content)
@@ -69,6 +62,7 @@ public class ChatContentRightView extends RelativeLayout {
     }
 
     public void setData(final ChatRecordData bean) {
+        layout_root.setBackgroundResource(R.drawable.bg_chat_send_item_picture_nor);
         int messageChatType = bean.getMessagechattype();
         switch (messageChatType) {
             case MessageChatType.TYPE_TEXT:
@@ -86,9 +80,10 @@ public class ChatContentRightView extends RelativeLayout {
                 iv_voice_play.setVisibility(View.GONE);
 //                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).asGif().load(bean.getMessagecontent()).into(iv_content);
                 String url = bean.getMessagecontent();
-                if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif"))
+                if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif")){
+                    layout_root.setBackgroundColor(getResources().getColor(R.color.color_transparent));
                     GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).into(iv_content);
-                else {
+                } else {
                     GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(url).into(iv_content);
                 }
                 iv_content.setOnClickListener(new OnClickListener() {

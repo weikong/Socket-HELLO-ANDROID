@@ -40,6 +40,17 @@ public class AnimUtil {
         animator.start(); // 开始运行动画
     }
 
+    @SuppressLint("WrongConstant")
+    public static ObjectAnimator alphaAnimLoop(View view, long delay, long duration) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1.0f,0f,1.0f); // 初始化动画，设置各个参数
+        animator.setDuration(duration); // 设置动画持续时间
+        animator.setStartDelay(delay);
+        animator.setRepeatCount(ValueAnimator.INFINITE);//无限循环
+        animator.setRepeatMode(ValueAnimator.INFINITE);//
+        animator.start(); // 开始运行动画
+        return animator;
+    }
+
     public static void scaleAnim(View view, long delay, long duration) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0f, 1.1f, 1.0f); // 初始化动画，设置各个参数
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0f, 1.1f, 1.0f); // 初始化动画，设置各个参数

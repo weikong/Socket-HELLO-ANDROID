@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="180dp">
 
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_45dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_main_tab_press"
+        android:singleLine="true"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_26sp"
+        android:text="00:00"/>
+
     <ImageView
         android:id="@+id/iv_voice_circle2"
         android:layout_width="90dp"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/layout_root"
     android:background="@drawable/bg_chat_send_item_picture_nor">
 
     <TextView
@@ -25,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerInside"
-        android:minWidth="@dimen/margin_220dp"
-        android:minHeight="@dimen/margin_220dp"
+        android:minWidth="@dimen/margin_200dp"
+        android:minHeight="@dimen/margin_200dp"
         android:visibility="gone" />
 
     <ImageView

@@ -5,7 +5,6 @@ package com.king.chat.socket.util.voice;
 
 import android.media.MediaRecorder;
 
-import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.SDCardUtil;
 
 import java.io.File;
@@ -35,6 +34,9 @@ public class VoiceRecordHelper {
         return VoiceRecordHelperHolder.INSTANCE;
     }
 
+    public MediaRecorder getmRecorder() {
+        return mRecorder;
+    }
 
     /**
      * 开始录制
@@ -69,17 +71,19 @@ public class VoiceRecordHelper {
         }
     }
 
-    public void stopRecording() {
+    public boolean stopRecording() {
         synchronized (VoiceRecordHelper.class) {
             if (mRecorder == null) {
-                return;
+                return true;
             }
             try {
                 mRecorder.release();
                 mRecorder = null;
             } catch (Exception e) {
-
+                e.printStackTrace();
+                return false;
             }
+            return true;
         }
     }
 
