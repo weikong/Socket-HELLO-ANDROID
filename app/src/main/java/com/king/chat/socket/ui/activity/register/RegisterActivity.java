@@ -16,8 +16,10 @@ import com.king.chat.socket.config.Config;
 import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.activity.MainActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
+import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.DBFlowUtil;
 import com.king.chat.socket.util.SharePreferceTool;
+import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
@@ -28,22 +30,30 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RegisterActivity extends BaseDataActivity {
 
-    EditText et_name, et_psd;
+    @BindView(R.id.action_bar)
+    CommonActionBar actionBar;
+    @BindView(R.id.et_name)
+    EditText et_name;
+    @BindView(R.id.et_psd)
+    EditText et_psd;
+    @BindView(R.id.tv_register)
     TextView tv_register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        et_name = (EditText) findViewById(R.id.et_name);
-        et_psd = (EditText) findViewById(R.id.et_psd);
-        tv_register = (TextView) findViewById(R.id.tv_register);
+        ButterKnife.bind(this);
+        initActionBar();
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkPermissionAllGranted(permissionAll)){
+                if (checkPermissionAllGranted(permissionAll)) {
                     registerTask();
                 } else {
                     setExternalStoragePermissions(permissionAll);
@@ -52,9 +62,14 @@ public class RegisterActivity extends BaseDataActivity {
         });
     }
 
+    private void initActionBar() {
+        actionBar.setTitle("注册");
+    }
+
+
     @Override
     public void resultPermissions(boolean result) {
-        if (result){
+        if (result) {
             registerTask();
         }
     }
@@ -97,6 +112,8 @@ public class RegisterActivity extends BaseDataActivity {
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
+                    } else {
+                        ToastUtil.show(baseTaskBean.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

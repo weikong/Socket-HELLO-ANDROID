@@ -9,16 +9,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.base.BaseTaskBean;
+import com.king.chat.socket.config.Config;
 import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.activity.MainActivity;
 import com.king.chat.socket.ui.activity.base.BaseDataActivity;
-import com.king.chat.socket.config.Config;
-import com.king.chat.socket.R;
 import com.king.chat.socket.ui.activity.register.RegisterActivity;
+import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.util.DBFlowUtil;
 import com.king.chat.socket.util.SharePreferceTool;
+import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
 import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
@@ -29,24 +31,32 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends BaseDataActivity {
 
-    EditText et_name, et_psd;
+    @BindView(R.id.action_bar)
+    CommonActionBar actionBar;
+    @BindView(R.id.et_name)
+    EditText et_name;
+    @BindView(R.id.et_psd)
+    EditText et_psd;
+    @BindView(R.id.tv_register)
     TextView tv_register;
+    @BindView(R.id.tv_login)
     TextView tv_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        et_name = (EditText) findViewById(R.id.et_name);
-        et_psd = (EditText) findViewById(R.id.et_psd);
-        tv_login = (TextView) findViewById(R.id.tv_login);
-        tv_register = (TextView) findViewById(R.id.tv_register);
+        ButterKnife.bind(this);
+        initActionBar();
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkPermissionAllGranted(permissionAll)){
+                if (checkPermissionAllGranted(permissionAll)) {
                     loginTask();
                 } else {
                     setExternalStoragePermissions(permissionAll);
@@ -61,9 +71,13 @@ public class LoginActivity extends BaseDataActivity {
         });
     }
 
+    private void initActionBar() {
+        actionBar.setTitle("登录");
+    }
+
     @Override
     public void resultPermissions(boolean result) {
-        if (result){
+        if (result) {
             loginTask();
         }
     }
@@ -72,12 +86,12 @@ public class LoginActivity extends BaseDataActivity {
     protected void onResume() {
         super.onResume();
         String strUserName = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_NAME);
-        if (!TextUtils.isEmpty(strUserName)){
+        if (!TextUtils.isEmpty(strUserName)) {
             et_name.setText(strUserName);
             et_name.setSelection(strUserName.length());
         }
         String strPsd = SharePreferceTool.getInstance().getString(Config.LOGIN_USER_PSD);
-        if (!TextUtils.isEmpty(strPsd)){
+        if (!TextUtils.isEmpty(strPsd)) {
             et_psd.setText(strPsd);
             et_psd.setSelection(strPsd.length());
         }
@@ -120,6 +134,8 @@ public class LoginActivity extends BaseDataActivity {
                         SocketUtil.getInstance().connect();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                    } else {
+                        ToastUtil.show(baseTaskBean.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

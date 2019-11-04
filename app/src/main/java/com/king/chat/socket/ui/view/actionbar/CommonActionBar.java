@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.king.chat.socket.R;
 import com.king.chat.socket.util.DisplayUtil;
-import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.socket.SocketUtil;
 
 import java.math.BigInteger;
