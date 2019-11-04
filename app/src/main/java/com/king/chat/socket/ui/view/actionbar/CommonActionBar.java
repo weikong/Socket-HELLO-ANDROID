@@ -3,7 +3,6 @@ package com.king.chat.socket.ui.view.actionbar;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,12 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.king.chat.socket.R;
-import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.socket.SocketUtil;
@@ -119,8 +115,7 @@ public class CommonActionBar extends LinearLayout {
         int alpha255 = (int) (255 * alpha);
         String a1 = Integer.toHexString(alpha255 / 16);
         String a2 = Integer.toHexString(alpha255 % 16);
-        String strColor = "#"+a1+a2+"4db4ff";
-        Logger.e("strColor = "+strColor);
+        String strColor = "#"+a1+a2+"27a350";
         root.setBackgroundColor(Color.parseColor(strColor));
     }
 

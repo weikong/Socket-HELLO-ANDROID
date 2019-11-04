@@ -3,8 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorTheme">#4db4ff</color>
-    <color name="colorThemeAlpha05">#884db4ff</color>
+    <color name="colorTheme">#27a350</color>
+    <color name="colorTheme2">#3DCE6D</color>
+    <color name="colorThemeAlpha05">#883DCE6D</color>
     <color name="color_ffffff">#ffffff</color>
     <color name="color_f4f4f4">#f4f4f4</color>
     <color name="color_e5e7e5">#f8f8f8</color>
@@ -64,14 +65,14 @@
     <color name="swipeoption_purple">#ff1744</color>
 
     <!--<color name="color_sign_in">#7d78f7</color>-->
-    <color name="color_sign_in">#0B5CB8</color>
+    <color name="color_sign_in">@color/colorTheme</color>
     <color name="bg_50_percent_black">#80000000</color>
     <color name="timetimepicker_default_text_color">#999999</color>
     <color name="timepicker_toolbar_bg">#e60012</color>
     <color name="timepicker_dialog_bg">#80000000</color>
     <color name="timepicker_line">#e8e8e8</color>
 
-    <color name="color_main_tab_press">#3DCE6D</color>
+    <color name="color_main_tab_press">@color/colorTheme</color>
     <color name="color_main_tab_nomal">#999999</color>
 
 </resources>
