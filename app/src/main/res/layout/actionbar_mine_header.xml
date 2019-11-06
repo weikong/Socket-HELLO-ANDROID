@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="@color/color_ffffff"
-                android:textSize="@dimen/text_size_15sp"
+                android:textSize="@dimen/text_size_20sp"
                 android:text=""/>
 
             <TextView

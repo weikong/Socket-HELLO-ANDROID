@@ -73,6 +73,15 @@
         <activity
             android:name=".ui.activity.chat.face.FaceSourceDownActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.setting.SettingActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.edit.MineEditActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.edit.InputEditActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

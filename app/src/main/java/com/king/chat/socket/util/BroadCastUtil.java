@@ -14,6 +14,7 @@ public class BroadCastUtil {
     public static final String ACTION_USER_LOGIN = "action_user_login";
     public static final String ACTION_USER_LOGOUT = "action_user_logout";
     public static final String ACTION_USER_REGISTER = "action_user_register";
+    public static final String ACTION_UPDATE_USER_INFO = "action_update_user_info";
     public static final String ACTION_RECIEVE_MESSAGE = "action_recieve_message";
     public static final String ACTION_UPDATE_MESSAGE = "action_update_message";
     public static final String ACTION_UPDATE_SESSION = "action_update_session";

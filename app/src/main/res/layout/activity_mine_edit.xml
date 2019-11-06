@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_activity">
+
+    <com.king.chat.socket.ui.view.actionbar.CommonActionBar
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_below="@+id/action_bar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_userPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_60dp"
+            android:background="@drawable/bg_ffffff_press_f4f4f4"
+            android:paddingLeft="@dimen/margin_8dp"
+            android:paddingRight="@dimen/margin_8dp"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/img_view_header_moor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:src="@drawable/icon_arrow_gray" />
+
+            <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
+                android:id="@+id/img_view_header"
+                android:layout_width="@dimen/margin_50dp"
+                android:layout_height="@dimen/margin_50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_6dp"
+                android:layout_toLeftOf="@id/img_view_header_moor"
+                android:src="@drawable/icon_default_user"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_60dp"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="头像"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_size_16sp" />
+        </RelativeLayout>
+
+        <com.king.chat.socket.ui.view.setting.ForwardItemView
+            android:id="@+id/item_view_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:clickable="true"
+            app:title_text="姓名"
+            app:title_textColor="@color/color_999999"
+            app:content_text="平行线"></com.king.chat.socket.ui.view.setting.ForwardItemView>
+
+        <com.king.chat.socket.ui.view.setting.ForwardItemView
+            android:id="@+id/item_view_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:clickable="true"
+            app:title_text="性别"
+            app:title_textColor="@color/color_999999"
+            app:content_text="男"></com.king.chat.socket.ui.view.setting.ForwardItemView>
+
+        <com.king.chat.socket.ui.view.setting.ForwardItemView
+            android:id="@+id/item_view_like"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:clickable="true"
+            app:title_text="爱好"
+            app:title_textColor="@color/color_999999"
+            app:content_text="健身，篮球"></com.king.chat.socket.ui.view.setting.ForwardItemView>
+    </LinearLayout>
+
+</RelativeLayout>

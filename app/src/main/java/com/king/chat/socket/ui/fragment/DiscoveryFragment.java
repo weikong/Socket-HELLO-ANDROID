@@ -1,34 +1,15 @@
 package com.king.chat.socket.ui.fragment;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
-import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
-import com.king.chat.socket.util.BitmapUtil;
-import com.king.chat.socket.util.CombineNineRect;
-import com.king.chat.socket.util.ContactManager;
-import com.king.chat.socket.util.ExpressionHelper;
-import com.king.chat.socket.util.GlideOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +21,7 @@ import butterknife.ButterKnife;
  * Use the {@link DiscoveryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DiscoveryFragment extends BaseFragment{
+public class DiscoveryFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -106,6 +87,12 @@ public class DiscoveryFragment extends BaseFragment{
     private void initActionBar() {
         actionBar.setFillStatusBar(true);
         actionBar.setTitle("发现");
+        actionBar.setIvRightSrc(R.drawable.btn_chat_more_item_camera, getResources().getColor(R.color.color_ffffff), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void initView(View view) {

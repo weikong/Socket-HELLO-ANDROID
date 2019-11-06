@@ -3,16 +3,9 @@
  */
 package com.king.chat.socket.util;
 
-import android.annotation.SuppressLint;
-import android.os.Environment;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.king.chat.socket.R;
-
-import java.io.File;
 
 /**
  * ImageLoaderOptions.java - ImageLoader config parameters

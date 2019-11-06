@@ -27,4 +27,14 @@
         <item name="android:backgroundDimEnabled">false</item>
         <!-- 背景是否模糊 -->
     </style>
+
+
+    <declare-styleable name="ForwardItemView">
+        <attr name="title_textColor" format="color" />
+        <attr name="title_text" format="string"></attr>
+        <attr name="title_textSize" format="dimension" />
+        <attr name="content_textColor" format="color" />
+        <attr name="content_text" format="string"></attr>
+        <attr name="content_textSize" format="dimension" />
+    </declare-styleable>
 </resources>

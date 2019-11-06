@@ -99,14 +99,14 @@ public class CommonActionBar extends LinearLayout {
         }
     }
 
-    public void setBackgroundAlpha(boolean transparent){
+    public void setBackgroundAlpha(boolean transparent) {
         if (transparent)
             root.setBackgroundColor(getResources().getColor(R.color.color_transparent));
         else
             root.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
     }
 
-    public void setBackgroundAlpha(float alpha){
+    public void setBackgroundAlpha(float alpha) {
         if (alpha < 0)
             alpha = 0;
         else if (alpha > 1)
@@ -114,7 +114,7 @@ public class CommonActionBar extends LinearLayout {
         int alpha255 = (int) (255 * alpha);
         String a1 = Integer.toHexString(alpha255 / 16);
         String a2 = Integer.toHexString(alpha255 % 16);
-        String strColor = "#"+a1+a2+"27a350";
+        String strColor = "#" + a1 + a2 + "27a350";
         root.setBackgroundColor(Color.parseColor(strColor));
     }
 
@@ -183,15 +183,24 @@ public class CommonActionBar extends LinearLayout {
         }
     }
 
+    public void setIvRightSrc(int src, int color, OnClickListener listener) {
+        if (iv_right != null) {
+            iv_right.setImageResource(src);
+            iv_right.setColorFilter(color);
+            iv_right.setVisibility(View.VISIBLE);
+            iv_right.setOnClickListener(listener);
+        }
+    }
+
     /**
      * connect:
      * 0、连接成功
      * 1、连接中
      * 2、未连接
-     * */
+     */
 
-    public void connectSocket(int connect){
-        switch (connect){
+    public void connectSocket(int connect) {
+        switch (connect) {
             case SocketUtil.IM_CONNECTED:
                 progressbar.setVisibility(View.INVISIBLE);
                 break;

@@ -1,6 +1,9 @@
 package com.king.chat.socket.ui.fragment;
 
-import android.os.Build;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.king.chat.socket.R;
+import com.king.chat.socket.ui.activity.setting.SettingActivity;
 import com.king.chat.socket.ui.adapter.MineAdapter;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.ui.view.mine.MineHeaderActionBar;
+import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.UserInfoManager;
@@ -31,7 +38,7 @@ import butterknife.ButterKnife;
  * Use the {@link MineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -40,6 +47,8 @@ public class MineFragment extends BaseFragment {
 
     @BindView(R.id.action_bar)
     CommonActionBar actionBar;
+    @BindView(R.id.iv_setting)
+    ImageView iv_setting;
     @BindView(R.id.listview)
     ListView listview;
 
@@ -95,10 +104,17 @@ public class MineFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         ButterKnife.bind(this, view);
+        regitserReceiver();
         headerImageHeight = DisplayUtil.dp2px(300) - DisplayUtil.dp2px(40) - DisplayUtil.getStatusBarHeight(getActivity());
         initActionBar();
         initView(view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unRegisterReceiver();
     }
 
     private void initActionBar() {
@@ -109,6 +125,10 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initView(View view) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv_setting.getLayoutParams();
+        params.topMargin = DisplayUtil.getStatusBarHeight(getActivity());
+        iv_setting.setLayoutParams(params);
+        iv_setting.setOnClickListener(this);
         mineHeaderActionBar = new MineHeaderActionBar(getActivity());
         listview.addHeaderView(mineHeaderActionBar);
         adapter = new MineAdapter(getActivity());
@@ -140,5 +160,43 @@ public class MineFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_setting:
+                intent2Activity(SettingActivity.class);
+                break;
+        }
+    }
+
+    private BroadcastReceiver receiver;
+
+    /**
+     * 注册广播
+     */
+    private void regitserReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadCastUtil.ACTION_UPDATE_USER_INFO);
+        if (receiver == null) {
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String action = intent.getAction();
+                    mineHeaderActionBar.setData();
+                }
+            };
+        }
+        getActivity().registerReceiver(receiver, intentFilter);
+    }
+
+    /**
+     * 注销广播监听
+     */
+    private void unRegisterReceiver() {
+        if (null != receiver) {
+            getActivity().unregisterReceiver(receiver);
+        }
     }
 }

@@ -60,6 +60,11 @@ public class UrlConfig {
      */
     public static String HTTP_LOGOUT = HTTP_ROOT + "account/logout";
 
+    /**
+     * 更新个人信息
+     */
+    public static String HTTP_UPDATE_PERSON_INFO = HTTP_ROOT + "account/edit";
+
 
     /**
      * 查询跑友圈（好友或已关注的人）

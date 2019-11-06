@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,20 +14,14 @@ import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
 import com.king.chat.socket.bean.GroupInfo;
-import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.config.Config;
+import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
-import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentLeftView;
 import com.king.chat.socket.ui.view.chat.adapter.ChatContentRightView;
-import com.king.chat.socket.ui.view.popup.CustomPopupWindow;
-import com.king.chat.socket.ui.view.popup.PopChatView;
-import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
-import com.king.chat.socket.util.Logger;
 import com.king.chat.socket.util.TimeFormatUtils;
-import com.king.chat.socket.util.ToastUtil;
 import com.king.chat.socket.util.UserInfoManager;
 import com.king.chat.socket.util.socket.SocketUtil;
 
@@ -36,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Handler;
 
 /**
  * Created by maesinfo on 2019/9/19.
@@ -172,10 +164,15 @@ public class MainChatAdapter extends BaseAdapter {
         String strName = bean.getSourcesendername();
         String strHeader = "";
         ContactBean contactBean = null;
-        if (contactBeanMap.containsKey(strSourceAccount)){
+        if (bean.getGroupdata() == 1 && contactBeanMap.containsKey(strSourceAccount)){
             contactBean = contactBeanMap.get(strSourceAccount);
             strName = contactBean.getName();
             strHeader = contactBean.getHeadPortrait();
+        } else if (bean.getGroupdata() == 0){
+            if (sessionData != null)
+                strHeader = sessionData.getMessagefromavatar();
+            else
+                strHeader = bean.getMessagefromavatar();
         }
         if (type == 1){
             strNameTime = TimeFormatUtils.getSessionFormatDate(bean.getMessagetime()) + "  " + strName;

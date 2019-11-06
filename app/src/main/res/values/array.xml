@@ -9,4 +9,19 @@
         <item>文件</item>
     </string-array>
 
+    <string-array name="array_tab_mine_title">
+        <item>帮助</item>
+        <item>意见反馈</item>
+        <item>推荐APP给朋友</item>
+        <item>版本号</item>
+        <item>修改密码</item>
+    </string-array>
+
+    <array name="array_tab_mine_icon">
+        <item>@drawable/icon_tab_mine_help</item>
+        <item>@drawable/icon_tab_mine_fankui</item>
+        <item>@drawable/icon_tab_mine_recommend</item>
+        <item>@drawable/icon_tab_mine_version</item>
+        <item>@drawable/icon_tab_mine_password</item>
+    </array>
 </resources>

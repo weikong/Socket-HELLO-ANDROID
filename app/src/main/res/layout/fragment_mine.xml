@@ -26,4 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"></com.king.chat.socket.ui.view.actionbar.CommonActionBar>
+
+    <ImageView
+        android:id="@+id/iv_setting"
+        android:layout_width="@dimen/actionbar_height"
+        android:layout_height="@dimen/actionbar_height"
+        android:src="@drawable/icon_setting_bar"
+        android:padding="@dimen/margin_12dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"/>
 </RelativeLayout>
