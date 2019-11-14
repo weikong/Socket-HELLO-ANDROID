@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 
 import com.king.chat.socket.App;
-import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
+import com.king.chat.socket.ui.view.dialog.LoadingDialog;
 import com.king.chat.socket.util.SDCardUtil;
 import com.king.chat.socket.util.TimeFormatUtils;
 
@@ -129,7 +129,7 @@ public class BaseFragment extends Fragment {
     }
 
 
-    private ProgressDialogMyBg pDialog;
+    private LoadingDialog pDialog;
 
     /**
      * 显示等待对话框 当点击返回键取消对话框并停留在该界面
@@ -137,7 +137,7 @@ public class BaseFragment extends Fragment {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void showProgreessDialog() {
         if (pDialog == null) {
-            pDialog = new ProgressDialogMyBg(getActivity());
+            pDialog = new LoadingDialog(getActivity());
             pDialog.setCanceledOnTouchOutside(false);
         }
         if (pDialog.isShowing())

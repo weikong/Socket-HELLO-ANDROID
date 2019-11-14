@@ -27,18 +27,12 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSONObject;
-import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
+import com.king.chat.socket.ui.view.dialog.LoadingDialog;
 import com.king.chat.socket.util.AndroidOSInfoManager;
-import com.king.chat.socket.util.ToastUtil;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,7 +40,7 @@ import butterknife.ButterKnife;
 
 public class BaseUIActivity extends BaseDataActivity {
 
-    private ProgressDialogMyBg pDialog;
+    private LoadingDialog pDialog;
 
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -269,7 +263,7 @@ public class BaseUIActivity extends BaseDataActivity {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void showProgreessDialog() {
         if (pDialog == null) {
-            pDialog = new ProgressDialogMyBg(this);
+            pDialog = new LoadingDialog(this);
             pDialog.setCanceledOnTouchOutside(false);
         }
         if (pDialog.isShowing())

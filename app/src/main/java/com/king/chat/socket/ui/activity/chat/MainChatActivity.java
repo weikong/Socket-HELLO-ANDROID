@@ -723,7 +723,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionCopy(ChatRecordData bean) {
                 try {
-                    ToastUtil.show("Copy");
+//                    DisplayUtil.copy(getApplicationContext(),bean.getMessagecontent());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -734,7 +734,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionForword(ChatRecordData bean) {
                 try {
-                    ToastUtil.show("Forword");
+//                    ToastUtil.show("Forword");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -745,7 +745,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionSave(ChatRecordData bean) {
                 try {
-                    ToastUtil.show("Save");
+//                    ToastUtil.show("Save");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -756,7 +756,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionCollect(ChatRecordData bean) {
                 try {
-                    ToastUtil.show("Collect");
+//                    ToastUtil.show("Collect");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

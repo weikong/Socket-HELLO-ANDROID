@@ -10,8 +10,8 @@ import com.king.chat.socket.R;
 /**
  * Created by caojian on 16/10/24.
  */
-public class ProgressDialogMyBg extends Dialog {
-    public ProgressDialogMyBg(Context context) {
+public class LoadingDialog extends Dialog {
+    public LoadingDialog(Context context) {
         super(context, R.style.Dialog_loading_noDim);
         init();
     }

@@ -13,14 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 
 
-import com.king.chat.socket.App;
-import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
+import com.king.chat.socket.ui.view.dialog.LoadingDialog;
 import com.king.chat.socket.util.AppManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BaseDataActivity extends FragmentActivity {
 
@@ -184,7 +181,7 @@ public class BaseDataActivity extends FragmentActivity {
         );
     }
 
-    private ProgressDialogMyBg pDialog;
+    private LoadingDialog pDialog;
 
     /**
      * 显示等待对话框 当点击返回键取消对话框并停留在该界面
@@ -192,7 +189,7 @@ public class BaseDataActivity extends FragmentActivity {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void showProgreessDialog() {
         if (pDialog == null) {
-            pDialog = new ProgressDialogMyBg(this);
+            pDialog = new LoadingDialog(this);
             pDialog.setCanceledOnTouchOutside(false);
         }
         if (pDialog.isShowing())

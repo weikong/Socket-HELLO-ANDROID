@@ -26,7 +26,7 @@ import com.king.chat.socket.ui.activity.chat.face.FaceSourceDownActivity;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerFaceBottomUtilAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerGifAdapter;
-import com.king.chat.socket.ui.view.dialog.ProgressDialogMyBg;
+import com.king.chat.socket.ui.view.dialog.LoadingDialog;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
 import com.king.chat.socket.util.SDCardUtil;
@@ -402,7 +402,7 @@ public class BiaoQingView extends RelativeLayout {
         public void clickGif(String url);
     }
 
-    private ProgressDialogMyBg pDialog;
+    private LoadingDialog pDialog;
 
     /**
      * 显示等待对话框 当点击返回键取消对话框并停留在该界面
@@ -410,7 +410,7 @@ public class BiaoQingView extends RelativeLayout {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void showProgreessDialog() {
         if (pDialog == null) {
-            pDialog = new ProgressDialogMyBg(getContext());
+            pDialog = new LoadingDialog(getContext());
             pDialog.setCanceledOnTouchOutside(false);
         }
         if (pDialog.isShowing())

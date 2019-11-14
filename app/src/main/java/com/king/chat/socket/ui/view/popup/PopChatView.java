@@ -1,25 +1,24 @@
 package com.king.chat.socket.ui.view.popup;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
-import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
-import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
+import com.king.chat.socket.ui.view.dialog.ProgressMyDialog;
 import com.king.chat.socket.util.DisplayUtil;
-import com.king.chat.socket.util.GlideOptions;
-import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
+import com.king.chat.socket.util.SDCardUtil;
+import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
+import com.squareup.okhttp.Request;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +65,7 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
         View view = LayoutInflater.from(context).inflate(R.layout.view_pop_chat, this);
         ButterKnife.bind(this, view);
         tv_copy.setOnClickListener(this);
+        tv_save.setOnClickListener(this);
         tv_forword.setOnClickListener(this);
         tv_del.setOnClickListener(this);
     }
@@ -75,11 +75,17 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
         super.onAttachedToWindow();
     }
 
-    public void setData(ChatRecordData bean){
+    public void setLayoutPopLocation(int location) {
+        LayoutParams params = (LayoutParams) layout_pop.getLayoutParams();
+        params.topMargin = location;
+        layout_pop.setLayoutParams(params);
+    }
+
+    public void setData(ChatRecordData bean) {
         this.bean = bean;
         if (bean == null)
             return;
-        if (Config.userId.equalsIgnoreCase(bean.getSourcesenderid())){
+        if (Config.userId.equalsIgnoreCase(bean.getSourcesenderid())) {
             //自己发送的消息
             layout_root.setGravity(Gravity.RIGHT);
             layout_pop.setBackgroundResource(R.drawable.bg_chat_edit_pop_right);
@@ -119,16 +125,32 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (callBack == null)
-            return;
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_copy:
+                DisplayUtil.copy(getContext(), bean.getMessagecontent());
                 callBack.actionCopy(bean);
                 break;
             case R.id.tv_forword:
                 callBack.actionForword(bean);
                 break;
             case R.id.tv_save:
+                final ProgressMyDialog myDialog = loadDialog();
+                OkHttpClientManager.downloadAsyn(bean.getMessagecontent(), SDCardUtil.getImgDir(), new OkHttpClientManager.StringProgressCallback() {
+                    @Override
+                    public void onProgress(float progress) {
+                        myDialog.setProgress((int) (progress * 100));
+                    }
+
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        myDialog.setProgressState(false);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        myDialog.setProgressState(true);
+                    }
+                });
                 callBack.actionSave(bean);
                 break;
             case R.id.tv_collect:
@@ -148,9 +170,19 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
 
     public interface CallBack {
         void actionCopy(ChatRecordData bean);
+
         void actionForword(ChatRecordData bean);
+
         void actionSave(ChatRecordData bean);
+
         void actionCollect(ChatRecordData bean);
+
         void actionDel(ChatRecordData bean);
+    }
+
+    private ProgressMyDialog loadDialog() {
+        ProgressMyDialog myDialog = new ProgressMyDialog(getContext());
+        myDialog.show();
+        return myDialog;
     }
 }

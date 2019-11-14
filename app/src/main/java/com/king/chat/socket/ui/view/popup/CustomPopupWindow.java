@@ -3,6 +3,7 @@ package com.king.chat.socket.ui.view.popup;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -30,7 +31,7 @@ public class CustomPopupWindow extends PopupWindow {
     private View mPopupView;
 
     public CustomPopupWindow(View contentView) {
-        this(contentView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+        this(contentView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
     }
 
     CustomPopupWindow(View contentView, int width, int height, boolean focusable) {
@@ -74,17 +75,6 @@ public class CustomPopupWindow extends PopupWindow {
         }
     }
 
-    public void showDropDown(View parentView, View contentView, int count) {
-        //获取需要在其上方显示的控件的位置信息
-        int[] location = new int[2];
-        parentView.getLocationOnScreen(location);
-        if (location[1] > DisplayUtil.screenHeight / 2){
-            showUp(parentView,contentView,count);
-        } else {
-            showAsDropDown(parentView);
-        }
-    }
-
     /**
      * 显示下拉的PopupWindow
      *
@@ -107,49 +97,50 @@ public class CustomPopupWindow extends PopupWindow {
 
     /**
      * 设置显示在v上方(以v的左边距为开始位置)
+     *
      * @param v
      */
-    public void showUp(View v, View contentView, int count) {
+    public void showUp(View v, final PopChatView popView) {
         //获取需要在其上方显示的控件的位置信息
-        int[] location = new int[2];
+        final int[] location = new int[2];
         v.getLocationOnScreen(location);
         //在控件上方显示
-//        showAtLocation(v, Gravity.NO_GRAVITY, (location[0]) - popupWidth / 2, location[1] - popupHeight);
-//        int h = contentView.getMeasuredHeight();
-//        if (h <= 0){
-//            h = DisplayUtil.dp2px(180);
-//        }
-//        int h = DisplayUtil.dp2px(40) * count;
-        int h2 = DisplayUtil.dp2px(180);
-//        if (h > h2){
-//            h = h2;
-//        }
-        showAtLocation(v, Gravity.NO_GRAVITY, 0, location[1] - h2 - DisplayUtil.dp2px(10));
+        if (popView != null) {
+            showAtLocation(v, Gravity.NO_GRAVITY, 0, 0);
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    popView.setLayoutPopLocation(location[1] - DisplayUtil.dp2px(40));
+                }
+            });
+        }
     }
 
     /**
      * 设置显示在v上方(以v的左边距为开始位置)
+     *
      * @param v
      */
-    public void showUp(View v,View popView) {
+    public void showUp(View v, View popView) {
         //获取需要在其上方显示的控件的位置信息
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         //在控件上方显示
-        if (popView != null){
-            if (popView.getHeight() > 0){
-                showAtLocation(v, Gravity.NO_GRAVITY, 0, location[1] - popView.getHeight()-DisplayUtil.dp2px(10));
+        if (popView != null) {
+            if (popView.getHeight() > 0) {
+                showAtLocation(v, Gravity.NO_GRAVITY, 0, location[1] - popView.getHeight() - DisplayUtil.dp2px(10));
             } else {
-                showAtLocation(v, Gravity.NO_GRAVITY, 0, location[1]-DisplayUtil.dp2px(50));
+                showAtLocation(v, Gravity.NO_GRAVITY, 0, location[1] - DisplayUtil.dp2px(50));
             }
         }
     }
 
     /**
      * 设置显示在v上方（以v的中心位置为开始位置）
+     *
      * @param v
      */
-    public void showUp2(View v,View popView) {
+    public void showUp2(View v, View popView) {
         //获取需要在其上方显示的控件的位置信息
         int[] location = new int[2];
         v.getLocationOnScreen(location);
@@ -184,7 +175,6 @@ public class CustomPopupWindow extends PopupWindow {
 
     /**
      * 获取屏幕真实高度（包括虚拟键盘）
-     *
      */
     public static int getRealHeight() {
         WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
