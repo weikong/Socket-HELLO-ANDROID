@@ -5,20 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
-import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
+import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
-import com.king.chat.socket.util.TimeFormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +26,12 @@ public class ContactAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater layoutInflater;
     private List<ContactBean> list = new ArrayList<>();
+    private int imageWidth = 100;
 
     public ContactAdapter(Context mContext) {
         this.mContext = mContext;
         this.layoutInflater = LayoutInflater.from(mContext);
+        imageWidth = DisplayUtil.dp2px(100);
     }
 
     public List<ContactBean> getList() {
@@ -112,7 +108,7 @@ public class ContactAdapter extends BaseAdapter {
             }
         } else {
             viewHolder.tv_name.setText(bean.getName());
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getHeadPortrait()).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getHeadPortrait()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
         }
         return convertView;
     }

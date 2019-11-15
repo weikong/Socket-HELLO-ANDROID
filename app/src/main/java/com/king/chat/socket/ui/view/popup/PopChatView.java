@@ -68,6 +68,7 @@ public class PopChatView extends LinearLayout implements View.OnClickListener {
         tv_save.setOnClickListener(this);
         tv_forword.setOnClickListener(this);
         tv_del.setOnClickListener(this);
+        tv_collect.setOnClickListener(this);
     }
 
     @Override

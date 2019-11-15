@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,18 +36,20 @@ public class CustomToast {
             toastStart.setDuration(Toast.LENGTH_SHORT);
             toastStart.setView(toastRoot);
             toastStart.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static Toast showMessageToast(Context context, String message,int duration) {
+    public static void showImageToast(Context context, int drawable) {
         try {
             //加载Toast布局
             View toastRoot = LayoutInflater.from(context).inflate(R.layout.view_toast_message, null);
             //初始化布局控件
-            TextView mTextView = (TextView) toastRoot.findViewById(R.id.tv_message);
-            mTextView.setText(message);
+            ImageView imageView = (ImageView) toastRoot.findViewById(R.id.iv_message);
+            if (drawable > 0) {
+                imageView.setImageResource(drawable);
+            }
             //Toast的初始化
             Toast toastStart = new Toast(context);
             //获取屏幕高度
@@ -57,12 +60,11 @@ public class CustomToast {
 //        toastRoot.setMinimumWidth(width * 2 / 3);
             //Toast的Y坐标是屏幕高度的1/3，不会出现不适配的问题
             toastStart.setGravity(Gravity.TOP, 0, height / 2);
+            toastStart.setDuration(Toast.LENGTH_SHORT);
             toastStart.setView(toastRoot);
             toastStart.show();
-            return toastStart;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 }

@@ -17,6 +17,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.ChatFaceInputUtil;
+import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.voice.VoiceMediaPlayHelper;
 
@@ -39,6 +40,7 @@ public class ChatContentRightView extends RelativeLayout {
     ImageView iv_viedo_play;
     @BindView(R.id.iv_voice_play)
     ImageView iv_voice_play;
+    private int imageWidth = 100;
 
     public ChatContentRightView(Context context) {
         super(context);
@@ -59,6 +61,7 @@ public class ChatContentRightView extends RelativeLayout {
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_chat_content_right, this);
         ButterKnife.bind(this, view);
+        imageWidth = DisplayUtil.dp2px(200);
     }
 
     public void setData(final ChatRecordData bean) {
@@ -82,9 +85,9 @@ public class ChatContentRightView extends RelativeLayout {
                 String url = bean.getMessagecontent();
                 if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif")){
                     layout_root.setBackgroundColor(getResources().getColor(R.color.color_transparent));
-                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).into(iv_content);
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).override(imageWidth,imageWidth).into(iv_content);
                 } else {
-                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(url).into(iv_content);
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(url).override(imageWidth,imageWidth).into(iv_content);
                 }
                 iv_content.setOnClickListener(new OnClickListener() {
                     @Override

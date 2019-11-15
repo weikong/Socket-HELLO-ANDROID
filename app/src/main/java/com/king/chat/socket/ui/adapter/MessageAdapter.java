@@ -14,6 +14,7 @@ import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.ChatFaceInputUtil;
+import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 import com.king.chat.socket.util.TimeFormatUtils;
 
@@ -29,10 +30,12 @@ public class MessageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater layoutInflater;
     private List<SessionData> list = new ArrayList<>();
+    private int imageWidth = 100;
 
     public MessageAdapter(Context mContext) {
         this.mContext = mContext;
         this.layoutInflater = LayoutInflater.from(mContext);
+        imageWidth = DisplayUtil.dp2px(100);
     }
 
     public List<SessionData> getList() {
@@ -117,9 +120,9 @@ public class MessageAdapter extends BaseAdapter {
             if (!TextUtils.isEmpty(bean.getSourcesendername()) && bean.getMessagetype() == 9) {
                 strContent = bean.getSourcesendername() + "：" + bean.getMessagecontent();
             }
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader3()).load(bean.getMessagefromavatar()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
         } else {
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getMessagefromavatar()).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getMessagefromavatar()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
         }
 //        viewHolder.tv_content.setText(strContent);
         ChatFaceInputUtil.getInstance().setExpressionTextView(mContext, strContent, viewHolder.tv_content);

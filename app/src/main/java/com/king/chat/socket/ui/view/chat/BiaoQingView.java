@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,8 +21,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.king.chat.socket.R;
+import com.king.chat.socket.bean.BiaoQingBean;
 import com.king.chat.socket.bean.Expression;
 import com.king.chat.socket.bean.ExpressionList;
+import com.king.chat.socket.config.UrlConfig;
+import com.king.chat.socket.ui.DBFlow.collect.CollectData;
+import com.king.chat.socket.ui.DBFlow.collect.DBCollectImpl;
 import com.king.chat.socket.ui.activity.chat.face.FaceSourceDownActivity;
 import com.king.chat.socket.ui.adapter.BasePagerAdapter;
 import com.king.chat.socket.ui.adapter.RecyclerFaceBottomUtilAdapter;
@@ -33,7 +38,6 @@ import com.king.chat.socket.util.SDCardUtil;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -70,12 +74,12 @@ public class BiaoQingView extends RelativeLayout {
 
     @BindView(R.id.tv_more_add)
     TextView tv_more_add;
-    @BindView(R.id.tv_more_biaoqing)
-    TextView tv_biaoqing;
-    @BindView(R.id.tv_more_gif)
-    TextView tv_gif;
-    @BindView(R.id.tv_more_shoucang)
-    TextView tv_shoucang;
+//    @BindView(R.id.tv_more_biaoqing)
+//    TextView tv_biaoqing;
+//    @BindView(R.id.tv_more_gif)
+//    TextView tv_gif;
+//    @BindView(R.id.tv_more_shoucang)
+//    TextView tv_shoucang;
 
     @BindView(R.id.recyclerview_face)
     RecyclerView recyclerview_face;
@@ -118,62 +122,62 @@ public class BiaoQingView extends RelativeLayout {
                 FaceSourceDownActivity.startActivity(getContext());
             }
         });
-        tv_biaoqing.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setVisibility(View.VISIBLE);
-                layout_dot.setVisibility(View.VISIBLE);
-                recyclerview.setVisibility(View.INVISIBLE);
-                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
-                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-            }
-        });
-        tv_gif.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setVisibility(View.INVISIBLE);
-                layout_dot.setVisibility(View.INVISIBLE);
-                recyclerview.setVisibility(View.VISIBLE);
-                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
-                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-//                if (gifAdapter.getItemCount() == 0){
-                    String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
-                    File GifDirFile = new File(GIFDir);
-                    if (GifDirFile.exists()){
-                        File[] childFiles = GifDirFile.listFiles();
-                        if (childFiles.length > 0){
-                            File child = childFiles[tabIndex];
-                            File[] gifFiles = child.listFiles();
-                            gifAdapter.setFileDatas(Arrays.asList(gifFiles));
-                            gifAdapter.notifyDataSetChanged();
-                            tabIndex++;
-                            if (tabIndex >= childFiles.length){
-                                tabIndex = 0;
-                            }
-                        }
-                    }
-//                }
-            }
-        });
-        tv_shoucang.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setVisibility(View.INVISIBLE);
-                layout_dot.setVisibility(View.INVISIBLE);
-                recyclerview.setVisibility(View.INVISIBLE);
-                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
-                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-            }
-        });
+//        tv_biaoqing.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewPager.setVisibility(View.VISIBLE);
+//                layout_dot.setVisibility(View.VISIBLE);
+//                recyclerview.setVisibility(View.INVISIBLE);
+//                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//            }
+//        });
+//        tv_gif.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewPager.setVisibility(View.INVISIBLE);
+//                layout_dot.setVisibility(View.INVISIBLE);
+//                recyclerview.setVisibility(View.VISIBLE);
+//                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+////                if (gifAdapter.getItemCount() == 0){
+//                    String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
+//                    File GifDirFile = new File(GIFDir);
+//                    if (GifDirFile.exists()){
+//                        File[] childFiles = GifDirFile.listFiles();
+//                        if (childFiles.length > 0){
+//                            File child = childFiles[tabIndex];
+//                            File[] gifFiles = child.listFiles();
+//                            gifAdapter.setFileDatas(Arrays.asList(gifFiles));
+//                            gifAdapter.notifyDataSetChanged();
+//                            tabIndex++;
+//                            if (tabIndex >= childFiles.length){
+//                                tabIndex = 0;
+//                            }
+//                        }
+//                    }
+////                }
+//            }
+//        });
+//        tv_shoucang.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewPager.setVisibility(View.INVISIBLE);
+//                layout_dot.setVisibility(View.INVISIBLE);
+//                recyclerview.setVisibility(View.INVISIBLE);
+//                tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//            }
+//        });
     }
 
     int tabIndex = 0;
 
     private void initGifRecyclerView(){
-        GridLayoutManager layoutmanager = new GridLayoutManager(getContext(),5,RecyclerView.VERTICAL,false);
+        GridLayoutManager layoutmanager = new GridLayoutManager(getContext(),4,RecyclerView.VERTICAL,false);
         //设置RecyclerView 布局
         recyclerview.setLayoutManager(layoutmanager);
         recyclerview.addItemDecoration(new EvenItemDecoration());
@@ -208,30 +212,62 @@ public class BiaoQingView extends RelativeLayout {
                         viewPager.setVisibility(View.VISIBLE);
                         layout_dot.setVisibility(View.VISIBLE);
                         recyclerview.setVisibility(View.INVISIBLE);
-                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
-                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                         break;
                     case 1:
                         viewPager.setVisibility(View.INVISIBLE);
                         layout_dot.setVisibility(View.INVISIBLE);
-                        recyclerview.setVisibility(View.INVISIBLE);
-                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
-                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        recyclerview.setVisibility(View.VISIBLE);
+//                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+                        List<CollectData> list = DBCollectImpl.getInstance().queryCollect();
+                        List<BiaoQingBean> list1 = new ArrayList<>();
+                        for (CollectData collectData : list){
+                            String url = collectData.getContent();
+                            if (TextUtils.isEmpty(url))
+                                continue;
+                            String fileName = url;
+                            String[] names = url.split("/");
+                            if (names != null && names.length > 0){
+                                fileName = names[names.length - 1];
+                            }
+                            BiaoQingBean biaoQingBean = new BiaoQingBean();
+                            biaoQingBean.setName(fileName);
+                            biaoQingBean.setUrl(url);
+                            list1.add(biaoQingBean);
+                        }
+                        gifAdapter.setListDatas(list1);
+                        gifAdapter.notifyDataSetChanged();
                         break;
                     default:
                         viewPager.setVisibility(View.INVISIBLE);
                         layout_dot.setVisibility(View.INVISIBLE);
                         recyclerview.setVisibility(View.VISIBLE);
-                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
-                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
-                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                        tv_gif.setBackgroundColor(getResources().getColor(R.color.color_line));
+//                        tv_biaoqing.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
+//                        tv_shoucang.setBackgroundColor(getResources().getColor(R.color.color_ffffff));
                         String GIFDir = SDCardUtil.getDiskCacheDir(getContext(),"gif");
                         String gifFileDir = GIFDir+File.separator+name;
                         File file = new File(gifFileDir);
                         File[] gifFiles = file.listFiles();
-                        gifAdapter.setFileDatas(Arrays.asList(gifFiles));
+//                        gifAdapter.setFileDatas(Arrays.asList(gifFiles));
+                        List<BiaoQingBean> list2 = new ArrayList<>();
+                        if (gifFiles != null){
+                            for (File item : gifFiles){
+                                String fileNname = item.getName();
+                                String parent = item.getParentFile().getName();
+                                String url = UrlConfig.HTTP_ROOT + "gif/res"+File.separator+parent+File.separator+fileNname;
+                                BiaoQingBean biaoQingBean = new BiaoQingBean();
+                                biaoQingBean.setName(fileNname);
+                                biaoQingBean.setLocalPath(item.getAbsolutePath());
+                                biaoQingBean.setUrl(url);
+                                list2.add(biaoQingBean);
+                            }
+                        }
+                        gifAdapter.setListDatas(list2);
                         gifAdapter.notifyDataSetChanged();
                         break;
                 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_corners_clear_cache"
+        android:maxWidth="@dimen/margin_160dp"
+        android:minHeight="@dimen/margin_80dp"
+        android:minWidth="@dimen/margin_80dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon_toast_ok" />
+</LinearLayout>

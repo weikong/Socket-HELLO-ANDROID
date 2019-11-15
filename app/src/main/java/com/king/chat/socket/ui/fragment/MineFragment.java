@@ -118,10 +118,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initActionBar() {
-        actionBar.setBackgroundAlpha(true);
-        actionBar.setFillStatusBar(true);
-        actionBar.setTitle(UserInfoManager.getInstance().getContactBean().getName());
-        actionBar.setTitleAlpha(0);
+        try {
+            actionBar.setBackgroundAlpha(true);
+            actionBar.setFillStatusBar(true);
+            actionBar.setTitleAlpha(0);
+            actionBar.setTitle(UserInfoManager.getInstance().getContactBean().getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initView(View view) {
@@ -140,18 +144,18 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Logger.e(TAG,"onScrollStateChanged scrollState = "+scrollState);
+                Logger.e(TAG, "onScrollStateChanged scrollState = " + scrollState);
 
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                View topView  = listview.getChildAt(0);
-                if (topView != null){
+                View topView = listview.getChildAt(0);
+                if (topView != null) {
                     float alpha = 1.0f;
-                    if (firstVisibleItem == 0){
+                    if (firstVisibleItem == 0) {
                         int top = listview.getChildAt(0).getTop();
-                        alpha = Math.abs(top * 1.0f/headerImageHeight);
+                        alpha = Math.abs(top * 1.0f / headerImageHeight);
                         actionBar.setBackgroundAlpha(alpha);
                     } else {
                         actionBar.setBackgroundAlpha(alpha);
@@ -164,7 +168,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_setting:
                 intent2Activity(SettingActivity.class);
                 break;

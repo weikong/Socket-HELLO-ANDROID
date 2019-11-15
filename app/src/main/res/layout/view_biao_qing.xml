@@ -9,13 +9,13 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_height="120dp">
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/margin_10dp">
 
     </android.support.v4.view.ViewPager>
 
@@ -23,108 +23,111 @@
         android:id="@+id/layout_dot"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/margin_10dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignBottom="@+id/viewpager"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_6dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/iv_dot1"
             android:layout_width="@dimen/margin_12dp"
             android:layout_height="@dimen/margin_6dp"
             android:layout_margin="@dimen/margin_2dp"
-            android:background="@drawable/bg_circle_dot_select"/>
+            android:background="@drawable/bg_circle_dot_select" />
 
         <ImageView
             android:id="@+id/iv_dot2"
             android:layout_width="@dimen/margin_6dp"
             android:layout_height="@dimen/margin_6dp"
             android:layout_margin="@dimen/margin_2dp"
-            android:background="@drawable/bg_circle_dot_nomal"/>
+            android:background="@drawable/bg_circle_dot_nomal" />
 
         <ImageView
             android:id="@+id/iv_dot3"
             android:layout_width="@dimen/margin_6dp"
             android:layout_height="@dimen/margin_6dp"
             android:layout_margin="@dimen/margin_2dp"
-            android:background="@drawable/bg_circle_dot_nomal"/>
+            android:background="@drawable/bg_circle_dot_nomal" />
 
         <ImageView
             android:id="@+id/iv_dot4"
             android:layout_width="@dimen/margin_6dp"
             android:layout_height="@dimen/margin_6dp"
             android:layout_margin="@dimen/margin_2dp"
-            android:background="@drawable/bg_circle_dot_nomal"/>
+            android:background="@drawable/bg_circle_dot_nomal" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layout_face_more"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_40dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
         android:background="@color/color_ffffff"
-        android:layout_alignParentBottom="true">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_more_add"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:drawableLeft="@drawable/icon_add"
+            android:drawableLeft="@drawable/icon_tag_add"
             android:gravity="center"
-            android:drawableTint="@color/color_999999"
             android:paddingLeft="@dimen/margin_12dp"
-            android:paddingRight="@dimen/margin_12dp"/>
+            android:paddingRight="@dimen/margin_12dp" />
+
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
-            android:background="@color/color_f4f4f4"/>
+            android:background="@color/color_f4f4f4" />
 
         <TextView
             android:id="@+id/tv_more_biaoqing"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="表情"
-            android:visibility="gone"
-            android:gravity="center"
             android:background="@color/color_line"
+            android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
-            android:paddingRight="@dimen/margin_8dp"/>
+            android:paddingRight="@dimen/margin_8dp"
+            android:text="表情"
+            android:visibility="gone" />
+
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
-            android:visibility="gone"
-            android:background="@color/color_f4f4f4"/>
+            android:background="@color/color_f4f4f4"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_more_shoucang"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="收藏"
-            android:visibility="gone"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
-            android:paddingRight="@dimen/margin_8dp"/>
+            android:paddingRight="@dimen/margin_8dp"
+            android:text="收藏"
+            android:visibility="gone" />
 
         <View
             android:layout_width="@dimen/margin_1dp"
             android:layout_height="@dimen/margin_12dp"
-            android:visibility="gone"
-            android:background="@color/color_f4f4f4"/>
+            android:background="@color/color_f4f4f4"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_more_gif"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="rabbit"
-            android:visibility="gone"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_8dp"
-            android:paddingRight="@dimen/margin_8dp"/>
+            android:paddingRight="@dimen/margin_8dp"
+            android:text="rabbit"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_face"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"/>
+            android:visibility="visible" />
     </LinearLayout>
 </RelativeLayout>

@@ -45,6 +45,8 @@ import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.DBChatRecordImpl;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
+import com.king.chat.socket.ui.DBFlow.collect.CollectData;
+import com.king.chat.socket.ui.DBFlow.collect.DBCollectImpl;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
 import com.king.chat.socket.ui.DBFlow.session.SessionData;
 import com.king.chat.socket.ui.activity.MainActivity;
@@ -99,7 +101,7 @@ public class MainChatActivity extends BaseDataActivity {
     private boolean inputHasContent = false;
     private boolean isPullScroll = false;
     private float oldY = 0;
-//    private ContactBean contactBean;
+    //    private ContactBean contactBean;
     private SessionData sessionData;
     public static Activity activity;
     private GroupInfo groupInfo;
@@ -113,7 +115,7 @@ public class MainChatActivity extends BaseDataActivity {
         ButterKnife.bind(this);
         regitserReceiver();
         sessionData = (SessionData) getIntent().getSerializableExtra("DATA");
-        if (sessionData != null && sessionData.getGroupdata() == 1){
+        if (sessionData != null && sessionData.getGroupdata() == 1) {
             isGroup = true;
         }
 //        contactBean = (ContactBean) getIntent().getSerializableExtra("DATA");
@@ -123,8 +125,8 @@ public class MainChatActivity extends BaseDataActivity {
         actionBar.setIvRightSrc(R.drawable.icon_home_category_white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isGroup && groupInfo != null){
-                    intent2Activity(ChatGroupInfoActivity.class,groupInfo);
+                if (isGroup && groupInfo != null) {
+                    intent2Activity(ChatGroupInfoActivity.class, groupInfo);
                 }
             }
         });
@@ -144,13 +146,13 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void showLeftPop(View v, ChatRecordData bean) {
                 popChatView.setData(bean);
-                showPopupWindow(customPopupWindow,v);
+                showPopupWindow(customPopupWindow, v);
             }
 
             @Override
             public void showRightPop(View v, ChatRecordData bean) {
                 popChatView.setData(bean);
-                showPopupWindow(customPopupWindow,v);
+                showPopupWindow(customPopupWindow, v);
             }
         });
         listView.setAdapter(adapter);
@@ -204,7 +206,7 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void onClick(View v) {
                 if (inputHasContent) {
-                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT, sessionData,sessionData.getGroupdata());
+                    SocketUtil.getInstance().sendContent(mEditText.getText().toString(), MessageChatType.TYPE_TEXT, sessionData, sessionData.getGroupdata());
                 } else {
                     showExpandView("更多");
                 }
@@ -267,14 +269,14 @@ public class MainChatActivity extends BaseDataActivity {
 
             @Override
             public void clickGif(String url) {
-                SocketUtil.getInstance().sendContent(url, MessageChatType.TYPE_IMG, sessionData,sessionData.getGroupdata());
+                SocketUtil.getInstance().sendContent(url, MessageChatType.TYPE_IMG, sessionData, sessionData.getGroupdata());
             }
         });
         initPopupWindow();
         SocketUtil.getInstance().setmHandler(mHandler);
         clearUnreadCount();
         loadData();
-        if (sessionData != null && sessionData.getGroupdata() == 1){
+        if (sessionData != null && sessionData.getGroupdata() == 1) {
             groupQueryTask(sessionData.getMessagefromid());
         }
     }
@@ -318,9 +320,9 @@ public class MainChatActivity extends BaseDataActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == INTENT_REQUEST_PHOTO) {
-                int type = data.getIntExtra("TYPE",0);
+                int type = data.getIntExtra("TYPE", 0);
                 String path = data.getStringExtra("Path");
-                if (type>0){
+                if (type > 0) {
                     sendFileTask(type, path);
                 }
             } else if (requestCode == REQUEST_ALBUM) {
@@ -434,7 +436,7 @@ public class MainChatActivity extends BaseDataActivity {
         try {
             int offset = adapter.getCount();
             List<ChatRecordData> list;
-            if (sessionData != null && sessionData.getGroupdata() == 1){
+            if (sessionData != null && sessionData.getGroupdata() == 1) {
                 list = DBChatRecordImpl.getInstance().queryGroupChatRecord(offset, Config.PageSize);
             } else {
                 list = DBChatRecordImpl.getInstance().queryChatRecord(offset, Config.PageSize);
@@ -655,7 +657,7 @@ public class MainChatActivity extends BaseDataActivity {
             ToastUtil.show("文件不存在");
             return;
         }
-        final ChatRecordData chatRecordData = SocketUtil.getInstance().sendContentFilePre(file.getAbsolutePath(), fileType, sessionData,sessionData.getGroupdata());
+        final ChatRecordData chatRecordData = SocketUtil.getInstance().sendContentFilePre(file.getAbsolutePath(), fileType, sessionData, sessionData.getGroupdata());
         if (chatRecordData == null)
             return;
         HttpTaskUtil.getInstance().postUploadTask(UrlConfig.HTTP_UPLOAD_IMAGES, new File(path), "file", new OkHttpClientManager.StringCallback() {
@@ -734,7 +736,6 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionForword(ChatRecordData bean) {
                 try {
-//                    ToastUtil.show("Forword");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -745,7 +746,6 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionSave(ChatRecordData bean) {
                 try {
-//                    ToastUtil.show("Save");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -756,7 +756,18 @@ public class MainChatActivity extends BaseDataActivity {
             @Override
             public void actionCollect(ChatRecordData bean) {
                 try {
-//                    ToastUtil.show("Collect");
+                    CollectData collectData = new CollectData();
+                    collectData.setCollecttime(System.currentTimeMillis());
+                    collectData.setCollecttype(1);
+                    collectData.setContent(bean.getMessagecontent());
+                    long insert = DBCollectImpl.getInstance().insertCollect(collectData);
+                    if (insert > 0) {
+//                        CustomToast.showImageToast(MainChatActivity.this, R.drawable.icon_toast_ok);
+                        ToastUtil.show("成功");
+                    } else {
+//                        CustomToast.showImageToast(MainChatActivity.this, R.drawable.icon_toast_fail);
+                        ToastUtil.show("失敗");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -768,7 +779,7 @@ public class MainChatActivity extends BaseDataActivity {
             public void actionDel(ChatRecordData bean) {
                 try {
                     boolean isDel = DBChatRecordImpl.getInstance().deleteChatRecord(bean);
-                    if (isDel){
+                    if (isDel) {
                         adapter.getList().remove(bean);
                         adapter.notifyDataSetChanged();
                     }
@@ -803,7 +814,7 @@ public class MainChatActivity extends BaseDataActivity {
         boolean isShow = false;
         if (null != mPopupWindow && !mPopupWindow.isShowing()) {
 //            mPopupWindow.showAsDropDown(view);
-            mPopupWindow.showUp(view,popChatView);
+            mPopupWindow.showUp(view, popChatView);
             isShow = true;
         }
         return isShow;
@@ -812,9 +823,9 @@ public class MainChatActivity extends BaseDataActivity {
 
     private void groupQueryTask(String groupAccount) {
 //        showProgreessDialog();
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("groupaccount", groupAccount);
-        HttpTaskUtil.getInstance().postTask(UrlConfig.HTTP_GROUP_QUERY_BY_GROUP_ACCOUNT,params, new OkHttpClientManager.StringCallback() {
+        HttpTaskUtil.getInstance().postTask(UrlConfig.HTTP_GROUP_QUERY_BY_GROUP_ACCOUNT, params, new OkHttpClientManager.StringCallback() {
             @Override
             public void onFailure(Request request, IOException e) {
                 dismissProgressDialog();
@@ -825,8 +836,8 @@ public class MainChatActivity extends BaseDataActivity {
                 try {
                     BaseTaskBean baseTaskBean = JSONObject.parseObject(response, BaseTaskBean.class);
                     if (baseTaskBean.getCode() == 1) {
-                        groupInfo = JSONObject.parseObject(baseTaskBean.getData(),GroupInfo.class);
-                        if (adapter != null){
+                        groupInfo = JSONObject.parseObject(baseTaskBean.getData(), GroupInfo.class);
+                        if (adapter != null) {
                             adapter.setGroupInfo(groupInfo);
                             adapter.notifyDataSetChanged();
                         }
