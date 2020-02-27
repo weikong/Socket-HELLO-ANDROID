@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.king.chat.socket.GlideApp;
 import com.king.chat.socket.R;
 import com.king.chat.socket.bean.ContactBean;
-import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
 
@@ -108,17 +108,18 @@ public class ContactAdapter extends BaseAdapter {
             }
         } else {
             viewHolder.tv_name.setText(bean.getName());
-            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getHeadPortrait()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
+//            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionDefaultHeader4()).load(bean.getHeadPortrait()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
+            GlideApp.with(mContext).applyDefaultRequestOptions(GlideOptions.optionsTransparentRoundedCorners()).load(bean.getHeadPortrait()).override(imageWidth,imageWidth).dontAnimate().into(viewHolder.iv_header);
         }
         return convertView;
     }
 
     class ViewHolder {
-        RoundAngleImageView iv_header;
+        ImageView iv_header;
         TextView tv_name;
 
         public ViewHolder(View view) {
-            this.iv_header = (RoundAngleImageView) view.findViewById(R.id.iv_header);
+            this.iv_header = (ImageView) view.findViewById(R.id.iv_header);
             this.tv_name = (TextView) view.findViewById(R.id.tv_name);
         }
     }

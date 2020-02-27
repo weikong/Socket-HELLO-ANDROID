@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.R;
+import com.king.chat.socket.config.Config;
 import com.king.chat.socket.ui.fragment.base.BaseFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
+import com.king.chat.socket.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,5 +99,17 @@ public class DiscoveryFragment extends BaseFragment {
     }
 
     private void initView(View view) {
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            JSONObject jsonObject = JSONObject.parseObject(Config.strJson);
+            String protocal = jsonObject.getString("protocal");
+            JSONObject protocalJson = JSONObject.parseObject(protocal);
+            String multimediaTranslateMessage = protocalJson.getString("multimediaTranslateMessage");
+            Logger.e(jsonObject.toJSONString());
+        }
     }
 }

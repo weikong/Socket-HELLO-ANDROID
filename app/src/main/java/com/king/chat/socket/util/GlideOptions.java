@@ -3,6 +3,7 @@
  */
 package com.king.chat.socket.util;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.king.chat.socket.R;
@@ -96,6 +97,12 @@ public class GlideOptions {
         return requestOptions;
     }
 
+    public static RequestOptions optionsTransparentRoundedCorners() {
+        RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(6)).override(DisplayUtil.dp2px(200),DisplayUtil.dp2px(200));
+        requestOptions.placeholder(R.drawable.bg_item_gray);
+        return requestOptions;
+    }
+
     public static RequestOptions optionsRoundedCorners(int radius) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.ic_launcher);
@@ -129,6 +136,14 @@ public class GlideOptions {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.bg_item_gray);
         requestOptions.centerCrop();
+        return requestOptions;
+    }
+
+    public static RequestOptions optionsSourceTransparent() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.bg_item_transparent);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        requestOptions.fitCenter();
         return requestOptions;
     }
 }

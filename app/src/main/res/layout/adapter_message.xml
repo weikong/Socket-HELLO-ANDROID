@@ -10,7 +10,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-    <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
+    <ImageView
         android:id="@+id/iv_header"
         android:layout_width="55dp"
         android:layout_height="55dp"
@@ -20,16 +20,19 @@
 
     <TextView
         android:id="@+id/tv_unread"
-        android:layout_width="@dimen/margin_20dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/margin_20dp"
+        android:minWidth="@dimen/margin_16dp"
         android:layout_alignRight="@+id/iv_header"
         android:layout_marginRight="-10dp"
-        android:background="@drawable/bg_circle_red"
+        android:background="@drawable/bg_unread_red"
+        android:paddingLeft="@dimen/margin_8dp"
+        android:paddingRight="@dimen/margin_8dp"
         android:gravity="center"
         android:singleLine="true"
-        android:text="99"
+        android:text=""
         android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/text_size_12sp"
+        android:textSize="@dimen/text_size_11sp"
         android:visibility="invisible" />
 
     <LinearLayout

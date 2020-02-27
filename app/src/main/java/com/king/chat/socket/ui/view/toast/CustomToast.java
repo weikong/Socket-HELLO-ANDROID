@@ -44,11 +44,40 @@ public class CustomToast {
     public static void showImageToast(Context context, int drawable) {
         try {
             //加载Toast布局
-            View toastRoot = LayoutInflater.from(context).inflate(R.layout.view_toast_message, null);
+            View toastRoot = LayoutInflater.from(context).inflate(R.layout.view_toast_image, null);
             //初始化布局控件
             ImageView imageView = (ImageView) toastRoot.findViewById(R.id.iv_message);
             if (drawable > 0) {
                 imageView.setImageResource(drawable);
+            }
+            //Toast的初始化
+            Toast toastStart = new Toast(context);
+            //获取屏幕高度
+//        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        int height = wm.getDefaultDisplay().getHeight();
+            int height = DisplayUtil.screenHeight;
+            int width = DisplayUtil.screenWidth;
+//        toastRoot.setMinimumWidth(width * 2 / 3);
+            //Toast的Y坐标是屏幕高度的1/3，不会出现不适配的问题
+            toastStart.setGravity(Gravity.TOP, 0, height / 2);
+            toastStart.setDuration(Toast.LENGTH_SHORT);
+            toastStart.setView(toastRoot);
+            toastStart.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showResultToast(Context context, boolean isSuccess) {
+        try {
+            //加载Toast布局
+            View toastRoot = LayoutInflater.from(context).inflate(R.layout.view_toast_image, null);
+            //初始化布局控件
+            ImageView imageView = (ImageView) toastRoot.findViewById(R.id.iv_message);
+            if (isSuccess) {
+                imageView.setImageResource(R.drawable.icon_toast_ok);
+            } else {
+                imageView.setImageResource(R.drawable.icon_toast_fail);
             }
             //Toast的初始化
             Toast toastStart = new Toast(context);

@@ -30,10 +30,11 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
     private List<File> files = new ArrayList<>();
     private List<BiaoQingBean> list = new ArrayList<>();
     private int imageWidth = 100;
+    private int page = 0;
 
     public RecyclerGifAdapter(Context context) {
         this.context = context;
-        imageWidth = DisplayUtil.dp2px(100);
+        imageWidth = DisplayUtil.dp2px(80);
     }
 
     public void setDatas(List<String> list) {
@@ -55,6 +56,10 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
         if (list == null)
             return;
         this.list.addAll(list);
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 
     @Override
@@ -84,11 +89,16 @@ public class RecyclerGifAdapter extends RecyclerView.Adapter<RecyclerGifAdapter.
 //            }
 //        });
 
+        if (page == 1){
+            holder.itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else {
+            holder.itemImage.setScaleType(ImageView.ScaleType.CENTER);
+        }
         final BiaoQingBean biaoQingBean = list.get(position);
         if (biaoQingBean != null && biaoQingBean.getName().toLowerCase().endsWith(".gif")){
             GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(biaoQingBean.getUrl()).override(imageWidth,imageWidth).into(holder.itemImage);
         } else {
-            GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(biaoQingBean.getUrl()).override(imageWidth,imageWidth).into(holder.itemImage);
+            GlideApp.with(context).applyDefaultRequestOptions(GlideOptions.optionsTransparentCenterCrop()).load(biaoQingBean.getUrl()).override(imageWidth,imageWidth).into(holder.itemImage);
         }
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override

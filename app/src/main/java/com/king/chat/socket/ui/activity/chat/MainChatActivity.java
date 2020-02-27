@@ -26,6 +26,7 @@ import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,8 +57,10 @@ import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
 import com.king.chat.socket.ui.view.chat.BiaoQingView;
 import com.king.chat.socket.ui.view.chat.MoreView;
 import com.king.chat.socket.ui.view.chat.VoiceView;
+import com.king.chat.socket.ui.view.popup.CustomChatPopWindow;
 import com.king.chat.socket.ui.view.popup.CustomPopupWindow;
 import com.king.chat.socket.ui.view.popup.PopChatView;
+import com.king.chat.socket.ui.view.toast.CustomToast;
 import com.king.chat.socket.util.AppManager;
 import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.DisplayUtil;
@@ -145,14 +148,14 @@ public class MainChatActivity extends BaseDataActivity {
         adapter.setCallBack(new MainChatAdapter.CallBack() {
             @Override
             public void showLeftPop(View v, ChatRecordData bean) {
-                popChatView.setData(bean);
-                showPopupWindow(customPopupWindow, v);
+                customChatPopWindow.setData(bean);
+                showPopupWindow(customChatPopWindow,v);
             }
 
             @Override
             public void showRightPop(View v, ChatRecordData bean) {
-                popChatView.setData(bean);
-                showPopupWindow(customPopupWindow, v);
+                customChatPopWindow.setData(bean);
+                showPopupWindow(customChatPopWindow,v);
             }
         });
         listView.setAdapter(adapter);
@@ -272,7 +275,7 @@ public class MainChatActivity extends BaseDataActivity {
                 SocketUtil.getInstance().sendContent(url, MessageChatType.TYPE_IMG, sessionData, sessionData.getGroupdata());
             }
         });
-        initPopupWindow();
+        initChatPopupWindow();
         SocketUtil.getInstance().setmHandler(mHandler);
         clearUnreadCount();
         loadData();
@@ -715,42 +718,24 @@ public class MainChatActivity extends BaseDataActivity {
     }
 
 
-    CustomPopupWindow customPopupWindow;
-    PopChatView popChatView;
+    CustomChatPopWindow customChatPopWindow;
 
-    private void initPopupWindow() {
-        //筛选分类
-        popChatView = new PopChatView(this);
-        popChatView.setCallBack(new PopChatView.CallBack() {
+    private void initChatPopupWindow() {
+        customChatPopWindow = new CustomChatPopWindow(this);
+        customChatPopWindow.setCallBack(new CustomChatPopWindow.CallBack() {
             @Override
             public void actionCopy(ChatRecordData bean) {
-                try {
-//                    DisplayUtil.copy(getApplicationContext(),bean.getMessagecontent());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    hidePopupWindow(customPopupWindow);
-                }
+
             }
 
             @Override
             public void actionForword(ChatRecordData bean) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    hidePopupWindow(customPopupWindow);
-                }
+
             }
 
             @Override
             public void actionSave(ChatRecordData bean) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    hidePopupWindow(customPopupWindow);
-                }
+
             }
 
             @Override
@@ -763,15 +748,14 @@ public class MainChatActivity extends BaseDataActivity {
                     long insert = DBCollectImpl.getInstance().insertCollect(collectData);
                     if (insert > 0) {
 //                        CustomToast.showImageToast(MainChatActivity.this, R.drawable.icon_toast_ok);
-                        ToastUtil.show("成功");
+                        ToastUtil.show("收藏成功");
                     } else {
 //                        CustomToast.showImageToast(MainChatActivity.this, R.drawable.icon_toast_fail);
-                        ToastUtil.show("失敗");
+                        ToastUtil.show("收藏失败");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    hidePopupWindow(customPopupWindow);
                 }
             }
 
@@ -786,13 +770,9 @@ public class MainChatActivity extends BaseDataActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    hidePopupWindow(customPopupWindow);
                 }
             }
         });
-        customPopupWindow = new CustomPopupWindow(popChatView);
-        customPopupWindow.enableKeyBackDismiss();
-        customPopupWindow.enablOutsideClickDismiss();
     }
 
     /**
@@ -810,11 +790,10 @@ public class MainChatActivity extends BaseDataActivity {
     /**
      * 显示PopupWindow
      */
-    private boolean showPopupWindow(CustomPopupWindow mPopupWindow, View view) {
+    private boolean showPopupWindow(PopupWindow mPopupWindow, View view) {
         boolean isShow = false;
         if (null != mPopupWindow && !mPopupWindow.isShowing()) {
-//            mPopupWindow.showAsDropDown(view);
-            mPopupWindow.showUp(view, popChatView);
+            mPopupWindow.showAsDropDown(view);
             isShow = true;
         }
         return isShow;

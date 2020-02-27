@@ -1,53 +1,24 @@
 package com.king.chat.socket.ui.activity.media;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
 import com.king.chat.socket.R;
-import com.king.chat.socket.bean.ContactBean;
-import com.king.chat.socket.bean.base.BaseTaskBean;
-import com.king.chat.socket.config.Config;
-import com.king.chat.socket.config.UrlConfig;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.DBChatRecordImpl;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
-import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
-import com.king.chat.socket.ui.activity.ChooseImages.ChooseImagesActivity;
-import com.king.chat.socket.ui.activity.MainActivity;
-import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.base.BaseUIActivity;
-import com.king.chat.socket.ui.fragment.ContactFragment;
-import com.king.chat.socket.ui.fragment.DiscoveryFragment;
-import com.king.chat.socket.ui.fragment.MessageFragment;
-import com.king.chat.socket.ui.fragment.MineFragment;
 import com.king.chat.socket.ui.fragment.media.ShowImageFragment;
 import com.king.chat.socket.ui.fragment.media.ShowVideoFragment;
 import com.king.chat.socket.ui.view.actionbar.CommonActionBar;
-import com.king.chat.socket.ui.view.viewpager.CustomViewPager;
 import com.king.chat.socket.util.DisplayUtil;
-import com.king.chat.socket.util.SharePreferceTool;
-import com.king.chat.socket.util.UserInfoManager;
-import com.king.chat.socket.util.httpUtil.HttpTaskUtil;
-import com.king.chat.socket.util.httpUtil.OkHttpClientManager;
-import com.king.chat.socket.util.socket.SocketUtil;
-import com.squareup.okhttp.Request;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

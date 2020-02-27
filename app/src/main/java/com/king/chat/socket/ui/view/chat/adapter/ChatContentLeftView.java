@@ -15,7 +15,6 @@ import com.king.chat.socket.R;
 import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.chatRecord.MessageChatType;
 import com.king.chat.socket.ui.activity.media.ShowMediaPlayActivity;
-import com.king.chat.socket.ui.view.ImageView.RoundAngleImageView;
 import com.king.chat.socket.util.ChatFaceInputUtil;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.GlideOptions;
@@ -35,12 +34,13 @@ public class ChatContentLeftView extends RelativeLayout {
     @BindView(R.id.tv_content)
     TextView tv_content;
     @BindView(R.id.iv_content)
-    RoundAngleImageView iv_content;
+    ImageView iv_content;
     @BindView(R.id.iv_viedo_play)
     ImageView iv_viedo_play;
     @BindView(R.id.iv_voice_play)
     ImageView iv_voice_play;
     private int imageWidth = 100;
+    private int textWidth = 120;
 
     public ChatContentLeftView(Context context) {
         super(context);
@@ -61,6 +61,7 @@ public class ChatContentLeftView extends RelativeLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.view_chat_content_left, this);
         ButterKnife.bind(this, view);
         imageWidth = DisplayUtil.dp2px(200);
+        textWidth = DisplayUtil.screenWidth - DisplayUtil.dp2px(120);
     }
 
     public void setData(final ChatRecordData bean) {
@@ -68,6 +69,7 @@ public class ChatContentLeftView extends RelativeLayout {
         int messageChatType = bean.getMessagechattype();
         switch (messageChatType) {
             case MessageChatType.TYPE_TEXT:
+                tv_content.setMaxWidth(textWidth);
                 tv_content.setVisibility(View.VISIBLE);
                 iv_content.setVisibility(View.GONE);
                 iv_viedo_play.setVisibility(View.GONE);
@@ -84,9 +86,11 @@ public class ChatContentLeftView extends RelativeLayout {
                 String url = bean.getMessagecontent();
                 if (!TextUtils.isEmpty(url) && url.toLowerCase().endsWith("gif")){
                     layout_root.setBackgroundColor(getResources().getColor(R.color.color_transparent));
-                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).override(imageWidth,imageWidth).into(iv_content);
+//                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).asGif().load(url).override(imageWidth,imageWidth).into(iv_content);
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparentRoundedCorners()).asGif().load(url).into(iv_content);
                 } else {
-                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(url).override(imageWidth,imageWidth).into(iv_content);
+//                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparent()).load(url).override(imageWidth,imageWidth).into(iv_content);
+                    GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparentRoundedCorners()).load(url).into(iv_content);
                 }
                 iv_content.setOnClickListener(new OnClickListener() {
                     @Override
@@ -109,7 +113,8 @@ public class ChatContentLeftView extends RelativeLayout {
                 iv_content.setVisibility(View.VISIBLE);
                 iv_viedo_play.setVisibility(View.VISIBLE);
                 iv_voice_play.setVisibility(View.GONE);
-                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+//                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsGrayItem()).load(bean.getMessagecontent()).dontAnimate().into(iv_content);
+                GlideApp.with(getContext()).applyDefaultRequestOptions(GlideOptions.optionsTransparentRoundedCorners()).load(bean.getMessagecontent()).into(iv_content);
                 iv_viedo_play.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

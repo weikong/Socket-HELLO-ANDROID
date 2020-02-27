@@ -14,9 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.king.chat.socket.R;
-import com.king.chat.socket.ui.DBFlow.chatRecord.ChatRecordData;
 import com.king.chat.socket.ui.DBFlow.session.DBSessionImpl;
-import com.king.chat.socket.ui.activity.base.BaseDataActivity;
 import com.king.chat.socket.ui.activity.base.BaseUIActivity;
 import com.king.chat.socket.ui.fragment.ContactFragment;
 import com.king.chat.socket.ui.fragment.DiscoveryFragment;
@@ -25,8 +23,6 @@ import com.king.chat.socket.ui.fragment.MineFragment;
 import com.king.chat.socket.ui.view.viewpager.CustomViewPager;
 import com.king.chat.socket.util.BroadCastUtil;
 import com.king.chat.socket.util.socket.SocketUtil;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +74,10 @@ public class MainActivity extends BaseUIActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        unreadCount();
+    }
+
+    private void unreadCount(){
         try {
             long count = DBSessionImpl.getInstance().querySessionAllUnread2();
             if (count > 0){
@@ -227,6 +227,7 @@ public class MainActivity extends BaseUIActivity implements View.OnClickListener
         intentFilter.addAction(BroadCastUtil.ACTION_CONNECTED);
         intentFilter.addAction(BroadCastUtil.ACTION_CONNECTING);
         intentFilter.addAction(BroadCastUtil.ACTION_DISCONNECT);
+        intentFilter.addAction(BroadCastUtil.ACTION_RECIEVE_MESSAGE);
         if (receiver == null) {
             receiver = new BroadcastReceiver() {
                 @Override
@@ -244,6 +245,9 @@ public class MainActivity extends BaseUIActivity implements View.OnClickListener
                             if (SocketUtil.getInstance().isConnect()){
                                 SocketUtil.getInstance().closeSocket();
                             }
+                            break;
+                        case BroadCastUtil.ACTION_RECIEVE_MESSAGE:
+                            unreadCount();
                             break;
                     }
                 }

@@ -1,6 +1,7 @@
 package com.king.chat.socket;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.util.Log;
 
@@ -8,8 +9,13 @@ import com.king.chat.socket.broadcast.ServiceBroadcastReceiver;
 import com.king.chat.socket.exception.CrashHandler;
 import com.king.chat.socket.util.DisplayUtil;
 import com.king.chat.socket.util.ExpressionHelper;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
+import com.king.chat.socket.util.ImageLoaderOptions;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 
 /**
@@ -33,6 +39,7 @@ public class App extends Application {
         CrashHandler.getInstance().init(this);
         regitserConnReceiver();
         DisplayUtil.displayScreen(this);
+        initImageLoader(this);
 //        FlowManager.init(new FlowConfig.Builder(this).build());
         new Thread(new Runnable() {
             @Override
@@ -40,6 +47,34 @@ public class App extends Application {
                 ExpressionHelper.getInstance().buildFaceFileNameList();
             }
         }).start();
+    }
+
+    public static void initImageLoader(Context context) {
+        int maxMemory = 0;
+        int maxImageMemoryCacheSize = (maxMemory == 0) ? ImageLoaderOptions.MAX_IMAGE_DISK_CACHE_SIZE : (maxMemory / 8);
+//		File cacheDir = StorageUtils.getOwnCacheDirectory(appContext, "Melinked/imageloader/Cache");
+// 				.diskCache(new UnlimitedDiskCache(cacheDir)) //自定义缓存路径
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showStubImage(R.drawable.icon_default_user) // 设置图片下载期间显示的图片
+                .showImageOnLoading(R.drawable.icon_default_user)    //设置下载过程中图片显示
+                .showImageForEmptyUri(R.drawable.icon_default_user) // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.icon_default_user) // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
+                .cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
+                .build(); // 创建配置过得DisplayImageOption对象
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(options)
+                .memoryCache(new LruMemoryCache(maxImageMemoryCacheSize))
+                .memoryCacheExtraOptions(ImageLoaderOptions.MAX_IMAGE_WIDTH, ImageLoaderOptions.MAX_IMAGE_HEIGHT)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+//				.diskCacheSize(ImageLoaderOptions.MAX_IMAGE_DISK_CACHE_SIZE)//缓存的文件占sdcard大小
+//				.diskCacheFileCount(ImageLoaderOptions.MAX_IMAGE_DISK_FILE_COUNT)//缓存的文件数量
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密
+                .tasksProcessingOrder(QueueProcessingType.LIFO) //LIFO:后进先出 --  FIFO:先入先出
+                .build();
+
+        ImageLoader.getInstance().init(config);
     }
 
     @Override

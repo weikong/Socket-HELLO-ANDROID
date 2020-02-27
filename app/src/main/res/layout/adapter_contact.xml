@@ -7,7 +7,7 @@
     android:background="@drawable/bg_ffffff_press_f4f4f4"
     android:padding="5dp">
 
-    <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
+    <ImageView
         android:id="@+id/iv_header"
         android:layout_width="50dp"
         android:layout_height="50dp"

@@ -239,6 +239,7 @@ public class BiaoQingView extends RelativeLayout {
                             biaoQingBean.setUrl(url);
                             list1.add(biaoQingBean);
                         }
+                        gifAdapter.setPage(index);
                         gifAdapter.setListDatas(list1);
                         gifAdapter.notifyDataSetChanged();
                         break;
@@ -267,6 +268,7 @@ public class BiaoQingView extends RelativeLayout {
                                 list2.add(biaoQingBean);
                             }
                         }
+                        gifAdapter.setPage(index);
                         gifAdapter.setListDatas(list2);
                         gifAdapter.notifyDataSetChanged();
                         break;

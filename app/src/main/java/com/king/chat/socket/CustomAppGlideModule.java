@@ -18,8 +18,8 @@ public class CustomAppGlideModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        int memoryCacheSizeBytes = 1024 * 1024 * 50; // 20mb
-        int diskCacheSizeBytes = 1024 * 1024 * 200;  //100 MB
+        int memoryCacheSizeBytes = 1024 * 1024 * 200; // 200 MB
+        int diskCacheSizeBytes = 1024 * 1024 * 200;  //200 MB
         builder.setMemoryCache(new LruResourceCache(memoryCacheSizeBytes))
                 .setDiskCache(new InternalCacheDiskCacheFactory(context, diskCacheSizeBytes));
     }

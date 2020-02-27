@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/iv_gif"
-        android:layout_width="@dimen/margin_100dp"
-        android:layout_height="@dimen/margin_100dp"/>
+        android:layout_width="@dimen/margin_80dp"
+        android:layout_height="@dimen/margin_80dp"/>
 
 </RelativeLayout>

@@ -17,15 +17,15 @@
         android:paddingTop="@dimen/margin_4dp"
         android:paddingBottom="@dimen/margin_4dp"
         android:textColor="#333333"
-        android:maxWidth="220dp"
+        android:maxWidth="250dp"
         android:visibility="gone"
         android:text=""/>
 
-    <com.king.chat.socket.ui.view.ImageView.RoundAngleImageView
+    <ImageView
         android:id="@+id/iv_content"
         android:layout_width="@dimen/margin_200dp"
         android:layout_height="@dimen/margin_200dp"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:minWidth="@dimen/margin_200dp"
         android:minHeight="@dimen/margin_200dp"
         android:visibility="gone" />
